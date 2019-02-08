@@ -1,6 +1,5 @@
 let mongoose = require('mongoose');
 
-// Student schema
 let studentSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     mahtaCode:{
@@ -21,7 +20,7 @@ let studentSchema = mongoose.Schema({
     gift : Number,
     inviter: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Student'  // query the number and needed things to send
+        ref: 'Student'
     },
     inviteds: [
         {

@@ -12,7 +12,7 @@ const GetStudentList = (onFetched, onError)=>{
         credentials: 'include'})
         .then(res => {
 
-            if(res.status == 200){
+            if(res.status === 200){
                 
                 res.json().then((res) =>{
 

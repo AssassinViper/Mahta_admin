@@ -12,7 +12,7 @@ const PostReq = (url, json, onSuccess, onFail)=>{
 
     }).then( res =>{
 
-        if(res.status == 200){
+        if(res.status === 200){
             
             onSuccess(res);
 

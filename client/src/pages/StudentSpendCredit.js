@@ -2,16 +2,18 @@ import React, { Component } from 'react';
 
 import Input from '../components/Input';
 import Button from '../components/Button';
-import PlainText from '../components/PlainText';
+import SpendCreditHandler from '../handlers/SpendCreditHandler';
 
-const SpendCreditData = {
-
-    price:"",
-}
 
 class SpendCredit extends Component {
 
     state = { usefrom:"credit" }
+
+    SpendCreditData = {
+
+        familyCode:this.props.familyCode,
+        price:"",
+    }
 
     render() { 
         return ( 
@@ -22,7 +24,7 @@ class SpendCredit extends Component {
 
                 <Input height={35} width="20%" placeholder="(مبلغ خرید(تومان"  type="number"
                 ref={(ref=>this.priceInput = ref)}
-                onChange={(event)=>{SpendCreditData.price = event.target.value}}/>
+                onChange={(event)=>{this.SpendCreditData.price = event.target.value}}/>
 
                 
                 <label style={s.usefrom_con}>
@@ -52,13 +54,19 @@ class SpendCredit extends Component {
 
     commit = ()=>{
 
-        alert(SpendCreditData.usefrom)
+        this.SpendCreditData.useFrom = this.state.usefrom;
 
-        if(1){
-        
-            this.priceInput.clear();
-        }
-    
+        SpendCreditHandler({params:this.SpendCreditData},
+            (res)=>{
+
+                this.priceInput.clear();
+                alert("done");
+
+            },(err)=>{
+
+                alert(err);
+            }
+        );
     }
 }
 

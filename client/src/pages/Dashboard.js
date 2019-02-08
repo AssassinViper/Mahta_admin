@@ -1,15 +1,40 @@
 import React, { Component } from 'react';
 
 import StudentList from '../components/StudentList';
-import list from '../data/studentList';
+import {GetStudentList} from '../handlers/StudentListHandler';
 
 import SearchBar from '../components/SearchBar';
 class Dashboard extends Component {
+
+    static StudentInfoList = [];
+    static selectedStudent = {}
     
-    state = { StudentList:list }
+    state = { }
 
     componentDidMount(){
-        this.showlist(list);
+
+        console.log(Dashboard.StudentInfoList)
+
+        if(Dashboard.StudentInfoList.length == 0){
+
+            GetStudentList((res)=>{
+
+                console.log(res);
+
+                Dashboard.StudentInfoList = res;
+                
+                this.showlist(Dashboard.StudentInfoList);
+    
+            },(err)=>{
+    
+                alert(err);
+            });
+
+        }else{
+
+            this.showlist(Dashboard.StudentInfoList);
+        }
+        
     }
 
     render() { 
@@ -37,7 +62,7 @@ class Dashboard extends Component {
 
         }else{
 
-            this.showlist(list);
+            this.showlist(Dashboard.StudentInfoList);
         }
     }
 }

@@ -11,7 +11,8 @@ class Input extends Component {
     render() { 
         return ( 
             <input 
-            placeholder={this.props.placeholder} 
+            placeholder={this.props.placeholder}
+            value={this.props.value}
             type={this.props.type || "text"}
             onChange={this.props.onChange}
             maxLength={this.props.maxLength || 200}

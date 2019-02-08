@@ -91,11 +91,11 @@ if (process.env.NODE_ENV === 'developement') {
     // with this configuration both first Option req and next req statuses would be 200 OK :)
     app.use(function(req, res, next) {
 
-        res.header('Access-Control-Allow-Origin', 'http://localhost:3005');
-        res.header('Access-Control-Allow-Credentials', true);
-        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-        res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-        next();
+        //res.header('Access-Control-Allow-Origin', 'http://localhost:3005');
+        //res.header('Access-Control-Allow-Credentials', true);
+        //res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+        //res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
+        //next();
     });
 }
 

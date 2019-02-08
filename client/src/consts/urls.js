@@ -1,8 +1,14 @@
-const base = "http://admin.alphaproject.info/api/admin";
-
 const urls = {
 
-    authenticate:"http://admin.alphaproject.info/api/admin/authenticate",
+    authenticate:"/api/admin/authenticate",
+    getStudentList:"api/admin/getStudentList",
+    groupCommit:"api/admin/groupCommit",
+    commitPurchase:"api/admin/commitPurchase",
+    commitGift:"api/admin/commitGift",
+    spendCredit:"api/admin/spendCredit",
+    addStudent:"api/admin/addStudent",
+    studentInfo:"api/admin/studentInfo",
+    studentEdit:"api/admin/studentEdit",
 }
 
 export default urls;

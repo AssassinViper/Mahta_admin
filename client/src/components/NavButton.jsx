@@ -15,7 +15,15 @@ class NavButton extends Component {
 
     goTo = ()=>{
 
-        this.props.history.push('/admin/'+this.props.navTo);
+        if(this.props.navTo == ""){
+
+            this.props.history.push('/admin');
+        }else{
+
+            this.props.history.push('/admin/'+this.props.navTo);
+        }
+        
+        
     }
 }
 

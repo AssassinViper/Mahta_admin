@@ -13,7 +13,7 @@ const secret = 'mysecretboozboozak';
 let User = require('../models/user');
 let Student = require('../models/student');
 
-// setAdmin();
+//setAdmin();
 
 // setting admin manually
 function setAdmin() {
@@ -44,6 +44,8 @@ function setAdmin() {
 // authenticate process
 router.post('/authenticate', (req, res, next) => {
 
+    console.log('/authenticate');
+    
     const { username, password } = req.body;
 
     User.findOne({ username }, function(err, user) {
@@ -59,7 +61,7 @@ router.post('/authenticate', (req, res, next) => {
 
             res.status(401)
                 .json({
-                    error: 'Incorrect username or password'
+                    error: 'Incorrect username or password->user not found'
                 });
         } else {
 
@@ -89,7 +91,7 @@ router.post('/authenticate', (req, res, next) => {
 
                     res.status(401)
                         .json({
-                            error: 'Incorrect username or password'
+                            error: 'Incorrect username or password->401'
                         });
                 }
             });
@@ -99,16 +101,17 @@ router.post('/authenticate', (req, res, next) => {
 
 });
 
+
 // checking token
 router.get('/checkToken', withAuth, function(req, res) {
+    console.log('/checkToken');
+    
     res.sendStatus(200);
 });
 
 
+//insertFakeStudentsToDb();
 
-
-
-// insertFakeStudentsToDb();
 
 function insertFakeStudentsToDb() {
 
@@ -137,8 +140,10 @@ function insertFakeStudentsToDb() {
 }
 
 
-router.get('/getStudentList', withAuth, (req, res) => {
+router.post('/getStudentList', withAuth, (req, res) => {
 
+    console.log(req.cookies.token);
+    
     Student.find({}, (err, students) => {
 
         if (err)

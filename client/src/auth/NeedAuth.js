@@ -2,18 +2,17 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import {GetReq} from '../helpers/HttpRequest';
 
-function NeedAuth(component) {
+function NeedAuth(Comp) {
   return class extends Component {
 
     state = {component:null};
 
     componentDidMount() {
 
-      GetReq('http://admin.alphaproject.info/api/admin/checkToken')
-      
+      GetReq('/api/admin/checkToken')
       .then(res => {
         if (res.status === 200) {
-          this.setState({component:<component {...this.props} />});
+          this.setState({component:<Comp {...this.props} />});
         } else {
           const error = new Error(res.error);
           throw error;

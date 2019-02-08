@@ -14,7 +14,7 @@ class StudentList extends Component {
         return ( 
 
             <div style={s.con}>
-                
+
                 <div style={s.header_con}>
                     
                     <div style={s.header}> مقدار هدیه </div>
@@ -25,7 +25,13 @@ class StudentList extends Component {
                 
                 </div>
 
-                {this.state.studentList}
+                <div style={s.list_con}>
+                
+                    <div style={{height:'auto'}}>
+                        {this.state.studentList}
+                    </div>
+
+                </div>
 
             </div>
         );
@@ -40,13 +46,7 @@ class StudentList extends Component {
             
             studentList.push(
 
-                <StudentListItem key={i} history={this.props.history}
-                    familyCode={element.familyCode}
-                    firstName={element.firstName}
-                    lastName={element.lastName}
-                    credit={element.credit}
-                    gift={element.gift}
-                />
+                <StudentListItem key={i} history={this.props.history} studentInfo={element}/>
             )
 
             i++;
@@ -64,16 +64,24 @@ const s = {
         flexDirection:'column',
         height:'95%',
         width:'98%',
-        overflowY:'scroll',
         borderStyle:'solid',
         borderWidth:4,
         borderColor:'purple'
     },
 
+    list_con:{
+
+        display:'flex',
+        flexDirection:'column',
+        height:'95%',
+        width:'100%',
+        overflowY:'scroll',
+    },
+
     header_con:{
         display:'flex',
         justifyContent:'space-between',
-        height:'6%',
+        height:30,
         width:'100%',
         marginBottom:8,
         backgroundColor:'white'

@@ -29,20 +29,20 @@ class App extends Component {
           <Route exact path="/auth" component={LoginPage}/>
 
           <Route path="/admin" component={NeedAuth(Navbar)}/>
-          <Route path="/student" component={StudentNavbar}/>.
+          <Route path="/student" component={NeedAuth(StudentNavbar)}/>.
             
           <Route exact path="/admin" component={NeedAuth(Dashboard)}/>
-          <Route exact path="/admin/addstudent" component={AddStudent}/>
-          <Route exact path="/admin/commitgift" component={CommitGift}/>
-          <Route exact path="/admin/commitpurchase" component={CommitPurchase}/>
-          <Route exact path="/admin/groupcommit" component={GroupCommit}/>
-          <Route exact path="/admin/spendcredit" component={SpendCredit}/>
+          <Route exact path="/admin/addstudent" component={NeedAuth(AddStudent)}/>
+          <Route exact path="/admin/commitgift" component={NeedAuth(CommitGift)}/>
+          <Route exact path="/admin/commitpurchase" component={NeedAuth(CommitPurchase)}/>
+          <Route exact path="/admin/groupcommit" component={NeedAuth(GroupCommit)}/>
+          <Route exact path="/admin/spendcredit" component={NeedAuth(SpendCredit)}/>
 
-          <Route exact path="/student" component={StudentInfo} />
-          <Route exact path="/student/edit" component={StudentEdit}/>
-          <Route exact path="/student/commitpurchase" component={StudentCommitPurchase}/>
-          <Route exact path="/student/commitgift" component={StudentCommitGift}/>
-          <Route exact path="/student/spendcredit" component={StudentSpendCredit}/>
+          <Route exact path="/student" component={NeedAuth(StudentInfo)} />
+          <Route exact path="/student/edit" component={NeedAuth(StudentEdit)}/>
+          <Route exact path="/student/commitpurchase" component={NeedAuth(StudentCommitPurchase)}/>
+          <Route exact path="/student/commitgift" component={NeedAuth(StudentCommitGift)}/>
+          <Route exact path="/student/spendcredit" component={NeedAuth(StudentSpendCredit)}/>
 
         </div>
       </Router>

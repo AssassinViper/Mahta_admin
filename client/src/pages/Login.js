@@ -7,6 +7,9 @@ import urls from '../consts/urls';
 
 class LoginPage extends Component{
 
+    username = "";
+    password = "";
+
     render(){
 
         return(
@@ -23,18 +26,22 @@ class LoginPage extends Component{
 
     authenticate = ()=>{
 
-        /*fetch("https://support.oneskyapp.com/hc/en-us/article_attachments/202761627/example_1.json")
-        .then( res => res.json())
-        .then( res => alert(res.fruit))
-        .catch( error => alert(error));*/
-
-        fetch("http://admin.alphaproject.info/api/admin/authenticate", 
+        fetch(urls.authenticate, 
         {method:"POST", 
-        body: JSON.stringify({username:"admin", password:"adminpassword"}),
+        body: JSON.stringify({username:this.username, password:this.password}),
         headers: {'Content-Type': 'application/json'},
         credentials: 'include'})
-        .then(res => {res.json()})
-        .then(res => {alert('aa')})
+        .then(res => {
+
+            if(res.status == 200 ){
+
+                this.props.history.push("/admin")
+
+            }else{
+
+                alert("Incorrect username or password")
+            }
+        })
         .catch(err => {alert(err)});
     }
 }

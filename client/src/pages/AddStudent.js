@@ -2,19 +2,11 @@ import React, { Component } from 'react';
 
 import Input from '../components/Input';
 import Button from '../components/Button';
-import PlainText from '../components/PlainText';
+import AddStudentHandler from '../handlers/AddStudentHandler';
 import Select from 'react-select';
-
-const AddStudentData = {
-
-    firstName:"",
-    lastName:"",
-    grade:"",
-    field:"",
-    phoneNumber:"",
-    familyCode:"",
-    inviterCode:""
-}
+import YesNoModal from '../components/YesNoModal';
+import ErrorModal from '../components/ErrorModal';
+import SuccessModal from '../components/SuccessModal';
 
 const gradeOptions=[
     {value:"9", label:"نهم"},
@@ -34,7 +26,20 @@ const fieldOptions=[
   
 
 class AddStudent extends Component {
-    state = {  }
+
+    state = { askModal:false, errorModal:false, successModal:false }
+
+    AddStudentData = {
+
+        firstName:"",
+        lastName:"",
+        grade:"",
+        field:"",
+        phoneNumber:"",
+        familyCode:"",
+        inviterCode:""
+    }
+
     render() { 
         return ( 
             <div style={s.con}>
@@ -45,11 +50,11 @@ class AddStudent extends Component {
                     
                     <Input height={35} width={200} placeholder="نام خانوادگی" type="text"
                     ref={(ref=>this.lastNameInput = ref)}
-                    onChange={(event)=>{AddStudentData.lastName = event.target.value}}/>
+                    onChange={(event)=>{this.AddStudentData.lastName = event.target.value}}/>
 
                     <Input height={35} width={200} placeholder="نام"type="text"
                     ref={(ref=>this.firstNameInput = ref)}
-                    onChange={(event)=>{AddStudentData.firstName = event.target.value}}/>
+                    onChange={(event)=>{this.AddStudentData.firstName = event.target.value}}/>
 
                 </div>
                 
@@ -65,11 +70,11 @@ class AddStudent extends Component {
 
                     <Input height={35} width={200} placeholder="کد معرف" type="number"
                     ref={(ref=>this.inviterCodeInput = ref)}
-                    onChange={(event)=>{AddStudentData.inviterCode = event.target.value}}/>
+                    onChange={(event)=>{this.AddStudentData.inviterCode = event.target.value}}/>
 
                     <Input height={35} width={200} placeholder="کد خانواده"type="number"
                     ref={(ref=>this.familyCodeInput = ref)}
-                    onChange={(event)=>{AddStudentData.familyCode = event.target.value}}/>
+                    onChange={(event)=>{this.AddStudentData.familyCode = event.target.value}}/>
 
                 </div>
                 
@@ -77,14 +82,96 @@ class AddStudent extends Component {
 
                     <Input height={35} width={200} placeholder="شماره تماس"type="number"
                     ref={(ref=>this.phoneNumberInput = ref)}
-                    onChange={(event)=>{AddStudentData.phoneNumber = event.target.value}}/>
+                    onChange={(event)=>{this.AddStudentData.phoneNumber = event.target.value}}/>
 
                 </div>
                 
-                <Button height={50} width="15%" onClick={this.commit}>ثبت</Button>
+                <Button height={50} width="15%" onClick={this.modalOpen}>ثبت</Button>
+
+                <YesNoModal open={this.state.askModal} commit={this.askModalCommit} cancel={this.askModalClose}>
+                    ثبت دانش آموز با مشخصات زیر؟
+                </YesNoModal>
+                
+                <ErrorModal open={this.state.errorModal} onClose={this.errorModalClose}>
+                    خطا
+                </ErrorModal>
+                
+                <SuccessModal open={this.state.successModal} onClose={this.successModalClose}>
+                    عملیات ثبت دانش آموز با موفقیت انجام شد
+                </SuccessModal>
 
             </div>
-         );
+        );
+    }
+
+    commit = ()=>{
+
+        
+
+        AddStudentHandler({params:this.AddStudentData},
+            (res)=>{
+
+                this.firstNameInput.clear();
+                this.lastNameInput.clear();
+                this.familyCodeInput.clear();
+                this.inviterCodeInput.clear();
+                this.phoneNumberInput.clear();
+                
+                this.successModalOpen();
+
+            },(err)=>{
+
+                this.errorModalOpen();
+            }
+        );
+    }
+
+    askModalCommit = ()=>{
+
+        this.askModalClose();
+        this.commit();
+    }
+
+    askModalOpen = ()=>{
+
+        let newState = Object.assign({}, this.state);
+        newState.commitModal =true;
+        this.setState(newState);
+    }
+
+    askModalClose = ()=>{
+
+        let newState = Object.assign({}, this.state);
+        newState.commitModal =false;
+        this.setState(newState);
+    }
+
+    errorModalOpen = ()=>{
+
+        let newState = Object.assign({}, this.state);
+        newState.errorModal =true;
+        this.setState(newState);
+    }
+
+    errorModalClose = ()=>{
+
+        let newState = Object.assign({}, this.state);
+        newState.errorModal =false;
+        this.setState(newState);
+    }
+
+    successModalOpen = ()=>{
+
+        let newState = Object.assign({}, this.state);
+        newState.successModal =true;
+        this.setState(newState);
+    }
+
+    successModalClose = ()=>{
+
+        let newState = Object.assign({}, this.state);
+        newState.successModal =false;
+        this.setState(newState);
     }
 }
 

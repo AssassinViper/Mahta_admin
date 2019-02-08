@@ -2,16 +2,20 @@ import React, { Component } from 'react';
 
 import Input from '../components/Input';
 import Button from '../components/Button';
-import PlainText from '../components/PlainText';
+import SpendCreditHandler from '../handlers/SpendCreditHandler';
 
-const SpendCreditData = {
 
-    familyCode:"",
-    price:""
-}
 
 class SpendCredit extends Component {
+
     state = { usefrom:"credit" }
+
+    SpendCreditData = {
+
+        familyCode:"",
+        price:""
+    }
+
     render() { 
         return ( 
             <div style={s.con}>
@@ -20,11 +24,11 @@ class SpendCredit extends Component {
                 
                 <Input height={35} width="20%" placeholder="کد خانواده" type="number"
                 ref={(ref=>this.familyCodeInput = ref)}
-                onChange={(event)=>{SpendCreditData.familyCode = event.target.value}}/>
+                onChange={(event)=>{this.SpendCreditData.familyCode = event.target.value}}/>
 
                 <Input height={35} width="20%" placeholder="(مبلغ خرید(تومان"  type="number"
                 ref={(ref=>this.priceInput = ref)}
-                onChange={(event)=>{SpendCreditData.price = event.target.value}}/>
+                onChange={(event)=>{this.SpendCreditData.price = event.target.value}}/>
 
                 
                 <label style={s.usefrom_con}>
@@ -54,14 +58,20 @@ class SpendCredit extends Component {
 
     commit = ()=>{
 
-        alert(this.state.usefrom)
-
-        if(1){
+        this.SpendCreditData.useFrom = this.state.usefrom;
         
-            this.familyCodeInput.clear();
-            this.priceInput.clear();
-        }
-    
+        SpendCreditHandler({params:this.SpendCreditData},
+            (res)=>{
+
+                this.familyCodeInput.clear();
+                this.priceInput.clear();
+                alert("done")
+
+            },(err)=>{
+
+                alert(err)
+            }
+        )
     }
 }
 

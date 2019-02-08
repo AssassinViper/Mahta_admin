@@ -15,7 +15,7 @@ async function addStudent(req, res, next) {
     let issue = false;
 
     // check if no student already own requested mahtaCode
-    await Student.findOne({ mahtaCode: params.mahtaCode }, function(err, student) {
+    await Student.findOne({ mahtaCode: params.familyCode }, function(err, student) {
 
         if (err) { // if there were errors running query
 
@@ -62,14 +62,12 @@ async function addStudent(req, res, next) {
     if (issue) return;
 
     newStudent._id = new mongoose.Types.ObjectId();
-    newStudent.mahtaCode = params.mahtaCode;
+    newStudent.mahtaCode = params.familyCode;
     newStudent.name.firstName = params.firstName;
     newStudent.name.lastName = params.lastName;
     newStudent.grade = params.grade;
     newStudent.field = params.field;
-    newStudent.phone = params.phone;
-    newStudent.credit = params.credit;
-    newStudent.gift = params.gift;
+    newStudent.phone = params.phoneNumber;
 
     newStudent.save((err => {
         if (err) errHandler(err, res);
@@ -78,13 +76,43 @@ async function addStudent(req, res, next) {
 
 }
 
-function editStudent(req, res, next) {
+async function editStudent(req, res, next) {
 
+    let params = req.body;
 
+    let query = {_id : params._id};
+
+    let student = {
+        name: {
+            firstName: params.firstName,
+            lastName: params.lastName
+        },
+        grade: params.grade,
+        field: params.field,
+        phone: params.phoneNumber
+    };
+
+    await Student.findOneAndUpdate(query, student, {upsert:false}, function(err, student){
+
+        if (err) errHandler(err, res);
+        else res.sendStatus(consts.SUCCESS_CODE);
+    });
 
 }
 
-function deleteStudent(req, res, next) {
+async function deleteStudent(req, res, next) {
+
+    let params = req.body;
+
+    let query = {
+        _id: params._id
+    };
+
+    await Student.remove(query, (err) => {
+
+        if (err) errHandler(err, res);
+        else res.sendStatus(consts.SUCCESS_CODE);
+    });
 
 }
 

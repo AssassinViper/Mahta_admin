@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 
-const withAuth = require('../utils/middleware');
+const withAuth = require('../auth/middleware');
 const faker = require('../tools/faker');
 const consts = require('../utils/consts');
 const studentHandler = require('../utils/studentHandler');

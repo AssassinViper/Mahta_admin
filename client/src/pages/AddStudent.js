@@ -22,7 +22,6 @@ const fieldOptions=[
     {value:"ensani", label:"انسانی"},
 ]
 
-
   
 
 class AddStudent extends Component {

@@ -4,10 +4,9 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const expressValidator = require('express-validator');
 const session = require('express-session');
-const passport = require('passport');
-const config = require('./config/database');
-const isProduction = require('./config/config');
 const cookieParser = require('cookie-parser');
+
+const config = require('./config/config');
 
 
 mongoose.connect(config.database, { useNewUrlParser: true });
@@ -36,7 +35,7 @@ app.use(bodyParser.json());
 
 app.use(cookieParser());
 
-if (process.env.NODE_ENV === 'developement') {
+if (config.isDevelopement) {
     console.log(`We're on developement :)`);
 
     // Express session Middleware

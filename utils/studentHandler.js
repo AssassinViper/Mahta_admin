@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 const consts = require('./consts');
 const errHandler = require('./errHandler');
+const config  = require('../config/config');
 
 // Requiring models
 let Student = require('../models/student');
-let User = require('../models/user');
 
 
 async function addStudent(req, res, next) {
@@ -34,9 +34,20 @@ async function addStudent(req, res, next) {
 
     if (issue) return;
 
+    newStudent._id = new mongoose.Types.ObjectId();
+    newStudent.mahtaCode = params.familyCode;
+    newStudent.name.firstName = params.firstName;
+    newStudent.name.lastName = params.lastName;
+    newStudent.grade = params.grade;
+    newStudent.field = params.field;
+    newStudent.phone = params.phoneNumber;
+    // newStudent.gift = 0;
+    // newStudent.credit = 0;
+
     // check if inviterCode is valid
     if (params.inviterCode) {
 
+        // finding inviter
         await Student.findOne({ mahtaCode: params.inviterCode }, function(err, student) {
 
             if (err) { // if there were errors running query
@@ -44,7 +55,7 @@ async function addStudent(req, res, next) {
                 issue = true;
                 errHandler(err, res);
 
-            } else if (!student) { // if no student found
+            } else if (!student) { // if no inviter found
 
                 issue = true;
                 res.status(consts.BAD_REQ_CODE)
@@ -54,20 +65,27 @@ async function addStudent(req, res, next) {
 
             } else { // if inviterCode is valid
 
+                // defining inviter for newStudent
                 newStudent.inviter = student._id;
+
+                // adding ref to inviter
+                student.inviteds.push(newStudent);
+
+                // saving inviter
+                student.save((err => {
+                    if (err) {
+                        errHandler(err, res);
+
+                        if (config.isDevelopement) {
+                            console.log(`error at saving inviter`);
+                        }
+                    }
+                }))
             }
         });
     }
 
     if (issue) return;
-
-    newStudent._id = new mongoose.Types.ObjectId();
-    newStudent.mahtaCode = params.familyCode;
-    newStudent.name.firstName = params.firstName;
-    newStudent.name.lastName = params.lastName;
-    newStudent.grade = params.grade;
-    newStudent.field = params.field;
-    newStudent.phone = params.phoneNumber;
 
     newStudent.save((err => {
         if (err) errHandler(err, res);
@@ -80,7 +98,7 @@ async function editStudent(req, res, next) {
 
     let params = req.body;
 
-    let query = {_id : params._id};
+    let query = {mahtaCode : params.familyCode};
 
     let student = {
         name: {
@@ -103,20 +121,45 @@ async function editStudent(req, res, next) {
 async function deleteStudent(req, res, next) {
 
     let params = req.body;
+    let inviterId;
 
     let query = {
-        _id: params._id
+        mahtaCode: params.familyCode
     };
+    // TODO: must check if the student was invited and then delete its id from inviteds of inviter
 
-    console.log("delete std ->"+params._id);
-    
+    // find student to get inviterId
+    // await Student.findOne(query, function(err, student) {
+    //
+    //     if (err) { // if there were errors running query
+    //
+    //         issue = true;
+    //         errHandler(err, res);
+    //
+    //     } else if (!student) { // if no student found
+    //
+    //         issue = true;
+    //         res.status(consts.BAD_REQ_CODE)
+    //             .json({
+    //                 error: consts.INCORRECT_MAHTA_ID
+    //             });
+    //
+    //     } else { // if student was found
+    //
+    //         check if had inviter
+            // if (student.inviter)    inviterId = student.inviter;
+        // }
+    // });
 
+    // remove student
     await Student.remove(query, (err) => {
 
         if (err) errHandler(err, res);
         else res.sendStatus(consts.SUCCESS_CODE);
     });
 
+
+    // update inviter information
 }
 
 module.exports = {addStudent, editStudent, deleteStudent};

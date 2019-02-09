@@ -16,8 +16,14 @@ let studentSchema = mongoose.Schema({
     grade: String,
     field: String,
     phone: Number,
-    credit: Number,
-    gift : Number,
+    credit: {
+        type: Number,
+        default: 0
+    },
+    gift : {
+        type: Number,
+        default: 0
+    },
     inviter: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Student'

@@ -7,15 +7,35 @@ const config  = require('../config/config');
 let Student = require('../models/student');
 
 
+async function getStudentList(req, res, next) {
+
+    // console.log(req.cookies.token);
+
+    Student.find({}, (err, students) => {
+
+        if (err) {
+            errHandler(err);
+
+        } else {
+            res.status(consts.SUCCESS_CODE).json(students);
+        }
+    });
+
+}
+
 async function addStudent(req, res, next) {
 
     let params = req.body;
     let newStudent = new Student({});
 
+    let query = { // must cast this shit to Number
+        mahtaCode: Number(params.code)
+    };
+
     let issue = false;
 
-    // check if no student already own requested mahtaCode
-    await Student.findOne({ mahtaCode: params.familyCode }, function(err, student) {
+    // check if any student already own requested mahtaCode
+    await Student.findOne(query, function(err, student) {
 
         if (err) { // if there were errors running query
 
@@ -41,8 +61,6 @@ async function addStudent(req, res, next) {
     newStudent.grade = params.grade;
     newStudent.field = params.field;
     newStudent.phone = params.phoneNumber;
-    // newStudent.gift = 0;
-    // newStudent.credit = 0;
 
     // check if inviterCode is valid
     if (params.inviterCode) {
@@ -88,9 +106,23 @@ async function addStudent(req, res, next) {
     if (issue) return;
 
     newStudent.save((err => {
-        if (err) errHandler(err, res);
-        else res.sendStatus(consts.SUCCESS_CODE);
+        if (err) {
+            issue = true;
+            errHandler(err, res);
+        }
     }));
+
+    if (issue) return;
+
+    await Student.find({}, (err, students) => {
+
+        if (err) {
+            errHandler(err);
+
+        } else {
+            res.status(consts.SUCCESS_CODE).json(students);
+        }
+    });
 
 }
 
@@ -98,7 +130,9 @@ async function editStudent(req, res, next) {
 
     let params = req.body;
 
-    let query = {mahtaCode : params.familyCode};
+    let query = {
+        mahtaCode: Number(params.code)
+    };
 
     let student = {
         name: {
@@ -126,8 +160,12 @@ async function deleteStudent(req, res, next) {
     let issue = false;
 
     let query = {
-        mahtaCode: params.code
+        mahtaCode: Number(params.code)
     };
+
+    if (config.isDevelopement) console.log(`query : ${typeof (query.mahtaCode)}`);
+
+
     // TODO: must check if the student was invited and then delete its id from inviteds of inviter
 
     // find student to get inviterId
@@ -154,15 +192,11 @@ async function deleteStudent(req, res, next) {
     // });
 
     // remove student
-    await Student.remove(query, (err) => {
+    await Student.deleteOne(query ,(err) => {
 
         if (err) {
             errHandler(err, res);
             issue = true;
-        }
-        else { // if student deleted successfully
-
-            // res.sendStatus(consts.SUCCESS_CODE);
         }
     });
 
@@ -171,11 +205,7 @@ async function deleteStudent(req, res, next) {
     await Student.find({}, (err, students) => {
 
         if (err) {
-            console.log(err);
-            res.status(consts.INT_ERR_CODE)
-                .json({
-                    error: consts.ERR
-                });
+            errHandler(err);
 
         } else {
             res.status(consts.SUCCESS_CODE).json(students);
@@ -184,4 +214,4 @@ async function deleteStudent(req, res, next) {
 
 }
 
-module.exports = {addStudent, editStudent, deleteStudent};
+module.exports = {getStudentList, addStudent, editStudent, deleteStudent};

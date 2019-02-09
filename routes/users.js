@@ -5,7 +5,6 @@ const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 
 const withAuth = require('../auth/middleware');
-const faker = require('../tools/faker');
 const consts = require('../utils/consts');
 const studentHandler = require('../utils/studentHandler');
 const purchaseHandler = require('../utils/purchaseHandler');
@@ -84,24 +83,7 @@ router.post('/checkToken', withAuth, function(req, res) {
     res.sendStatus(consts.SUCCESS_CODE);
 });
 
-router.post('/getStudentList', withAuth, (req, res) => {
-
-    // console.log(req.cookies.token);
-
-    Student.find({}, (err, students) => {
-
-        if (err) {
-            console.log(err);
-            res.status(consts.INT_ERR_CODE)
-                .json({
-                    error: consts.ERR
-                });
-
-        } else {
-            res.status(consts.SUCCESS_CODE).json(students);
-        }
-    });
-});
+router.post('/getStudentList', withAuth, studentHandler.getStudentList);
 
 router.post('/addStudent', withAuth, studentHandler.addStudent);
 router.post('/editStudent', withAuth, studentHandler.editStudent);

@@ -3,7 +3,7 @@ module.exports = {
     ERR: 'Internal Error',
     INCORRECT_USER: 'Incorrect Username',
     INCORRECT_PASSWORD : 'Incorrect Password',
-    INCORRECT_STUDENT_ID: 'Incorrect Student ID',
+    INCORRECT_MAHTA_ID: 'Incorrect Mahta ID',
 
     INVITER_NOT_EXISTS : 'Inviter Code is Incorrect',
     MAHTA_CODE_EXISTS : 'Mahta Code is Already Taken',

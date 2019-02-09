@@ -8,6 +8,8 @@ const withAuth = require('../auth/middleware');
 const faker = require('../tools/faker');
 const consts = require('../utils/consts');
 const studentHandler = require('../utils/studentHandler');
+const purchaseHandler = require('../utils/purchaseHandler');
+const giftHandler = require('../utils/giftHandler');
 
 const secret = 'mysecretboozboozak';
 
@@ -104,6 +106,10 @@ router.post('/getStudentList', withAuth, (req, res) => {
 router.post('/addStudent', withAuth, studentHandler.addStudent);
 router.post('/editStudent', withAuth, studentHandler.editStudent);
 router.post('/deleteStudent', withAuth, studentHandler.deleteStudent);
+
+
+router.post('/commitPurchase', withAuth, purchaseHandler.commitPurchase);
+router.post('/commitGift', withAuth, giftHandler.commitGift);
 
 
 

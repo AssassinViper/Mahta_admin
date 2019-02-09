@@ -8,7 +8,7 @@ function NeedAuth(Comp) {
     state = {component:null};
 
     componentDidMount() {
-
+      // TODO: change this to POST
       GetReq('/api/admin/checkToken')
       .then(res => {
         if (res.status === 200) {

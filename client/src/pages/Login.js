@@ -33,7 +33,7 @@ class LoginPage extends Component{
         credentials: 'include'})
         .then(res => {
 
-            if(res.status == 200 ){
+            if(res.status === 200 ){
 
                 this.props.history.push("/admin")
 

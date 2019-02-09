@@ -4,8 +4,10 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 
-const withAuth = require('../utils/middleware');
+const withAuth = require('../auth/middleware');
 const faker = require('../tools/faker');
+const consts = require('../utils/consts');
+const studentHandler = require('../utils/studentHandler');
 
 const secret = 'mysecretboozboozak';
 
@@ -13,36 +15,8 @@ const secret = 'mysecretboozboozak';
 let User = require('../models/user');
 let Student = require('../models/student');
 
-//setAdmin();
-
-// setting admin manually
-function setAdmin() {
-
-    let admin = new User({
-        username: 'admin',
-        password: 'adminpassword'
-    });
-
-    // hashing the password
-    bcrypt.genSalt(10, (err, salt) => {
-        bcrypt.hash(admin.password, salt, (err, hash) => {
-
-            if (err) console.log(err);
-
-            admin.password = hash;
-
-            admin.save((err => {
-
-                if (err) console.log(err);
-                else console.log(`user added successfully`)
-            }));
-        });
-    });
-}
-
-
 // authenticate process
-router.post('/authenticate', (req, res, next) => {
+router.post('/authenticate', (req, res) => {
 
     console.log('/authenticate');
     
@@ -53,15 +27,15 @@ router.post('/authenticate', (req, res, next) => {
         if (err) {
 
             console.error(err);
-            res.status(500)
+            res.status(consts.INT_ERR_CODE)
                 .json({
-                    error: 'Internal error please try again'
+                    error: consts.ERR
                 });
         } else if (!user) {
 
-            res.status(401)
+            res.status(consts.UNAUTHORIZED_CODE)
                 .json({
-                    error: 'Incorrect username or password->user not found'
+                    error: consts.INCORRECT_USER
                 });
         } else {
 
@@ -89,9 +63,9 @@ router.post('/authenticate', (req, res, next) => {
 
                 } else {
 
-                    res.status(401)
+                    res.status(consts.UNAUTHORIZED_CODE)
                         .json({
-                            error: 'Incorrect username or password->401'
+                            error: consts.INCORRECT_PASSWORD
                         });
                 }
             });
@@ -103,68 +77,35 @@ router.post('/authenticate', (req, res, next) => {
 
 
 // checking token
-router.get('/checkToken', withAuth, function(req, res) {
-    console.log('/checkToken');
-    
-    res.sendStatus(200);
+router.post('/checkToken', withAuth, function(req, res) {
+
+    res.sendStatus(consts.SUCCESS_CODE);
 });
-
-
-//insertFakeStudentsToDb();
-
-
-function insertFakeStudentsToDb() {
-
-    for (let i = 0; i < 100; i++) {
-
-        new Student({
-            _id: new mongoose.Types.ObjectId(),
-            mahtaCode: 1400000 + i,
-            name: {
-                firstName: faker.getFirstName(),
-                lastName: faker.getLastName()
-            },
-            grade: faker.getGrade(),
-            field: faker.getField(),
-            phone: faker.getPhoneNumber(),
-            credit: 0,
-            gift: 0,
-        })
-        .save((err) => {
-            if (err) console.log(err);
-            else console.log(`student added`)
-        });
-
-    }
-
-}
-
 
 router.post('/getStudentList', withAuth, (req, res) => {
 
-    console.log(req.cookies.token);
-    
+    // console.log(req.cookies.token);
+
     Student.find({}, (err, students) => {
 
-        if (err)
+        if (err) {
             console.log(err);
-         else
-            res.json(students);
-    });
+            res.status(consts.INT_ERR_CODE)
+                .json({
+                    error: consts.ERR
+                });
 
-});
-
-
-
-// Get single article
-router.get('/:id', (req, res) => { // must use this after all other get request handles cause /:id can be even letters and mistaken
-
-    Article.findById(req.params.id, (err, article) => {
-        res.render('article', {
-            article: article
-        })
+        } else {
+            res.status(consts.SUCCESS_CODE).json(students);
+        }
     });
 });
 
+router.post('/addStudent', withAuth, studentHandler.addStudent);
+router.post('/editStudent', withAuth, studentHandler.editStudent);
+router.post('/deleteStudent', withAuth, studentHandler.deleteStudent);
 
-module.exports = router; // accessing router from outside
+
+
+
+module.exports = router;

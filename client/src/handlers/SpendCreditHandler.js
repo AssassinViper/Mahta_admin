@@ -10,7 +10,7 @@ const SpendCreditHandler = (json, onFetched, onError)=>{
         })
         .then(res =>{
 
-            if(res.status == 200){
+            if(res.status === 200){
                 
                 res.json().then(res=> onFetched(res));
             

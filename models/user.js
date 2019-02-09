@@ -1,6 +1,5 @@
 let mongoose = require('mongoose');
 
-// User schema
 let userSchema = mongoose.Schema({
     username:{
         type: String,

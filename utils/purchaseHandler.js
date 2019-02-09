@@ -45,7 +45,10 @@ async function commitPurchase(req, res, next) {
 
             // save student
             student.save((err => {
-                if (err) errHandler(err, res);
+                if (err) {
+                    issue = true;
+                    errHandler(err, res);
+                }
             }));
 
             // save purchase

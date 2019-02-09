@@ -12,6 +12,8 @@ async function commitPurchase(req, res, next) {
 
     let params = req.body;
 
+    let issue = false;
+
     let purchase = new Purchase({});
     let inviterId;
 
@@ -48,9 +50,27 @@ async function commitPurchase(req, res, next) {
 
             // save purchase
             purchase.save((err => {
-                if (err) errHandler(err, res);
-                else res.sendStatus(consts.SUCCESS_CODE);
+                if (err) {
+                    issue = true;
+                    errHandler(err, res);
+                }
+
+                else { // if purchase saved successfully
+                    // res.sendStatus(consts.SUCCESS_CODE);
+                }
             }));
+        }
+    });
+
+    if (issue) return;
+
+    Student.find({}, (err, students) => {
+
+        if (err) {
+            errHandler(err);
+
+        } else {
+            res.status(consts.SUCCESS_CODE).json(students);
         }
     });
 

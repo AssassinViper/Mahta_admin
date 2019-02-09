@@ -28,7 +28,7 @@ async function addStudent(req, res, next) {
     let params = req.body;
     let newStudent = new Student({});
 
-    let query = { // must cast this shit to Number
+    let query = { // no need need to cast to Number in add/edit student :|
         code: Number(params.code)
     };
 
@@ -157,7 +157,7 @@ async function deleteStudent(req, res, next) {
 
     let issue = false;
 
-    let query = {
+    let query = { // must cast this shit to Number
         code: Number(params.code)
     };
 

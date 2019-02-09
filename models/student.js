@@ -2,17 +2,15 @@ let mongoose = require('mongoose');
 
 let studentSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    mahtaCode:{
+    code:{
         type: Number,
         required: true,
         unique: true,
         dropDups: true,
         trim: true
     },
-    name: {
-        firstName: { type: String, trim: true },
-        lastName: { type: String, trim: true },
-    },
+    firstName: { type: String, trim: true },
+    lastName: { type: String, trim: true },
     grade: String,
     field: String,
     phone: Number,

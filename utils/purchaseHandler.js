@@ -16,7 +16,7 @@ async function commitPurchase(req, res, next) {
     let inviterId;
 
     // find student
-    await Student.findOne({ mahtaCode: params.familyCode }, function(err, student) {
+    await Student.findOne({ code: params.code }, function(err, student) {
 
         if (err) {
             errHandler(err, res);

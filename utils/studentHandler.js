@@ -191,7 +191,6 @@ async function deleteStudent(req, res, next) {
     
     // remove student
     await Student.deleteOne(query ,(err) => {
->>>>>>> 9a72ea78a1a32bcd041c513e0177e1cb0e9f3a21
 
         if (err) {
             errHandler(err, res);

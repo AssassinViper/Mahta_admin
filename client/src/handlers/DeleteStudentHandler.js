@@ -12,7 +12,7 @@ const DeleteStudentHandler = (json, onFetched, onError)=>{
 
             if(res.status === 200){
                 
-                onFetched(res);
+                res.json().then((res)=>onFetched(res));
             
             }else{
 

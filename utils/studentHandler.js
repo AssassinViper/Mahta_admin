@@ -126,7 +126,7 @@ async function deleteStudent(req, res, next) {
     let issue = false;
 
     let query = {
-        mahtaCode: params.code
+        mahtaCode: Number(params.code)
     };
     // TODO: must check if the student was invited and then delete its id from inviteds of inviter
 
@@ -152,9 +152,9 @@ async function deleteStudent(req, res, next) {
             // if (student.inviter)    inviterId = student.inviter;
         // }
     // });
-
+    
     // remove student
-    await Student.remove(query, (err) => {
+    await Student.deleteOne(query, (err) => {
 
         if (err) {
             errHandler(err, res);

@@ -44,6 +44,8 @@ class StudentList extends Component {
         let studentList = [];
         let i = 1;
 
+        alert("showing student list");
+
         list.forEach(element => {
             
             studentList.push(
@@ -52,6 +54,8 @@ class StudentList extends Component {
             )
 
             i++;
+            console.log(i);
+            
         });
         
         this.state.studentList= studentList;

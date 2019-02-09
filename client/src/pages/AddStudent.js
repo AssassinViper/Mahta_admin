@@ -4,6 +4,7 @@ import Input from '../components/Input';
 import Button from '../components/Button';
 import AddStudentHandler from '../handlers/AddStudentHandler';
 import Select from 'react-select';
+import Dashboard from '../pages/Dashboard';
 import YesNoModal from '../components/YesNoModal';
 import ErrorModal from '../components/ErrorModal';
 import SuccessModal from '../components/SuccessModal';
@@ -114,11 +115,14 @@ class AddStudent extends Component {
                 this.familyCodeInput.clear();
                 this.inviterCodeInput.clear();
                 this.phoneNumberInput.clear();
-                
+
+                Dashboard.StudentInfoList = res;
+
                 this.successModalOpen();
 
             },(err)=>{
 
+                alert(err);
                 this.errorModalOpen();
             }
         );

@@ -115,9 +115,14 @@ class StudentEdit extends Component {
 
     deleteStudent = ()=>{
 
-        DeleteStudentHandler({_id:this.AddStudentData._id},
-            ()=>{alert("done")},
-            (err)=>{alert("error"); console.log(err);
+        DeleteStudentHandler({code:this.AddStudentData.familyCode},
+            (res)=>{
+
+                Dashboard.StudentInfoList = res; 
+            },
+            (err)=>{
+                
+                alert(err);
             });
     }
 

@@ -9,7 +9,7 @@ const Sort = (studentList, by, order)=>{
 
             console.log("A-fam");
             
-            return a.mahtaCode - b.mahtaCode;
+            return a.code - b.code;
         });
 
         if(order == "D"){
@@ -23,7 +23,7 @@ const Sort = (studentList, by, order)=>{
 
             console.log("A-name");
             
-            return a.name.lastName.localeCompare(b.name.lastName);
+            return a.lastName.localeCompare(b.lastName);
         });
 
         if(order == "D"){

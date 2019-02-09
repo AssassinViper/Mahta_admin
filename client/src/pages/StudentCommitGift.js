@@ -15,7 +15,7 @@ class CommitGift extends Component {
 
     CommitGiftData = {
 
-        familyCode:Dashboard.selectedStudent.mahtaCode,
+        code:Dashboard.selectedStudent.code,
         price:"",
         info:""
     }
@@ -63,7 +63,7 @@ class CommitGift extends Component {
 
     commit = ()=>{
 
-        CommitGiftHandler({params:this.CommitGiftData},
+        CommitGiftHandler(this.CommitGiftData,
             (res)=>{
 
                 this.priceInput.clear();

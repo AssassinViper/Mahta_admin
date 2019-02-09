@@ -2,7 +2,7 @@ import urls from '../consts/urls';
 
 const AddStudentHandler = (json, onFetched, onError)=>{
 
-    fetch(urls.commitGift, {
+    fetch(urls.addStudent, {
         method:"POST",
         body: JSON.stringify(json),
         headers: {'Content-Type': 'application/json'},

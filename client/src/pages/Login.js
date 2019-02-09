@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import Button from '../components/Button';
 import Input from '../components/Input';
-import {PostReq} from '../helpers/HttpRequest';
 import urls from '../consts/urls';
 
 

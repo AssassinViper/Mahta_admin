@@ -14,20 +14,18 @@ const Search = (word, studentList)=>{
 
         j++;
 
-        if(recSearch(word, element.name.firstName)){
+        if(recSearch(word, element.firstName)){
 
             newList.push(element);
             console.log("pushed!!!");
 
-        }else if(recSearch(word, element.name.lastName)){
+        }else if(recSearch(word, element.lastName)){
 
             newList.push(element);
             console.log("pushed!!!");
 
-        }else if(recSearch(word,  element.mahtaCode.toString())){
+        }else if(recSearch(word,  element.code.toString())){
 
-            
-            
             newList.push(element);
             console.log("pushed!!!");
         }

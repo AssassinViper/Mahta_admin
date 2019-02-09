@@ -33,15 +33,15 @@ class StudentInfo extends Component {
                             <Label text={this.student.field} label="رشته"/>
                         </div>
                         <div style={s.column}>
-                            <Label text={this.student.name.lastName} label="نام خانوادگی"/>
+                            <Label text={this.student.lastName} label="نام خانوادگی"/>
                         </div>
                         <div style={s.column}>
-                            <Label text={this.student.name.firstName} label="نام "/>
+                            <Label text={this.student.firstName} label="نام "/>
                         </div>
                     </div>
                     <div style={s.row}>
                     <div style={s.column}>
-                            <Label text={this.student.phoneNumber} label="شماره تماس"/>
+                            <Label text={this.student.phone} label="شماره تماس"/>
                         </div>
                         <div style={s.column}>
                             <Label text={this.student.gift} label="هدیه"/>
@@ -50,7 +50,7 @@ class StudentInfo extends Component {
                             <Label text={this.student.credit} label="اعتبار"/>
                         </div>
                         <div style={s.column}>
-                            <Label text={this.student.mahtaCode} label="کد خانواده"/>
+                            <Label text={this.student.code} label="کد خانواده"/>
                         </div>
                     </div>
                         

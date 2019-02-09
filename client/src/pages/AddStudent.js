@@ -34,8 +34,8 @@ class AddStudent extends Component {
         lastName:"",
         grade:"",
         field:"",
-        phoneNumber:"",
-        familyCode:"",
+        phone:"",
+        code:"",
         inviterCode:""
     }
 
@@ -72,16 +72,16 @@ class AddStudent extends Component {
                     onChange={(event)=>{this.AddStudentData.inviterCode = event.target.value}}/>
 
                     <Input height={35} width={200} placeholder="کد خانواده"type="number"
-                    ref={(ref=>this.familyCodeInput = ref)}
-                    onChange={(event)=>{this.AddStudentData.familyCode = event.target.value}}/>
+                    ref={(ref=>this.codeInput = ref)}
+                    onChange={(event)=>{this.AddStudentData.code = event.target.value}}/>
 
                 </div>
                 
                 <div style={s.sec1}>
 
                     <Input height={35} width={200} placeholder="شماره تماس"type="number"
-                    ref={(ref=>this.phoneNumberInput = ref)}
-                    onChange={(event)=>{this.AddStudentData.phoneNumber = event.target.value}}/>
+                    ref={(ref=>this.phoneInput = ref)}
+                    onChange={(event)=>{this.AddStudentData.phone = event.target.value}}/>
 
                 </div>
                 
@@ -112,9 +112,9 @@ class AddStudent extends Component {
 
                 this.firstNameInput.clear();
                 this.lastNameInput.clear();
-                this.familyCodeInput.clear();
+                this.codeInput.clear();
                 this.inviterCodeInput.clear();
-                this.phoneNumberInput.clear();
+                this.phoneInput.clear();
 
                 Dashboard.StudentInfoList = res;
 

@@ -14,9 +14,9 @@ class CommitPurchase extends Component {
     
     CommitPurchaseData = {
 
-        familyCode:Dashboard.selectedStudent.mahtaCode,
+        code:Dashboard.selectedStudent.code,
         price:"",
-        familyPercent:"",
+        percent:"",
         info:""
     }
     render() { 
@@ -37,7 +37,7 @@ class CommitPurchase extends Component {
                     onChange={(event)=>{this.CommitPurchaseData.price = event.target.value}}/>
 
                     <Input height={35} width="20%" placeholder="درصد خانواده" type="number"
-                    ref={(ref=>this.familyPercentInput = ref)}
+                    ref={(ref=>this.percentInput = ref)}
                     onChange={(event)=>{this.CommitPurchaseData.familyPercent = event.target.value}}/>
 
                     <PlainText height={90} width="20%" placeholder="توضیحات"
@@ -65,7 +65,7 @@ class CommitPurchase extends Component {
 
     commit = ()=>{
 
-        CommitPurchaseHandler({params:this.CommitPurchaseData},
+        CommitPurchaseHandler(this.CommitPurchaseData,
             (res)=>{
 
                 this.familyCodeInput.clear();

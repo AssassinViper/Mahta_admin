@@ -52,7 +52,7 @@ class GroupCommit extends Component {
 
     commit = ()=>{
 
-        GroupCommitHandler({params:this.GroupCommitData}, 
+        GroupCommitHandler(this.GroupCommitData, 
             
             (res)=>{
 

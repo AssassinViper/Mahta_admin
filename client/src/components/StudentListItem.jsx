@@ -8,9 +8,9 @@ class StudentListItem extends Component {
             <div style={s.con} onClick={()=>{this.showInfo(this.props.studentInfo)}}>
                   <div style={s.sec}>{this.props.studentInfo.gift}&emsp;</div>
                   <div style={s.sec}>{this.props.studentInfo.credit}&emsp;</div>
-                  <div style={s.sec}>{this.props.studentInfo.name.firstName}&emsp;</div>
-                  <div style={s.sec}>{this.props.studentInfo.name.lastName}&emsp;</div>
-                  <div style={s.sec}>{this.props.studentInfo.mahtaCode}&emsp;</div>
+                  <div style={s.sec}>{this.props.studentInfo.firstName}&emsp;</div>
+                  <div style={s.sec}>{this.props.studentInfo.lastName}&emsp;</div>
+                  <div style={s.sec}>{this.props.studentInfo.code}&emsp;</div>
             </div>
          );
     }

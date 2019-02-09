@@ -13,9 +13,9 @@ class CommitPurchase extends Component {
 
     CommitPurchaseData = {
 
-        familyCode:"",
+        code:"",
         price:"",
-        familyPercent:"",
+        percent:"",
         info:""
     }
 
@@ -25,16 +25,16 @@ class CommitPurchase extends Component {
 
                 <div style={s.space}/>
                 <Input height={35} width="20%" placeholder="کد خانواده" type="number"
-                ref={(ref=>this.familyCodeInput = ref)}
-                onChange={(event)=>{this.CommitPurchaseData.familyCode = event.target.value}}/>
+                ref={(ref=>this.codeInput = ref)}
+                onChange={(event)=>{this.CommitPurchaseData.code = event.target.value}}/>
 
                 <Input height={35} width="20%" placeholder="(مبلغ خرید(تومان"  type="number"
                 ref={(ref=>this.priceInput = ref)}
                 onChange={(event)=>{this.CommitPurchaseData.price = event.target.value}}/>
 
                 <Input height={35} width="20%" placeholder="درصد خانواده" type="number"
-                ref={(ref=>this.familyPercentInput = ref)}
-                onChange={(event)=>{this.CommitPurchaseData.familyPercent = event.target.value}}/>
+                ref={(ref=>this.percentInput = ref)}
+                onChange={(event)=>{this.CommitPurchaseData.percent = event.target.value}}/>
 
                 <PlainText height={90} width="20%" placeholder="توضیحات"
                 ref={(ref=>this.infoPlainText = ref)} 
@@ -60,12 +60,12 @@ class CommitPurchase extends Component {
 
     commit = ()=>{
 
-        CommitPurchaseHandler({params:this.CommitPurchaseData},
+        CommitPurchaseHandler(this.CommitPurchaseData,
             (res)=>{
 
-                this.familyCodeInput.clear();
+                this.codeInput.clear();
                 this.priceInput.clear();
-                this.familyPercentInput.clear();
+                this.percentInput.clear();
                 this.infoPlainText.clear();
                 
                 this.successModalOpen();

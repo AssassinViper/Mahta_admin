@@ -19,8 +19,6 @@ class Dashboard extends Component {
 
         if(Dashboard.StudentInfoList.length == 0){
 
-            alert("is 0")
-
             GetStudentList((res)=>{
 
                 console.log(res);
@@ -36,8 +34,6 @@ class Dashboard extends Component {
 
         }else{
 
-            alert("not 0");
-            
             this.showlist(Sort(Dashboard.StudentInfoList,this.state.sortBy, this.state.sortOrder));
         }
         

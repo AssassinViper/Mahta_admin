@@ -58,12 +58,12 @@ class StudentEdit extends Component {
                     <div style={s.sec1}>
                         
                         <Input height={35} width={200} placeholder="نام خانوادگی" type="text"
-                        value={this.AddStudentData.name.lastName}
+                        value={this.AddStudentData.lastName}
                         ref={(ref=>this.lastNameInput = ref)}
                         onChange={(event)=>{this.AddStudentData.lastName = event.target.value}}/>
 
                         <Input height={35} width={200} placeholder="نام"type="text"
-                        value={this.AddStudentData.name.firstName}
+                        value={this.AddStudentData.firstName}
                         ref={(ref=>this.firstNameInput = ref)}
                         onChange={(event)=>{this.AddStudentData.firstName = event.target.value}}/>
 
@@ -79,7 +79,7 @@ class StudentEdit extends Component {
                     <div style={s.sec1}>
 
                         <Input height={35} width={200} placeholder="کد خانواده"type="number"
-                        value={this.AddStudentData.mahtaCode}
+                        value={this.AddStudentData.code}
                         ref={(ref=>this.familyCodeInput = ref)}
                         onChange={(event)=>{this.AddStudentData.familyCode = event.target.value}}/>
 
@@ -89,8 +89,8 @@ class StudentEdit extends Component {
 
                         <Input height={35} width={200} placeholder="شماره تماس"type="number"
                         value={this.AddStudentData.phone}
-                        ref={(ref=>this.phoneNumberInput = ref)}
-                        onChange={(event)=>{this.AddStudentData.phoneNumber = event.target.value}}/>
+                        ref={(ref=>this.phoneInput = ref)}
+                        onChange={(event)=>{this.AddStudentData.phone = event.target.value}}/>
 
                     </div>
                     
@@ -115,7 +115,7 @@ class StudentEdit extends Component {
 
     deleteStudent = ()=>{
 
-        DeleteStudentHandler({code:this.AddStudentData.mahtaCode},
+        DeleteStudentHandler({code:this.AddStudentData.code},
             (res)=>{
                 
                 console.log(res);
@@ -132,13 +132,13 @@ class StudentEdit extends Component {
 
     commit = ()=>{
 
-        AddStudentHandler({params:this.AddStudentData},
+        AddStudentHandler(this.AddStudentData,
             (res)=>{
 
                 this.firstNameInput.clear();
                 this.lastNameInput.clear();
                 this.familyCodeInput.clear();
-                this.phoneNumberInput.clear();
+                this.phoneInput.clear();
                 
                 this.successModalOpen();
 

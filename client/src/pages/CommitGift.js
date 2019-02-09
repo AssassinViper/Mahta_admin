@@ -15,7 +15,7 @@ class CommitGift extends Component {
 
     CommitGiftData = {
 
-        familyCode:"",
+        code:"",
         price:"",
         info:""
     }
@@ -27,8 +27,8 @@ class CommitGift extends Component {
                 <div style={s.space}/>
 
                 <Input height={35} width="20%" placeholder="کد خانواده" type="number"
-                ref={(ref=>this.familyCodeInput = ref)}
-                onChange={(event)=>{this.CommitGiftData.familyCode = event.target.value}}/>
+                ref={(ref=>this.codeInput = ref)}
+                onChange={(event)=>{this.CommitGiftData.code = event.target.value}}/>
 
                 <Input height={35} width="20%" placeholder="(مبلغ خرید(تومان"  type="number"
                 ref={(ref=>this.priceInput = ref)}
@@ -58,10 +58,10 @@ class CommitGift extends Component {
 
     commit = ()=>{
 
-        CommitGiftHandler({params:this.CommitGiftData},
+        CommitGiftHandler(this.CommitGiftData,
             (res)=>{
 
-                this.familyCodeInput.clear();
+                this.codeInput.clear();
                 this.priceInput.clear();
                 this.infoPlainText.clear();
                 

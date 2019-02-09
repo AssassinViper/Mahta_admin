@@ -6,13 +6,14 @@ import SpendCreditHandler from '../handlers/SpendCreditHandler';
 import YesNoModal from '../components/YesNoModal';
 import ErrorModal from '../components/ErrorModal';
 import SuccessModal from '../components/SuccessModal';
+import Dashboard from './Dashboard';
 
 class SpendCredit extends Component {
     state = { usefrom:"credit", askModal:false, errorModal:false, successModal:false }
 
     SpendCreditData = {
 
-        familyCode:this.props.familyCode,
+        code:Dashboard.selectedStudent.code,
         price:"",
     }
 
@@ -69,7 +70,7 @@ class SpendCredit extends Component {
 
         this.SpendCreditData.useFrom = this.state.usefrom;
 
-        SpendCreditHandler({params:this.SpendCreditData},
+        SpendCreditHandler(this.SpendCreditData,
             (res)=>{
 
                 this.priceInput.clear();

@@ -14,7 +14,7 @@ class SpendCredit extends Component {
 
     SpendCreditData = {
 
-        familyCode:"",
+        code:"",
         price:""
     }
 
@@ -25,8 +25,8 @@ class SpendCredit extends Component {
                 <div style={s.space}/>
                 
                 <Input height={35} width="20%" placeholder="کد خانواده" type="number"
-                ref={(ref=>this.familyCodeInput = ref)}
-                onChange={(event)=>{this.SpendCreditData.familyCode = event.target.value}}/>
+                ref={(ref=>this.codeInput = ref)}
+                onChange={(event)=>{this.SpendCreditData.code = event.target.value}}/>
 
                 <Input height={35} width="20%" placeholder="(مبلغ خرید(تومان"  type="number"
                 ref={(ref=>this.priceInput = ref)}
@@ -74,10 +74,10 @@ class SpendCredit extends Component {
 
         this.SpendCreditData.useFrom = this.state.usefrom;
         
-        SpendCreditHandler({params:this.SpendCreditData},
+        SpendCreditHandler(this.SpendCreditData,
             (res)=>{
 
-                this.familyCodeInput.clear();
+                this.codeInput.clear();
                 this.priceInput.clear();
                 
                 this.successModalOpen();

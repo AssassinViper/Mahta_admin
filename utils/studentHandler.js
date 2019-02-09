@@ -41,8 +41,8 @@ async function addStudent(req, res, next) {
     newStudent.grade = params.grade;
     newStudent.field = params.field;
     newStudent.phone = params.phoneNumber;
-    newStudent.gift = 0;
-    newStudent.credit = 0;
+    // newStudent.gift = 0;
+    // newStudent.credit = 0;
 
     // check if inviterCode is valid
     if (params.inviterCode) {
@@ -121,6 +121,7 @@ async function editStudent(req, res, next) {
 async function deleteStudent(req, res, next) {
 
     let params = req.body;
+    let inviterId;
 
     let query = {
         mahtaCode: params.familyCode
@@ -128,12 +129,38 @@ async function deleteStudent(req, res, next) {
 
     // TODO: must check if the student was invited and then delete its id from inviteds of inviter
 
+    // find student to get inviterId
+    // await Student.findOne(query, function(err, student) {
+    //
+    //     if (err) { // if there were errors running query
+    //
+    //         issue = true;
+    //         errHandler(err, res);
+    //
+    //     } else if (!student) { // if no student found
+    //
+    //         issue = true;
+    //         res.status(consts.BAD_REQ_CODE)
+    //             .json({
+    //                 error: consts.INCORRECT_MAHTA_ID
+    //             });
+    //
+    //     } else { // if student was found
+    //
+    //         check if had inviter
+            // if (student.inviter)    inviterId = student.inviter;
+        // }
+    // });
+
+    // remove student
     await Student.remove(query, (err) => {
 
         if (err) errHandler(err, res);
         else res.sendStatus(consts.SUCCESS_CODE);
     });
 
+
+    // update inviter information
 }
 
 module.exports = {addStudent, editStudent, deleteStudent};

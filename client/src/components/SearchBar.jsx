@@ -22,7 +22,7 @@ class SearchBar extends Component {
               
                 <div style={s.input_con}>
                     <input type="text" style={s.input} 
-                    onInput={()=>{this.props.searchBtnClick(this.searchWord)}}
+                    //onInput={()=>{this.props.searchBtnClick(this.searchWord)}}
                     onChange={(event)=>{this.searchWord = event.target.value}}/>
                 </div>
                 

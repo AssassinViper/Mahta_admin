@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 
 import StudentList from '../components/StudentList';
 import {GetStudentList} from '../handlers/StudentListHandler';
-
 import SearchBar from '../components/SearchBar';
+import {Search} from '../utils/Search';
+
 class Dashboard extends Component {
 
     static StudentInfoList = [];
@@ -57,8 +58,7 @@ class Dashboard extends Component {
         
         if(searchWord != ""){
 
-            let newList = [];
-            this.showlist(newList);
+            this.showlist(Search(searchWord, Dashboard.StudentInfoList));
 
         }else{
 

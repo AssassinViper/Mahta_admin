@@ -29,12 +29,12 @@ async function addStudent(req, res, next) {
     let newStudent = new Student({});
 
     let query = { // must cast this shit to Number
-        mahtaCode: Number(params.code)
+        code: Number(params.code)
     };
 
     let issue = false;
 
-    // check if any student already own requested mahtaCode
+    // check if any student already own requested code
     await Student.findOne(query, function(err, student) {
 
         if (err) { // if there were errors running query
@@ -42,7 +42,7 @@ async function addStudent(req, res, next) {
             issue = true; // must use Promises or async/await to make this shit work
             errHandler(err, res);
 
-        } else if (student) { // if a student owns requested mahtaCode
+        } else if (student) { // if a student owns requested Code
 
             issue = true;
             res.status(consts.BAD_REQ_CODE)
@@ -55,9 +55,9 @@ async function addStudent(req, res, next) {
     if (issue) return;
 
     newStudent._id = new mongoose.Types.ObjectId();
-    newStudent.mahtaCode = params.familyCode;
-    newStudent.name.firstName = params.firstName;
-    newStudent.name.lastName = params.lastName;
+    newStudent.code = params.code;
+    newStudent.firstName = params.firstName;
+    newStudent.lastName = params.lastName;
     newStudent.grade = params.grade;
     newStudent.field = params.field;
     newStudent.phone = params.phoneNumber;
@@ -66,7 +66,7 @@ async function addStudent(req, res, next) {
     if (params.inviterCode) {
 
         // finding inviter
-        await Student.findOne({ mahtaCode: params.inviterCode }, function(err, student) {
+        await Student.findOne({ code: Number(params.inviterCode) }, function(err, student) {
 
             if (err) { // if there were errors running query
 
@@ -131,14 +131,12 @@ async function editStudent(req, res, next) {
     let params = req.body;
 
     let query = {
-        mahtaCode: Number(params.code)
+        code: Number(params.code)
     };
 
     let student = {
-        name: {
-            firstName: params.firstName,
-            lastName: params.lastName
-        },
+        firstName: params.firstName,
+        lastName: params.lastName,
         grade: params.grade,
         field: params.field,
         phone: params.phoneNumber
@@ -160,10 +158,10 @@ async function deleteStudent(req, res, next) {
     let issue = false;
 
     let query = {
-        mahtaCode: Number(params.code)
+        code: Number(params.code)
     };
 
-    if (config.isDevelopement) console.log(`query : ${typeof (query.mahtaCode)}`);
+    if (config.isDevelopement) console.log(`query : ${typeof (query.code)}`);
 
 
     // TODO: must check if the student was invited and then delete its id from inviteds of inviter

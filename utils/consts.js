@@ -12,7 +12,7 @@ module.exports = {
     SUCCESS_CODE: 200,
     BAD_REQ_CODE: 400,
     UNAUTHORIZED_CODE: 401,
-    NOT_FOUND_CODE: 401,
+    NOT_FOUND_CODE: 404,
     INT_ERR_CODE: 500
 
 };

@@ -123,8 +123,10 @@ async function deleteStudent(req, res, next) {
     let params = req.body;
     let inviterId;
 
+    let issue = false;
+
     let query = {
-        mahtaCode: params.familyCode
+        mahtaCode: params.code
     };
     // TODO: must check if the student was invited and then delete its id from inviteds of inviter
 
@@ -154,12 +156,32 @@ async function deleteStudent(req, res, next) {
     // remove student
     await Student.remove(query, (err) => {
 
-        if (err) errHandler(err, res);
-        else res.sendStatus(consts.SUCCESS_CODE);
+        if (err) {
+            errHandler(err, res);
+            issue = true;
+        }
+        else { // if student deleted successfully
+
+            // res.sendStatus(consts.SUCCESS_CODE);
+        }
     });
 
+    if (issue) return;
 
-    // update inviter information
+    await Student.find({}, (err, students) => {
+
+        if (err) {
+            console.log(err);
+            res.status(consts.INT_ERR_CODE)
+                .json({
+                    error: consts.ERR
+                });
+
+        } else {
+            res.status(consts.SUCCESS_CODE).json(students);
+        }
+    });
+
 }
 
 module.exports = {addStudent, editStudent, deleteStudent};

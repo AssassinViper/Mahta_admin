@@ -3,12 +3,14 @@ import React, { Component } from 'react';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import SpendCreditHandler from '../handlers/SpendCreditHandler';
-
+import YesNoModal from '../components/YesNoModal';
+import ErrorModal from '../components/ErrorModal';
+import SuccessModal from '../components/SuccessModal';
 
 
 class SpendCredit extends Component {
 
-    state = { usefrom:"credit" }
+    state = { usefrom:"credit", askModal:false, errorModal:false, successModal:false }
 
     SpendCreditData = {
 
@@ -45,7 +47,19 @@ class SpendCredit extends Component {
                         onChange={this.onUseFromChanged}name="usefrom"/>
                 </label>
                 
-                <Button height={50} width="15%" onClick={this.commit}>ثبت</Button>
+                <Button height={50} width="15%" onClick={this.askModalOpen}>ثبت</Button>
+
+                <YesNoModal open={this.state.askModal} commit={this.askModalCommit} cancel={this.askModalClose}>
+                    ثبت مصرف اعتبار با مشخصات زیر؟
+                </YesNoModal>
+                
+                <ErrorModal open={this.state.errorModal} onClose={this.errorModalClose}>
+                    خطا
+                </ErrorModal>
+                
+                <SuccessModal open={this.state.successModal} onClose={this.successModalClose}>
+                    عملیات ثبت مصرف اعتبار با موفقیت انجام شد
+                </SuccessModal>
 
             </div>
          );
@@ -65,13 +79,62 @@ class SpendCredit extends Component {
 
                 this.familyCodeInput.clear();
                 this.priceInput.clear();
-                alert("done")
+                
+                this.successModalOpen();
 
             },(err)=>{
 
-                alert(err)
+                this.errorModalOpen();
             }
         )
+    }
+
+    askModalCommit = ()=>{
+
+        this.askModalClose();
+        this.commit();
+    }
+
+    askModalOpen = ()=>{
+
+        let newState = Object.assign({}, this.state);
+        newState.askModal =true;
+        this.setState(newState);
+    }
+
+    askModalClose = ()=>{
+
+        let newState = Object.assign({}, this.state);
+        newState.askModal =false;
+        this.setState(newState);
+    }
+
+    errorModalOpen = ()=>{
+
+        let newState = Object.assign({}, this.state);
+        newState.errorModal =true;
+        this.setState(newState);
+    }
+
+    errorModalClose = ()=>{
+
+        let newState = Object.assign({}, this.state);
+        newState.errorModal =false;
+        this.setState(newState);
+    }
+
+    successModalOpen = ()=>{
+
+        let newState = Object.assign({}, this.state);
+        newState.successModal =true;
+        this.setState(newState);
+    }
+
+    successModalClose = ()=>{
+
+        let newState = Object.assign({}, this.state);
+        newState.successModal =false;
+        this.setState(newState);
     }
 }
 

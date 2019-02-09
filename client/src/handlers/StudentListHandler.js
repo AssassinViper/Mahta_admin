@@ -3,7 +3,7 @@ import Dashboard from '../pages/Dashboard';
 
 const GetStudentList = (onFetched, onError)=>{
 
-    alert('getting list')
+    //alert('getting list')
 
     fetch(urls.getStudentList,
         {method:"POST", 

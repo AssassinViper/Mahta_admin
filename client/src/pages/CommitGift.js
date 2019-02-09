@@ -11,7 +11,7 @@ import SuccessModal from '../components/SuccessModal';
 
 
 class CommitGift extends Component {
-    state = { commitModal:false, errorModal:false, successModal:false }
+    state = { askModal:false, errorModal:false, successModal:false }
 
     CommitGiftData = {
 
@@ -38,7 +38,7 @@ class CommitGift extends Component {
                 ref={(ref=>this.infoPlainText = ref)} 
                 onChange={(event)=>{this.CommitGiftData.info = event.target.value}}/>
 
-                <Button height={50} width="15%" onClick={this.commit}>ثبت</Button>
+                <Button height={50} width="15%" onClick={this.askModalOpen}>ثبت</Button>
 
                 <YesNoModal open={this.state.askModal} commit={this.askModalCommit} cancel={this.askModalClose}>
                     ثبت هدیه؟
@@ -83,14 +83,14 @@ class CommitGift extends Component {
     askModalOpen = ()=>{
 
         let newState = Object.assign({}, this.state);
-        newState.commitModal =true;
+        newState.askModal =true;
         this.setState(newState);
     }
 
     askModalClose = ()=>{
 
         let newState = Object.assign({}, this.state);
-        newState.commitModal =false;
+        newState.askModal =false;
         this.setState(newState);
     }
 

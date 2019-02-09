@@ -25,7 +25,6 @@ const fieldOptions=[
   
 
 class AddStudent extends Component {
-
     state = { askModal:false, errorModal:false, successModal:false }
 
     AddStudentData = {
@@ -85,7 +84,7 @@ class AddStudent extends Component {
 
                 </div>
                 
-                <Button height={50} width="15%" onClick={this.modalOpen}>ثبت</Button>
+                <Button height={50} width="15%" onClick={this.askModalOpen}>ثبت</Button>
 
                 <YesNoModal open={this.state.askModal} commit={this.askModalCommit} cancel={this.askModalClose}>
                     ثبت دانش آموز با مشخصات زیر؟
@@ -134,14 +133,14 @@ class AddStudent extends Component {
     askModalOpen = ()=>{
 
         let newState = Object.assign({}, this.state);
-        newState.commitModal =true;
+        newState.askModal =true;
         this.setState(newState);
     }
 
     askModalClose = ()=>{
 
         let newState = Object.assign({}, this.state);
-        newState.commitModal =false;
+        newState.askModal =false;
         this.setState(newState);
     }
 

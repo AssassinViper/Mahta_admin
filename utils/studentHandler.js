@@ -108,6 +108,9 @@ async function deleteStudent(req, res, next) {
         _id: params._id
     };
 
+    console.log("delete std ->"+params._id);
+    
+
     await Student.remove(query, (err) => {
 
         if (err) errHandler(err, res);

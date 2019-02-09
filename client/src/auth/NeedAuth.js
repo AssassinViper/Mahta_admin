@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
-import {GetReq} from '../helpers/HttpRequest';
 
 function NeedAuth(Comp) {
   return class extends Component {
@@ -9,7 +8,12 @@ function NeedAuth(Comp) {
 
     componentDidMount() {
       // TODO: change this to POST
-      GetReq('/api/admin/checkToken')
+      fetch('/api/admin/checkToken',{
+        method:"POST",
+        body: "",
+        headers: {'Content-Type': 'application/json'},
+        credentials: 'include'
+        })
       .then(res => {
         if (res.status === 200) {
           this.setState({component:<Comp {...this.props} />});

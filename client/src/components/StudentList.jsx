@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
 import StudentListItem from './StudentListItem';
+import sort from '../assets/icons/sort.png'
 
 class StudentList extends Component {
     state = { studentList:[]}
@@ -19,9 +20,10 @@ class StudentList extends Component {
                     
                     <div style={s.header}> مقدار هدیه </div>
                     <div style={s.header}> مقدار اعتبار </div>
-                    <div style={s.header}>  نام خانوادگی </div>
                     <div style={s.header}> نام </div>
-                    <div style={s.header}> کد خانواده </div>
+                    <div style={s.header} onClick={this.props.sortByName}>  نام خانوادگی <img src={sort}/> </div>
+                    <div style={s.header} onClick={this.props.sortByCode}> کد خانواده <img src={sort}/></div>
+                    <div style={s.space}></div>
                 
                 </div>
 
@@ -69,6 +71,11 @@ const s = {
         borderColor:'purple'
     },
 
+    space:{
+
+        width:"1.45%"
+    },
+
     list_con:{
 
         display:'flex',
@@ -88,7 +95,7 @@ const s = {
     },
 
     header:{
-        width:'19.8%',
+        width:'19.55%',
         backgroundColor:'#f2f',
         textAlign:'center'
     }

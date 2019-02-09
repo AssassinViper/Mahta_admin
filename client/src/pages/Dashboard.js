@@ -4,13 +4,14 @@ import StudentList from '../components/StudentList';
 import {GetStudentList} from '../handlers/StudentListHandler';
 import SearchBar from '../components/SearchBar';
 import {Search} from '../utils/Search';
+import {Sort} from '../utils/Sort';
 
 class Dashboard extends Component {
 
     static StudentInfoList = [];
     static selectedStudent = {}
     
-    state = { }
+    state = { sortBy:"code", sortOrder:"A" }
 
     componentDidMount(){
 
@@ -23,8 +24,8 @@ class Dashboard extends Component {
                 console.log(res);
 
                 Dashboard.StudentInfoList = res;
-                
-                this.showlist(Dashboard.StudentInfoList);
+
+                this.showlist(Sort(Dashboard.StudentInfoList,this.state.sortBy, this.state.sortOrder));
     
             },(err)=>{
     
@@ -33,7 +34,7 @@ class Dashboard extends Component {
 
         }else{
 
-            this.showlist(Dashboard.StudentInfoList);
+            this.showlist(Sort(Dashboard.StudentInfoList,this.state.sortBy, this.state.sortOrder));
         }
         
     }
@@ -45,7 +46,8 @@ class Dashboard extends Component {
                 <div style={s.space}/>
                 
                 <div style={s.list_con}>
-                    <StudentList getShowList={(showlist)=>this.showlist=showlist} history={this.props.history}/>
+                    <StudentList getShowList={(showlist)=>this.showlist=showlist} history={this.props.history}
+                        sortByName={()=>{this.sortBy("name")}} sortByCode={()=>{this.sortBy("code")}}/>
                 </div>
 
                 <SearchBar searchBtnClick={this.search}/>
@@ -58,12 +60,35 @@ class Dashboard extends Component {
         
         if(searchWord != ""){
 
-            this.showlist(Search(searchWord, Dashboard.StudentInfoList));
+            let list = Search(searchWord, Dashboard.StudentInfoList)
+            list = Sort(list,this.state.sortBy, this.state.sortOrder)
+            this.showlist(list);
 
         }else{
 
-            this.showlist(Dashboard.StudentInfoList);
+            Sort(Dashboard.StudentInfoList,this.state.sortBy, this.state.sortOrder)
+            this.showlist(Sort(Dashboard.StudentInfoList,this.state.sortBy, this.state.sortOrder));
         }
+    }
+
+    sortBy= (by)=>{
+
+        let newState = Object.assign({}, this.state);
+        
+        if(newState.sortBy == by){
+            
+            if(newState.sortOrder == "A"){
+                newState.sortOrder = "D";
+            }else{
+                newState.sortOrder = "A";
+            }
+        }else{
+            newState.sortBy = by;
+            newState.sortOrder = "A";
+        }
+
+        this.setState(newState);
+        this.showlist(Sort(Dashboard.StudentInfoList,newState.sortBy, newState.sortOrder));
     }
 }
 

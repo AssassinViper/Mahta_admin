@@ -6,11 +6,11 @@ class StudentListItem extends Component {
     render() { 
         return ( 
             <div style={s.con} onClick={()=>{this.showInfo(this.props.studentInfo)}}>
-                  <div style={s.sec}>{this.props.studentInfo.gift}</div>
-                  <div style={s.sec}>{this.props.studentInfo.credit}</div>
-                  <div style={s.sec}>{this.props.studentInfo.name.lastName}</div>
-                  <div style={s.sec}>{this.props.studentInfo.name.firstName}</div>
-                  <div style={s.sec}>{this.props.studentInfo.mahtaCode}</div>
+                  <div style={s.sec}>{this.props.studentInfo.gift}&emsp;</div>
+                  <div style={s.sec}>{this.props.studentInfo.credit}&emsp;</div>
+                  <div style={s.sec}>{this.props.studentInfo.name.firstName}&emsp;</div>
+                  <div style={s.sec}>{this.props.studentInfo.name.lastName}&emsp;</div>
+                  <div style={s.sec}>{this.props.studentInfo.mahtaCode}&emsp;</div>
             </div>
          );
     }

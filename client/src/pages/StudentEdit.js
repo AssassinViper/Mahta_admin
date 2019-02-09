@@ -4,6 +4,7 @@ import Dashboard from '../pages/Dashboard';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import AddStudentHandler from '../handlers/AddStudentHandler';
+import DeleteStudentHandler from '../handlers/DeleteStudentHandler';
 import Select from 'react-select';
 import YesNoModal from '../components/YesNoModal';
 import ErrorModal from '../components/ErrorModal';
@@ -47,6 +48,10 @@ class StudentEdit extends Component {
 
             return ( 
                 <div style={s.con}>
+
+                    <div style={s.delete_btn}>
+                        <Button onClick={this.deleteStudent}>حذف</Button>
+                    </div>
 
                     <div style={s.space}/>
                     
@@ -106,6 +111,14 @@ class StudentEdit extends Component {
                 </div>
             );
         }
+    }
+
+    deleteStudent = ()=>{
+
+        DeleteStudentHandler({_id:this.AddStudentData._id},
+            ()=>{alert("done")},
+            (err)=>{alert("error"); console.log(err);
+            });
     }
 
     commit = ()=>{
@@ -186,6 +199,13 @@ const s = {
         justifyContent:'space-around',
         alignItems:'center',
         backgroundColor:'#861'
+    },
+
+    delete_btn:{
+
+        position:'absolute',
+        top:120,
+        right:150
     },
 
     sec1:{

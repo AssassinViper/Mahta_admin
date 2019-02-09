@@ -106,7 +106,7 @@ class AddStudent extends Component {
 
         
 
-        AddStudentHandler({params:this.AddStudentData},
+        AddStudentHandler(this.AddStudentData,
             (res)=>{
 
                 this.firstNameInput.clear();

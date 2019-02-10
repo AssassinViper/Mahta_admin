@@ -1,11 +1,12 @@
 module.exports = {
 
     ERR: 'Internal Error',
+
     INCORRECT_USER: 'Incorrect Username',
     INCORRECT_PASSWORD : 'Incorrect Password',
     INCORRECT_MAHTA_ID: 'Incorrect Mahta ID',
+    INCORRECT_INVITER_ID : 'Inviter Code is Incorrect',
 
-    INVITER_NOT_EXISTS : 'Inviter Code is Incorrect',
     MAHTA_CODE_EXISTS : 'Mahta Code is Already Taken',
 
 

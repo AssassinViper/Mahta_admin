@@ -11,6 +11,7 @@ let Gift = require('../models/gift');
 async function commitGift(req, res, next) {
 
     let params = req.body;
+    let issue = false;
 
     let gift = new Gift({});
     let inviterId;
@@ -23,6 +24,7 @@ async function commitGift(req, res, next) {
 
         } else if (!student) { // if no student found
 
+            issue = true;
             res.status(consts.NOT_FOUND_CODE)
                 .json({
                     error: consts.INCORRECT_MAHTA_ID
@@ -56,11 +58,13 @@ async function commitGift(req, res, next) {
                     errHandler(err, res);
                     if (config.isDevelopement) console.log(`err in saving gift`);
                 }
-                else res.sendStatus(consts.SUCCESS_CODE);
             }));
-
         }
     });
+
+    if (issue) return;
+
+    next();
 }
 
 module.exports = {commitGift};

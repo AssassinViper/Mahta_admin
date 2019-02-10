@@ -90,8 +90,8 @@ router.post('/editStudent', withAuth, studentHandler.editStudent);
 router.post('/deleteStudent', withAuth, studentHandler.deleteStudent);
 
 
-router.post('/commitPurchase', withAuth, purchaseHandler.commitPurchase);
-router.post('/commitGift', withAuth, giftHandler.commitGift);
+router.post('/commitPurchase', withAuth, purchaseHandler.commitPurchase, studentHandler.getStudentList);
+router.post('/commitGift', withAuth, giftHandler.commitGift, studentHandler.getStudentList);
 
 
 

@@ -20,7 +20,6 @@ async function getStudentList(req, res, next) {
             res.status(consts.SUCCESS_CODE).json(students);
         }
     });
-
 }
 
 async function addStudent(req, res, next) {
@@ -28,8 +27,8 @@ async function addStudent(req, res, next) {
     let params = req.body;
     let newStudent = new Student({});
 
-    let query = { // no need need to cast to Number in add/edit student :|
-        code: Number(params.code)
+    let query = { // no need need to convert to Number in add/edit :|
+        code: params.code
     };
 
     let issue = false;
@@ -37,14 +36,13 @@ async function addStudent(req, res, next) {
     // check if any student already own requested code
     await Student.findOne(query, function(err, student) {
 
-        if (err) { // if there were errors running query
-
-            issue = true; // must use Promises or async/await to make this shit work
+        if (err) {
+            issue = true;
             errHandler(err, res);
 
         } else if (student) { // if a student owns requested Code
 
-            issue = true;
+            issue = true; // must use Promises or async/await to make this shit work
             res.status(consts.BAD_REQ_CODE)
                 .json({
                     error: consts.MAHTA_CODE_EXISTS
@@ -68,8 +66,7 @@ async function addStudent(req, res, next) {
         // finding inviter
         await Student.findOne({ code: Number(params.inviterCode) }, function(err, student) {
 
-            if (err) { // if there were errors running query
-
+            if (err) {
                 issue = true;
                 errHandler(err, res);
 
@@ -78,7 +75,7 @@ async function addStudent(req, res, next) {
                 issue = true;
                 res.status(consts.BAD_REQ_CODE)
                     .json({
-                        error: consts.INVITER_NOT_EXISTS
+                        error: consts.INCORRECT_INVITER_ID
                     });
 
             } else { // if inviterCode is valid
@@ -91,12 +88,11 @@ async function addStudent(req, res, next) {
 
                 // saving inviter
                 student.save((err => {
-                    if (err) {
-                        errHandler(err, res);
 
-                        if (config.isDevelopement) {
-                            console.log(`error at saving inviter`);
-                        }
+                    if (err) {
+                        issue = true;
+                        errHandler(err, res);
+                        if (config.isDevelopement) console.log(`error at saving inviter`);
                     }
                 }))
             }
@@ -105,33 +101,33 @@ async function addStudent(req, res, next) {
 
     if (issue) return;
 
-    newStudent.save((err => {
+    await newStudent.save((err => {
         if (err) {
             issue = true;
             errHandler(err, res);
+            if (config.isDevelopement) console.log(`error at saving new student`);
+            console.log(`issue in newStudent save: ${issue}`)
         }
     }));
 
+    console.log(`issue: ${issue}`);
+
     if (issue) return;
 
-    await Student.find({}, (err, students) => {
+    // TODO: there's a problem here, can test it by sending no params
 
-        if (err) {
-            errHandler(err);
-
-        } else {
-            res.status(consts.SUCCESS_CODE).json(students);
-        }
-    });
+    // send student list
+    getStudentList(req, res, next);
 
 }
 
 async function editStudent(req, res, next) {
 
     let params = req.body;
+    let issue = false;
 
     let query = {
-        code: Number(params.code)
+        code: params.code
     };
 
     let student = {
@@ -144,9 +140,24 @@ async function editStudent(req, res, next) {
 
     await Student.findOneAndUpdate(query, student, {upsert:false}, function(err, student){
 
-        if (err) errHandler(err, res);
-        else res.sendStatus(consts.SUCCESS_CODE);
+        if (err) {
+            issue = true;
+            errHandler(err, res);
+
+        } else if (!student) {
+
+            issue = true;
+            res.status(consts.NOT_FOUND_CODE)
+                .json({
+                    error: consts.INCORRECT_MAHTA_ID
+                });
+        }
     });
+
+    if (issue) return;
+
+    // send student list
+    getStudentList(req, res, next);
 
 }
 
@@ -154,17 +165,18 @@ async function deleteStudent(req, res, next) {
 
     let params = req.body;
     let inviterId;
-
     let issue = false;
 
     let query = { // must cast this shit to Number
         code: Number(params.code)
     };
 
-    if (config.isDevelopement) console.log(`query : ${typeof (query.code)}`);
+    if (config.isDevelopement)
+        console.log(`code type of: ${typeof (query.code)}`);
 
 
     // TODO: must check if the student was invited and then delete its id from inviteds of inviter
+    // TODO: must check if the student had gifts and purchases and delete them either
 
     // find student to get inviterId
     // await Student.findOne(query, function(err, student) {
@@ -193,22 +205,13 @@ async function deleteStudent(req, res, next) {
     await Student.deleteOne(query ,(err) => {
 
         if (err) {
-            errHandler(err, res);
             issue = true;
+            errHandler(err, res);
         }
     });
 
-    if (issue) return;
-
-    await Student.find({}, (err, students) => {
-
-        if (err) {
-            errHandler(err);
-
-        } else {
-            res.status(consts.SUCCESS_CODE).json(students);
-        }
-    });
+    // send student list
+    getStudentList(req, res, next);
 
 }
 

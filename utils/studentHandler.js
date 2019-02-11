@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const consts = require('./consts');
 const errHandler = require('./errHandler');
+const giftHandler = require('./giftHandler');
+const purchaseHandler = require('./purchaseHandler');
 const config  = require('../config/config');
 
 // Requiring models
@@ -9,7 +11,7 @@ let Student = require('../models/student');
 
 async function getStudentList(req, res, next) {
 
-    // console.log(req.cookies.token);
+    // config.log(req.cookies.token);
 
     Student.find({}, (err, students) => {
 
@@ -92,7 +94,7 @@ async function addStudent(req, res, next) {
                     if (err) {
                         issue = true;
                         errHandler(err, res);
-                        if (config.isDevelopement) console.log(`error at saving inviter`);
+                        config.log(`error at saving inviter`);
                     }
                 }))
             }
@@ -105,12 +107,12 @@ async function addStudent(req, res, next) {
         if (err) {
             issue = true;
             errHandler(err, res);
-            if (config.isDevelopement) console.log(`error at saving new student`);
-            console.log(`issue in newStudent save: ${issue}`)
+            config.log(`error at saving new student`);
+            config.log(`issue in newStudent save: ${issue}`)
         }
     }));
 
-    console.log(`issue: ${issue}`);
+    config.log(`issue: ${issue}`);
 
     if (issue) return;
 
@@ -165,50 +167,112 @@ async function deleteStudent(req, res, next) {
 
     let params = req.body;
     let inviterId;
+    let gifts;
+    let purchases;
     let issue = false;
 
     let query = { // must cast this shit to Number
         code: Number(params.code)
     };
 
-    if (config.isDevelopement)
-        console.log(`code type of: ${typeof (query.code)}`);
-
-
-    // TODO: must check if the student was invited and then delete its id from inviteds of inviter
-    // TODO: must check if the student had gifts and purchases and delete them either
+    config.log(`code type of: ${typeof (query.code)}`);
 
     // find student to get inviterId
-    // await Student.findOne(query, function(err, student) {
-    //
-    //     if (err) { // if there were errors running query
-    //
-    //         issue = true;
-    //         errHandler(err, res);
-    //
-    //     } else if (!student) { // if no student found
-    //
-    //         issue = true;
-    //         res.status(consts.BAD_REQ_CODE)
-    //             .json({
-    //                 error: consts.INCORRECT_MAHTA_ID
-    //             });
-    //
-    //     } else { // if student was found
-    //
-    //         check if had inviter
-            // if (student.inviter)    inviterId = student.inviter;
-        // }
-    // });
+    let studentToDelete = await Student.findOne(query, function(err, student) {
 
-    // remove student
-    await Student.deleteOne(query ,(err) => {
+        if (err) { // if there were errors running query
 
-        if (err) {
             issue = true;
             errHandler(err, res);
+
+        } else if (!student) { // if no student found
+
+            issue = true;
+            res.status(consts.BAD_REQ_CODE)
+                .json({
+                    error: consts.INCORRECT_MAHTA_ID
+                });
+
+        } else { // if student found
+
+            // check if had inviter
+            if (student.inviter)    inviterId = student.inviter;
+            // check if had gifts
+            if (student.gifts.length !== 0)    gifts = student.gifts;
+            // check if had purchases
+            if (student.purchases.length !== 0)    purchases = student.purchases;
         }
     });
+
+    if (issue) return;
+
+    // if student had inviter
+    if (inviterId) {
+
+        // find inviter
+        await Student.findOne({_id:inviterId}, function(err, student) {
+
+            if (err) {
+
+                issue = true;
+                errHandler(err, res);
+
+            } else if (!student) { // if no inviter found
+
+                config.log(`Could not find student's inviter`)
+
+            } else { // if inviter found, delete id from inviteds array
+
+                for( let i = 0; i < student.inviteds.length; i++){
+
+                    if (student.inviteds[i].equals(studentToDelete._id))
+                        student.inviteds.splice(i, 1);
+                }
+
+                // saving inviter
+                student.save(err => {
+                    if (err) {
+
+                        issue = true;
+                        errHandler(err);
+
+                    } else {
+                        config.log(`inviter's property updated`);
+                    }
+                })
+            }
+        });
+    }
+
+    if (issue) return;
+
+    // if student had gifts
+    if (gifts) {
+        giftHandler.deleteGifts(studentToDelete._id);
+    }
+
+    // if student had purchases
+    if (purchases) {
+        purchaseHandler.deletePurchases(studentToDelete._id);
+    }
+
+    if (issue) return;
+
+
+    // remove student
+    await Student.deleteOne(studentToDelete ,(err, student) => {
+
+        if (err) {
+
+            issue = true;
+            errHandler(err, res);
+
+        } else {
+            config.log(`Removed student`);
+        }
+    });
+
+    if (issue) return;
 
     // send student list
     getStudentList(req, res, next);

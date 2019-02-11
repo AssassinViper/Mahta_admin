@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 
 const withAuth = require('../auth/middleware');
 const consts = require('../utils/consts');
+const config = require('../config/config');
 const studentHandler = require('../utils/studentHandler');
 const purchaseHandler = require('../utils/purchaseHandler');
 const giftHandler = require('../utils/giftHandler');
@@ -19,15 +20,13 @@ let Student = require('../models/student');
 // authenticate process
 router.post('/authenticate', (req, res) => {
 
-    console.log('/authenticate');
-    
     const { username, password } = req.body;
 
     User.findOne({ username }, function(err, user) {
 
         if (err) {
 
-            console.error(err);
+            config.error(err);
             res.status(consts.INT_ERR_CODE)
                 .json({
                     error: consts.ERR
@@ -50,17 +49,17 @@ router.post('/authenticate', (req, res) => {
                     // Issue token
                     const payload = { username: username };
                     const token = jwt.sign(payload, secret, {
-                        expiresIn: '1h'
+                        expiresIn: '3h'
                     });
 
                     try {
                         res.cookie('token', token, { httpOnly: true }).sendStatus(200);
 
                     } catch (e) {
-                        console.log(e)
+                        config.log(e)
                     }
 
-                    console.log(token);
+                    config.log(token);
 
                 } else {
 

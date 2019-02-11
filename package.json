@@ -4,7 +4,8 @@
   "description": "management system for mahta",
   "main": "index.js",
   "scripts": {
-    "dev": "set NODE_ENV=development && nodemon index.js",
+    "envDevelopment": "set NODE_ENV=development",
+    "dev": "nodemon index.js",
     "project": "concurrently \"nodemon server.js\" \"cd client && npm start\""
   },
   "author": "Mohammad Noori",

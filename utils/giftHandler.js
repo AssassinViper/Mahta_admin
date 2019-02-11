@@ -47,7 +47,7 @@ async function commitGift(req, res, next) {
             student.save((err => {
                 if (err) {
                     errHandler(err, res);
-                    if (config.isDevelopement) console.log(`err in saving student`);
+                    config.log(`err in saving student`);
                 }
 
             }));
@@ -56,7 +56,7 @@ async function commitGift(req, res, next) {
             gift.save((err => {
                 if (err) {
                     errHandler(err, res);
-                    if (config.isDevelopement) console.log(`err in saving gift`);
+                    config.log(`err in saving gift`);
                 }
             }));
         }
@@ -67,6 +67,23 @@ async function commitGift(req, res, next) {
     next();
 }
 
-module.exports = {commitGift};
+function deleteGifts(ownerId) {
+
+    let issue = false;
+
+    Gift.deleteMany({ owner: ownerId }, function(err, info) {
+
+        if (err) {
+            errHandler(err, res);
+
+        } else {
+            config.log(`deleted ${info.n} gifts`);
+        }
+    }).catch(err => {
+        config.log(err)
+    });
+}
+
+module.exports = {commitGift, deleteGifts};
 
 

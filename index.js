@@ -35,7 +35,7 @@ app.use(bodyParser.json());
 
 app.use(cookieParser());
 
-if (config.isDevelopement) {
+if (config.isDevelopment) {
     console.log(`We're on developement :)`);
 
     // Express session Middleware

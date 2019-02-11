@@ -98,6 +98,23 @@ async function commitPurchase(req, res, next) {
 
 }
 
-module.exports = {commitPurchase};
+function deletePurchases(ownerId) {
+
+    let issue = false;
+
+    Purchase.deleteMany({ owner: ownerId }, function(err, info) {
+
+        if (err) {
+            errHandler(err, res);
+
+        } else {
+            config.log(`deleted ${info.n} purchases`);
+        }
+    }).catch(err => {
+        config.log(err)
+    });
+}
+
+module.exports = {commitPurchase, deletePurchases};
 
 

@@ -67,11 +67,9 @@ async function commitGift(req, res, next) {
     next();
 }
 
-function deleteGifts(ownerId) {
+async function deleteGifts(ownerId) {
 
-    let issue = false;
-
-    Gift.deleteMany({ owner: ownerId }, function(err, info) {
+    await Gift.deleteMany({ owner: ownerId }, function(err, info) {
 
         if (err) {
             errHandler(err, res);
@@ -84,6 +82,31 @@ function deleteGifts(ownerId) {
     });
 }
 
-module.exports = {commitGift, deleteGifts};
+async function getGifts(ownerId, response) {
+
+    let issue = false;
+
+    let query = {
+       owner: ownerId
+    };
+
+    await Gift.find(query, {_id: 0, __v: 0, owner: 0}, function (err, gifts) {
+
+        if (err) {
+            issue = true;
+            errHandler(err, res);
+        } else {
+
+            config.log('gifts: ');
+            config.log(gifts);
+
+            // only way to change sent argument to a function in js is this: :)
+            response.gifts = gifts;
+        }
+    });
+
+}
+
+module.exports = {commitGift, deleteGifts, getGifts};
 
 

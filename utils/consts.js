@@ -8,6 +8,7 @@ module.exports = {
     INCORRECT_INVITER_ID : 'Inviter Code is Incorrect',
 
     MAHTA_CODE_EXISTS : 'Mahta Code is Already Taken',
+    GP_NOT_FOUND : 'No Purchase/Gift Was Found',
 
 
     SUCCESS_CODE: 200,

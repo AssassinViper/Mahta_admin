@@ -74,14 +74,17 @@ async function commitPurchase(req, res, next) {
         await Student.findOne({ _id: inviterId }, function(err, student) {
 
             if (err) {
-                errHandler(err);
+                config.log(err);
+                // errHandler(err);
+
 
             } else if (!student) { // if no inviter found
 
-                res.status(consts.NOT_FOUND_CODE)
-                    .json({
-                        error: consts.INCORRECT_INVITER_ID
-                    });
+                config.log('Could not find student inviter');
+                // res.status(consts.NOT_FOUND_CODE)
+                //     .json({
+                //         error: consts.INCORRECT_INVITER_ID
+                //     });
 
             } else { // if inviter was found
 
@@ -98,11 +101,11 @@ async function commitPurchase(req, res, next) {
 
 }
 
-function deletePurchases(ownerId) {
+async function deletePurchases(ownerId) {
 
     let issue = false;
 
-    Purchase.deleteMany({ owner: ownerId }, function(err, info) {
+    await Purchase.deleteMany({ owner: ownerId }, function(err, info) {
 
         if (err) {
             errHandler(err, res);
@@ -115,6 +118,32 @@ function deletePurchases(ownerId) {
     });
 }
 
-module.exports = {commitPurchase, deletePurchases};
+async function getPurchases(ownerId, response) {
+
+    let issue = false;
+
+    let query = {
+        owner: ownerId
+    };
+
+    await Purchase.find(query, {_id: 0, __v: 0, owner: 0}, function (err, purchases) {
+
+        if (err) {
+            issue = true;
+            errHandler(err, res);
+        } else {
+
+            config.log('purchases: ');
+            config.log(purchases);
+
+
+            // only way to change sent argument to a function in js is this: :)
+            response.purchases = purchases;
+        }
+    });
+
+}
+
+module.exports = {commitPurchase, deletePurchases, getPurchases};
 
 

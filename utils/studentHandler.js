@@ -13,7 +13,8 @@ async function getStudentList(req, res, next) {
 
     // config.log(req.cookies.token);
 
-    Student.find({}, (err, students) => {
+    // projecting fields
+    await Student.find({}, { _id: 0, __v: 0 }, (err, students) => {
 
         if (err) {
             errHandler(err);
@@ -72,7 +73,7 @@ async function addStudent(req, res, next) {
                 issue = true;
                 errHandler(err, res);
 
-            } else if (!student) { // if no inviter found
+            } else if (!student) { // if found no inviter
 
                 issue = true;
                 res.status(consts.BAD_REQ_CODE)
@@ -108,7 +109,6 @@ async function addStudent(req, res, next) {
             issue = true;
             errHandler(err, res);
             config.log(`error at saving new student`);
-            config.log(`issue in newStudent save: ${issue}`)
         }
     }));
 
@@ -185,7 +185,7 @@ async function deleteStudent(req, res, next) {
             issue = true;
             errHandler(err, res);
 
-        } else if (!student) { // if no student found
+        } else if (!student) { // if found no student
 
             issue = true;
             res.status(consts.BAD_REQ_CODE)
@@ -193,7 +193,7 @@ async function deleteStudent(req, res, next) {
                     error: consts.INCORRECT_MAHTA_ID
                 });
 
-        } else { // if student found
+        } else { // if found student
 
             // check if had inviter
             if (student.inviter)    inviterId = student.inviter;
@@ -217,11 +217,11 @@ async function deleteStudent(req, res, next) {
                 issue = true;
                 errHandler(err, res);
 
-            } else if (!student) { // if no inviter found
+            } else if (!student) { // if found no inviter
 
                 config.log(`Could not find student's inviter`)
 
-            } else { // if inviter found, delete id from inviteds array
+            } else { // if found inviter, delete id from inviteds array
 
                 for( let i = 0; i < student.inviteds.length; i++){
 
@@ -248,12 +248,12 @@ async function deleteStudent(req, res, next) {
 
     // if student had gifts
     if (gifts) {
-        giftHandler.deleteGifts(studentToDelete._id);
+        await giftHandler.deleteGifts(studentToDelete._id);
     }
 
     // if student had purchases
     if (purchases) {
-        purchaseHandler.deletePurchases(studentToDelete._id);
+        await purchaseHandler.deletePurchases(studentToDelete._id);
     }
 
     if (issue) return;
@@ -279,4 +279,75 @@ async function deleteStudent(req, res, next) {
 
 }
 
-module.exports = {getStudentList, addStudent, editStudent, deleteStudent};
+async  function getGPList(req, res, next) {
+
+    let params = req.body;
+    let issue = false;
+    let gifts;
+    let purchases;
+
+    let studentId;
+
+    let response = {
+        gifts : [],
+        purchases : []
+    };
+
+    query = {
+        code: params.code
+    };
+
+    await Student.findOne(query, function(err, student) {
+
+        if (err) {
+            issue = true;
+            errHandler(err, res);
+
+        } else if (!student) { // if found no student
+
+            issue = true;
+            res.status(consts.NOT_FOUND_CODE)
+                .json({
+                    error: consts.INCORRECT_MAHTA_ID
+                });
+        } else { // if found student
+
+            // check if had gifts
+            if (student.gifts.length !== 0)    gifts = student.gifts;
+            // check if had purchases
+            if (student.purchases.length !== 0)    purchases = student.purchases;
+
+            // if student has neither purchases nor gifts
+            if (!gifts && !purchases) {
+
+                issue = true;
+                res.status(consts.NOT_FOUND_CODE)
+                    .json({
+                        error: consts.GP_NOT_FOUND
+                    });
+            } else {
+                studentId = student._id;
+            }
+
+        }
+    });
+
+    if (issue) return;
+
+
+    // if student had gifts
+    if (gifts) {
+        await giftHandler.getGifts(studentId, response);
+    }
+
+    // if student had purchases
+    if (purchases) {
+        await purchaseHandler.getPurchases(studentId, response);
+    }
+
+    res.status(consts.SUCCESS_CODE)
+        .json(response);
+
+}
+
+module.exports = {getStudentList, addStudent, editStudent, deleteStudent, getGPList};

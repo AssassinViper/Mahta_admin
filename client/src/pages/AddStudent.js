@@ -32,8 +32,8 @@ class AddStudent extends Component {
 
         firstName:"",
         lastName:"",
-        grade:"",
-        field:"",
+        grade:"نهم",
+        field:"ریاضی",
         phone:"",
         code:"",
         inviterCode:""
@@ -69,11 +69,11 @@ class AddStudent extends Component {
 
                     <Input height={35} width={200} placeholder="کد معرف" type="number"
                     ref={(ref=>this.inviterCodeInput = ref)}
-                    onChange={(event)=>{this.AddStudentData.inviterCode = event.target.value}}/>
+                    onChange={(event)=>{this.AddStudentData.inviterCode = Number(event.target.value)}}/>
 
                     <Input height={35} width={200} placeholder="کد خانواده"type="number"
                     ref={(ref=>this.codeInput = ref)}
-                    onChange={(event)=>{this.AddStudentData.code = event.target.value}}/>
+                    onChange={(event)=>{this.AddStudentData.code = Number(event.target.value)}}/>
 
                 </div>
                 
@@ -81,7 +81,7 @@ class AddStudent extends Component {
 
                     <Input height={35} width={200} placeholder="شماره تماس"type="number"
                     ref={(ref=>this.phoneInput = ref)}
-                    onChange={(event)=>{this.AddStudentData.phone = event.target.value}}/>
+                    onChange={(event)=>{this.AddStudentData.phone = Number(event.target.value)}}/>
 
                 </div>
                 

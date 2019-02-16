@@ -58,9 +58,7 @@ module.exports = {
                         lastName: getLastName(),
                         grade: getGrade(),
                         field: getField(),
-                        phone: getPhoneNumber(),
-                        credit: 0,
-                        gift: 0,
+                        phone: getPhoneNumber()
                     })
                         .save((err) => {
                             if (err) console.log(err);

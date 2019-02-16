@@ -72,6 +72,8 @@ class CommitPurchase extends Component {
                 this.priceInput.clear();
                 this.familyPercentInput.clear();
                 this.infoPlainText.clear();
+
+                Dashboard.StudentInfoList = res;
                 
                 this.successModalOpen();
             },

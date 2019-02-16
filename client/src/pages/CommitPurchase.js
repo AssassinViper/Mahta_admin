@@ -7,6 +7,7 @@ import CommitPurchaseHandler from '../handlers/CommitPurchaseHandler';
 import YesNoModal from '../components/YesNoModal';
 import ErrorModal from '../components/ErrorModal';
 import SuccessModal from '../components/SuccessModal';
+import Dashboard from '../pages/Dashboard';
 
 class CommitPurchase extends Component {
     state = { askModal:false, errorModal:false, successModal:false }
@@ -67,6 +68,8 @@ class CommitPurchase extends Component {
                 this.priceInput.clear();
                 this.percentInput.clear();
                 this.infoPlainText.clear();
+
+                Dashboard.StudentInfoList = res;
                 
                 this.successModalOpen();
             },

@@ -8,7 +8,7 @@ const withAuth = function(req, res, next) {
   const token = req.cookies.token;
 
   if (!token) {
-    console.log("no token");
+    // console.log("no token");
     
     res.status(consts.UNAUTHORIZED_CODE).send('Unauthorized: No token provided');
 
@@ -17,12 +17,12 @@ const withAuth = function(req, res, next) {
     jwt.verify(token, secret, function(err, decoded) {
       if (err) {
 
-        console.log("invalid token");
+        // console.log("invalid token");
         
         res.status(consts.UNAUTHORIZED_CODE).send('Unauthorized: Invalid token');
 
       } else {
-        console.log("valid token");
+        // console.log("valid token");
         
         req.username = decoded.username;
         next();

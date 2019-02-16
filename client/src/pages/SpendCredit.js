@@ -6,7 +6,7 @@ import SpendCreditHandler from '../handlers/SpendCreditHandler';
 import YesNoModal from '../components/YesNoModal';
 import ErrorModal from '../components/ErrorModal';
 import SuccessModal from '../components/SuccessModal';
-
+import Dashboard from '../pages/Dashboard';
 
 class SpendCredit extends Component {
 
@@ -79,6 +79,8 @@ class SpendCredit extends Component {
 
                 this.codeInput.clear();
                 this.priceInput.clear();
+
+                Dashboard.StudentInfoList = res;
                 
                 this.successModalOpen();
 

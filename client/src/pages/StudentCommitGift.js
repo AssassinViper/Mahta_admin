@@ -68,6 +68,8 @@ class CommitGift extends Component {
 
                 this.priceInput.clear();
                 this.infoPlainText.clear();
+
+                Dashboard.StudentInfoList = res;
                 
                 this.successModalOpen();
 

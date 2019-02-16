@@ -139,6 +139,8 @@ class StudentEdit extends Component {
                 this.lastNameInput.clear();
                 this.familyCodeInput.clear();
                 this.phoneInput.clear();
+
+                Dashboard.StudentInfoList = res;
                 
                 this.successModalOpen();
 

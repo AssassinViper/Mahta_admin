@@ -47,7 +47,7 @@ module.exports = {
 
         Student.count({}, function(err, count) {
 
-            if (count <= 99) { // check students count
+            if (count <= 50) { // check students count
 
                 for (let i = 0; i < 100; i++) {
 

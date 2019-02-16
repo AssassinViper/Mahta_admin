@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const consts = require('./consts');
 const errHandler = require('./errHandler');
+const giftHandler = require('./giftHandler');
+const purchaseHandler = require('./purchaseHandler');
 const config  = require('../config/config');
 
 // Requiring models
@@ -9,9 +11,10 @@ let Student = require('../models/student');
 
 async function getStudentList(req, res, next) {
 
-    // console.log(req.cookies.token);
+    // config.log(req.cookies.token);
 
-    Student.find({}, (err, students) => {
+    // projecting fields
+    await Student.find({}, { _id: 0, __v: 0 }, (err, students) => {
 
         if (err) {
             errHandler(err);
@@ -20,7 +23,6 @@ async function getStudentList(req, res, next) {
             res.status(consts.SUCCESS_CODE).json(students);
         }
     });
-
 }
 
 async function addStudent(req, res, next) {
@@ -28,8 +30,8 @@ async function addStudent(req, res, next) {
     let params = req.body;
     let newStudent = new Student({});
 
-    let query = { // must cast this shit to Number
-        code: Number(params.code)
+    let query = { // no need need to convert to Number in add/edit :|
+        code: params.code
     };
 
     let issue = false;
@@ -37,14 +39,13 @@ async function addStudent(req, res, next) {
     // check if any student already own requested code
     await Student.findOne(query, function(err, student) {
 
-        if (err) { // if there were errors running query
-
-            issue = true; // must use Promises or async/await to make this shit work
+        if (err) {
+            issue = true;
             errHandler(err, res);
 
         } else if (student) { // if a student owns requested Code
 
-            issue = true;
+            issue = true; // must use Promises or async/await to make this shit work
             res.status(consts.BAD_REQ_CODE)
                 .json({
                     error: consts.MAHTA_CODE_EXISTS
@@ -68,17 +69,16 @@ async function addStudent(req, res, next) {
         // finding inviter
         await Student.findOne({ code: Number(params.inviterCode) }, function(err, student) {
 
-            if (err) { // if there were errors running query
-
+            if (err) {
                 issue = true;
                 errHandler(err, res);
 
-            } else if (!student) { // if no inviter found
+            } else if (!student) { // if found no inviter
 
                 issue = true;
                 res.status(consts.BAD_REQ_CODE)
                     .json({
-                        error: consts.INVITER_NOT_EXISTS
+                        error: consts.INCORRECT_INVITER_ID
                     });
 
             } else { // if inviterCode is valid
@@ -91,12 +91,11 @@ async function addStudent(req, res, next) {
 
                 // saving inviter
                 student.save((err => {
-                    if (err) {
-                        errHandler(err, res);
 
-                        if (config.isDevelopement) {
-                            console.log(`error at saving inviter`);
-                        }
+                    if (err) {
+                        issue = true;
+                        errHandler(err, res);
+                        config.log(`error at saving inviter`);
                     }
                 }))
             }
@@ -105,33 +104,32 @@ async function addStudent(req, res, next) {
 
     if (issue) return;
 
-    newStudent.save((err => {
+    await newStudent.save((err => {
         if (err) {
             issue = true;
             errHandler(err, res);
+            config.log(`error at saving new student`);
         }
     }));
 
+    config.log(`issue: ${issue}`);
+
     if (issue) return;
 
-    await Student.find({}, (err, students) => {
+    // TODO: there's a problem here, can test it by sending no params
 
-        if (err) {
-            errHandler(err);
-
-        } else {
-            res.status(consts.SUCCESS_CODE).json(students);
-        }
-    });
+    // send student list
+    getStudentList(req, res, next);
 
 }
 
 async function editStudent(req, res, next) {
 
     let params = req.body;
+    let issue = false;
 
     let query = {
-        code: Number(params.code)
+        code: params.code
     };
 
     let student = {
@@ -144,9 +142,24 @@ async function editStudent(req, res, next) {
 
     await Student.findOneAndUpdate(query, student, {upsert:false}, function(err, student){
 
-        if (err) errHandler(err, res);
-        else res.sendStatus(consts.SUCCESS_CODE);
+        if (err) {
+            issue = true;
+            errHandler(err, res);
+
+        } else if (!student) {
+
+            issue = true;
+            res.status(consts.NOT_FOUND_CODE)
+                .json({
+                    error: consts.INCORRECT_MAHTA_ID
+                });
+        }
     });
+
+    if (issue) return;
+
+    // send student list
+    getStudentList(req, res, next);
 
 }
 
@@ -154,62 +167,186 @@ async function deleteStudent(req, res, next) {
 
     let params = req.body;
     let inviterId;
-
+    let gifts;
+    let purchases;
     let issue = false;
 
-    let query = {
+    let query = { // must cast this shit to Number
         code: Number(params.code)
     };
 
-    if (config.isDevelopement) console.log(`query : ${typeof (query.code)}`);
-
-
-    // TODO: must check if the student was invited and then delete its id from inviteds of inviter
+    config.log(`code type of: ${typeof (query.code)}`);
 
     // find student to get inviterId
-    // await Student.findOne(query, function(err, student) {
-    //
-    //     if (err) { // if there were errors running query
-    //
-    //         issue = true;
-    //         errHandler(err, res);
-    //
-    //     } else if (!student) { // if no student found
-    //
-    //         issue = true;
-    //         res.status(consts.BAD_REQ_CODE)
-    //             .json({
-    //                 error: consts.INCORRECT_MAHTA_ID
-    //             });
-    //
-    //     } else { // if student was found
-    //
-    //         check if had inviter
-            // if (student.inviter)    inviterId = student.inviter;
-        // }
-    // });
-    
-    // remove student
-    await Student.deleteOne(query ,(err) => {
+    let studentToDelete = await Student.findOne(query, function(err, student) {
 
-        if (err) {
-            errHandler(err, res);
+        if (err) { // if there were errors running query
+
             issue = true;
+            errHandler(err, res);
+
+        } else if (!student) { // if found no student
+
+            issue = true;
+            res.status(consts.BAD_REQ_CODE)
+                .json({
+                    error: consts.INCORRECT_MAHTA_ID
+                });
+
+        } else { // if found student
+
+            // check if had inviter
+            if (student.inviter)    inviterId = student.inviter;
+            // check if had gifts
+            if (student.gifts.length !== 0)    gifts = student.gifts;
+            // check if had purchases
+            if (student.purchases.length !== 0)    purchases = student.purchases;
         }
     });
 
     if (issue) return;
 
-    await Student.find({}, (err, students) => {
+    // if student had inviter
+    if (inviterId) {
+
+        // find inviter
+        await Student.findOne({_id:inviterId}, function(err, student) {
+
+            if (err) {
+
+                issue = true;
+                errHandler(err, res);
+
+            } else if (!student) { // if found no inviter
+
+                config.log(`Could not find student's inviter`)
+
+            } else { // if found inviter, delete id from inviteds array
+
+                for( let i = 0; i < student.inviteds.length; i++){
+
+                    if (student.inviteds[i].equals(studentToDelete._id))
+                        student.inviteds.splice(i, 1);
+                }
+
+                // saving inviter
+                student.save(err => {
+                    if (err) {
+
+                        issue = true;
+                        errHandler(err);
+
+                    } else {
+                        config.log(`inviter's property updated`);
+                    }
+                })
+            }
+        });
+    }
+
+    if (issue) return;
+
+    // if student had gifts
+    if (gifts) {
+        await giftHandler.deleteGifts(studentToDelete._id);
+    }
+
+    // if student had purchases
+    if (purchases) {
+        await purchaseHandler.deletePurchases(studentToDelete._id);
+    }
+
+    if (issue) return;
+
+    // remove student
+    await Student.deleteOne(studentToDelete ,(err, student) => {
 
         if (err) {
-            errHandler(err);
+
+            issue = true;
+            errHandler(err, res);
 
         } else {
-            res.status(consts.SUCCESS_CODE).json(students);
+            config.log(`Removed student`);
         }
     });
 
+    if (issue) return;
+
+    // send student list
+    getStudentList(req, res, next);
+
 }
 
-module.exports = {getStudentList, addStudent, editStudent, deleteStudent};
+async  function getGPList(req, res, next) {
+
+    let params = req.body;
+    let issue = false;
+    let gifts;
+    let purchases;
+
+    let studentId;
+
+    let response = {
+        gifts : [],
+        purchases : []
+    };
+
+    query = {
+        code: params.code
+    };
+
+    await Student.findOne(query, function(err, student) {
+
+        if (err) {
+            issue = true;
+            errHandler(err, res);
+
+        } else if (!student) { // if found no student
+
+            issue = true;
+            res.status(consts.NOT_FOUND_CODE)
+                .json({
+                    error: consts.INCORRECT_MAHTA_ID
+                });
+        } else { // if found student
+
+            // check if had gifts
+            if (student.gifts.length !== 0)    gifts = student.gifts;
+            // check if had purchases
+            if (student.purchases.length !== 0)    purchases = student.purchases;
+
+            // if student has neither purchases nor gifts
+            if (!gifts && !purchases) {
+
+                issue = true;
+                res.status(consts.NOT_FOUND_CODE)
+                    .json({
+                        error: consts.GP_NOT_FOUND
+                    });
+            } else {
+                studentId = student._id;
+            }
+
+        }
+    });
+
+    if (issue) return;
+
+
+    // if student had gifts
+    if (gifts) {
+        await giftHandler.getGifts(studentId, response);
+    }
+
+    // if student had purchases
+    if (purchases) {
+        await purchaseHandler.getPurchases(studentId, response);
+    }
+
+    res.status(consts.SUCCESS_CODE)
+        .json(response);
+
+}
+
+module.exports = {getStudentList, addStudent, editStudent, deleteStudent, getGPList};

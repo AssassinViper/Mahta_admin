@@ -11,6 +11,7 @@ let Gift = require('../models/gift');
 async function commitGift(req, res, next) {
 
     let params = req.body;
+    let issue = false;
 
     let gift = new Gift({});
     let inviterId;
@@ -23,6 +24,7 @@ async function commitGift(req, res, next) {
 
         } else if (!student) { // if no student found
 
+            issue = true;
             res.status(consts.NOT_FOUND_CODE)
                 .json({
                     error: consts.INCORRECT_MAHTA_ID
@@ -45,7 +47,7 @@ async function commitGift(req, res, next) {
             student.save((err => {
                 if (err) {
                     errHandler(err, res);
-                    if (config.isDevelopement) console.log(`err in saving student`);
+                    config.log(`err in saving student`);
                 }
 
             }));
@@ -54,15 +56,57 @@ async function commitGift(req, res, next) {
             gift.save((err => {
                 if (err) {
                     errHandler(err, res);
-                    if (config.isDevelopement) console.log(`err in saving gift`);
+                    config.log(`err in saving gift`);
                 }
-                else res.sendStatus(consts.SUCCESS_CODE);
             }));
-
         }
+    });
+
+    if (issue) return;
+
+    next();
+}
+
+async function deleteGifts(ownerId) {
+
+    await Gift.deleteMany({ owner: ownerId }, function(err, info) {
+
+        if (err) {
+            errHandler(err, res);
+
+        } else {
+            config.log(`deleted ${info.n} gifts`);
+        }
+    }).catch(err => {
+        config.log(err)
     });
 }
 
-module.exports = {commitGift};
+async function getGifts(ownerId, response) {
+
+    let issue = false;
+
+    let query = {
+       owner: ownerId
+    };
+
+    await Gift.find(query, {_id: 0, __v: 0, owner: 0}, function (err, gifts) {
+
+        if (err) {
+            issue = true;
+            errHandler(err, res);
+        } else {
+
+            config.log('gifts: ');
+            config.log(gifts);
+
+            // only way to change sent argument to a function in js is this: :)
+            response.gifts = gifts;
+        }
+    });
+
+}
+
+module.exports = {commitGift, deleteGifts, getGifts};
 
 

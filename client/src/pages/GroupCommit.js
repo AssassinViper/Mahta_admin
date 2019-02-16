@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 
 import Input from '../components/Input';
 import Button from '../components/Button';
-import PlainText from '../components/PlainText';
 import GroupCommitHandler from '../handlers/GroupCommitHandler';
 import YesNoModal from '../components/YesNoModal';
 import ErrorModal from '../components/ErrorModal';
 import SuccessModal from '../components/SuccessModal';
-
+import Dashboard from '../pages/Dashboard';
 
 class GroupCommit extends Component {
     state = { askModal:false, errorModal:false, successModal:false }
@@ -58,6 +57,8 @@ class GroupCommit extends Component {
 
                 this.numberInput.clear();
                 this.priceInput.clear();
+
+                Dashboard.StudentInfoList = res;
                 
                 this.successModalOpen();
             },

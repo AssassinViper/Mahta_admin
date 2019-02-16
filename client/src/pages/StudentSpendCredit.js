@@ -74,6 +74,8 @@ class SpendCredit extends Component {
             (res)=>{
 
                 this.priceInput.clear();
+
+                Dashboard.StudentInfoList = res;
                 
                 this.successModalOpen();
 

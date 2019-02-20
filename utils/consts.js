@@ -6,9 +6,10 @@ module.exports = {
     INCORRECT_PASSWORD : 'گذرواژه نادرست',
     INCORRECT_MAHTA_ID: 'کد مهتا نامعتبر',
     INCORRECT_INVITER_ID : 'کد دعوت کننده نامعتبر',
+    INCORRECT_PARAMS : 'پارامتر های ارسالی نامعتبر',
 
     MAHTA_CODE_EXISTS : 'کد مهتا تکراری',
-    GP_NOT_FOUND : 'هیچ خرید یا هدیه ای وجود ندارد',
+    GP_NOT_FOUND : 'خرید یا هدیه ای وجود ندارد',
 
 
     SUCCESS_CODE: 200,

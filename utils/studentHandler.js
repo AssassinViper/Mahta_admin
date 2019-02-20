@@ -4,6 +4,7 @@ const errHandler = require('./errHandler');
 const giftHandler = require('./giftHandler');
 const purchaseHandler = require('./purchaseHandler');
 const config  = require('../config/config');
+const validator = require('../tools/validator');
 
 // Requiring models
 let Student = require('../models/student');
@@ -28,13 +29,17 @@ async function getStudentList(req, res, next) {
 async function addStudent(req, res, next) {
 
     let params = req.body;
+
+    let issue = validator.hasCode(req, res, params);
+    if (issue) return;
+
     let newStudent = new Student({});
 
     let query = { // no need need to convert to Number in add/edit :|
         code: params.code
     };
 
-    let issue = false;
+    // let issue = false;
 
     // check if any student already own requested code
     await Student.findOne(query, function(err, student) {
@@ -95,7 +100,6 @@ async function addStudent(req, res, next) {
                     if (err) {
                         issue = true;
                         errHandler(err, res);
-                        config.log(`error at saving inviter`);
                     }
                 }))
             }
@@ -112,11 +116,7 @@ async function addStudent(req, res, next) {
         }
     }));
 
-    config.log(`issue: ${issue}`);
-
     if (issue) return;
-
-    // TODO: there's a problem here, can test it by sending no params
 
     // send student list
     getStudentList(req, res, next);
@@ -137,7 +137,7 @@ async function editStudent(req, res, next) {
         lastName: params.lastName,
         grade: params.grade,
         field: params.field,
-        phone: params.phoneNumber
+        phone: params.phone
     };
 
     await Student.findOneAndUpdate(query, student, {upsert:false}, function(err, student){
@@ -166,10 +166,13 @@ async function editStudent(req, res, next) {
 async function deleteStudent(req, res, next) {
 
     let params = req.body;
+
+    let issue = validator.hasCode(req, res, params);
+    if (issue) return;
+
     let inviterId;
     let gifts;
     let purchases;
-    let issue = false;
 
     let query = { // must cast this shit to Number
         code: Number(params.code)
@@ -349,5 +352,7 @@ async  function getGPList(req, res, next) {
         .json(response);
 
 }
+
+
 
 module.exports = {getStudentList, addStudent, editStudent, deleteStudent, getGPList};

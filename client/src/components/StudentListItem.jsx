@@ -18,6 +18,7 @@ class StudentListItem extends Component {
     showInfo(studentInfo){
         
         Dashboard.selectedStudent = studentInfo;
+        console.log(studentInfo);
         
         this.props.history.push('/student');
     }
@@ -32,7 +33,9 @@ const s = {
         justifyContent:'space-between',
         marginBottom:4,
         borderStyle:"solid",
-        borderWidth:1,
+        borderWidth:0,
+        borderRadius:5,
+        borderColor:'rgb(216,92,32)',
         backgroundColor:'white'
     },
 
@@ -40,7 +43,10 @@ const s = {
         height:'100%',
         width:'19.8%',
         textAlign:'right',
-        backgroundColor:'orange'
+        borderRadius:2,
+        fontFamily:'amp',
+        cursor:'pointer',
+        backgroundColor:'rgb(210,210,210)'
     }
 }
  

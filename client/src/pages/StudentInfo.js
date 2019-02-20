@@ -14,7 +14,7 @@ class StudentInfo extends Component {
     }
     render() { 
 
-        if(this.student.name === undefined){
+        if(this.student.code === undefined){
 
             return(
                 <Redirect to="/admin" />
@@ -89,14 +89,15 @@ class StudentInfo extends Component {
 const s = {
 
     container:{
-        
+        opacity:0.8,
         display:'flex',
         flexDirection:'column',
         alignItems:'center',
         justifyContent:'space-around',
-        height:520,
+        height:500,
         width:1200,
-        backgroundColor:'#f62'
+        borderRadius:15,
+        backgroundColor:'rgb(55, 110, 198)',
     },
 
     sec1:{

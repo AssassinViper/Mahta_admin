@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import Button from '../components/Button';
 import Input from '../components/Input';
 import urls from '../consts/urls';
+import lock from '../assets/svg/lock.svg'
 
 
 class LoginPage extends Component{
@@ -14,10 +15,12 @@ class LoginPage extends Component{
         return(
 
             <div style={s.con}>
-            
-                <Input height={30} width="80%" placeholder="نام کاربری" onChange={(e)=>{this.username = e.target.value}}/>
-                <Input height={30} width="80%" placeholder="شناسه کاربری" onChange={(e)=>{this.password = e.target.value}}/>
-                <Button height={50} width="60%" onClick={this.authenticate} >ورود</Button>
+
+                <div style={s.con2}>
+                    <Input height={30} width="80%" placeholder="نام کاربری" onChange={(e)=>{this.username = e.target.value}}/>
+                    <Input height={30} width="80%" placeholder="رمز عبور" type={"password"}onChange={(e)=>{this.password = e.target.value}}/>
+                    <Button height={50} width="60%" onClick={this.authenticate} >ورود</Button>
+                </div>
 
             </div>
         )
@@ -48,15 +51,31 @@ class LoginPage extends Component{
 const s = {
 
     con:{
-        
+
+        height:'100%',
+        width:'100%',
         display:'flex',
         flexDirection:'column',
         alignItems:'center',
         justifyContent:'center',
-        marginTop:100,
-        height:400,
-        width:360,
-        backgroundColor:'rgba(0,0,0,0.6)',
+        backgroundImage: `url(${lock})`,
+        backgroundSize:'auto',
+        backgroundRepeat: 'no-repeat',
+        backgroundPosition: '50% 60%', 
+    },
+
+    con2:{
+        
+        display:'flex',
+        opacity:0.88,
+        flexDirection:'column',
+        alignItems:'center',
+        justifyContent:'center',
+        height:440,
+        width:380,
+        borderRadius:12,
+        boxShadow:'4px 4px 4px rgba(0,0,0,0.5)',
+        backgroundColor:'rgb(220,96,36)',
     }
 }
 

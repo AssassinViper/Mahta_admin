@@ -180,13 +180,15 @@ class AddStudent extends Component {
 const s = {
 
     con:{
-        height:520,
-        width: 1200,
+        opacity:0.8,
         display:'flex',
         flexDirection:'column',
-        justifyContent:'space-around',
         alignItems:'center',
-        backgroundColor:'#820'
+        justifyContent:'space-around',
+        height:500,
+        width:1200,
+        borderRadius:15,
+        backgroundColor:'rgb(216,92,32)',
     },
 
     sec1:{
@@ -197,6 +199,8 @@ const s = {
         justifyContent:'space-around',
         borderWidth:"2px",
         borderStyle:"solid",
+        borderRadius:8,
+        borderColor:'white'
     },
 
     space:{
@@ -211,6 +215,7 @@ const customStyles = {
         borderBottom: '1px dotted pink',
         color: state.isSelected ? 'red' : 'blue',
         padding: 20,
+        fontFamily:"amp",
       }),
       control: () => ({
         // none of react-select's styles are passed to <Control />
@@ -218,9 +223,13 @@ const customStyles = {
         display:'flex',
         flexDirection:'row',
         borderStyle:"solid",
-        borderWidth:3,
-        borderRadius:0,
-        
+        borderRadius:5,
+        borderWidth:2,
+        paddingLeft:20,
+        paddingRight:10,
+        fontFamily:"amp",
+        borderColor:'white',
+        backgroundColor:'white'
       }),
       singleValue: (provided, state) => {
         const opacity = state.isDisabled ? 0.5 : 1;

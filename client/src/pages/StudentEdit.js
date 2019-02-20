@@ -40,7 +40,7 @@ class StudentEdit extends Component {
 
     render() {
 
-        if(this.AddStudentData.name === undefined){
+        if(this.AddStudentData.code === undefined){
 
             return(<Redirect to="/admin" />);
 
@@ -203,13 +203,15 @@ class StudentEdit extends Component {
 const s = {
 
     con:{
-        height:520,
-        width: 1200,
+        opacity:0.8,
         display:'flex',
         flexDirection:'column',
-        justifyContent:'space-around',
         alignItems:'center',
-        backgroundColor:'#861'
+        justifyContent:'space-around',
+        height:500,
+        width:1200,
+        borderRadius:15,
+        backgroundColor:'rgb(55, 110, 198)',
     },
 
     delete_btn:{

@@ -22,6 +22,37 @@
   color: #61dafb;
 }
 
+button{
+
+  border-width: 0px;
+  padding: 0px;
+}
+
+button:active {
+
+  border-width: 0px;
+}
+
+button:focus{
+  outline: 0px;
+}
+
+@font-face {
+  font-family: "amp";
+  src: url('../src/assets/fonts/amp_sans.ttf') format("truetype");
+}
+
+@font-face {
+  font-family: "roozname";
+  src: url('../src/assets/fonts/ARooznameh.ttf') format("truetype");
+}
+
+@font-face {
+  font-family: "ebhar";
+  src: url('../src/assets/fonts/Ebhaar.otf') format("truetype");
+}
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

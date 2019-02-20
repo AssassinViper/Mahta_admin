@@ -22,12 +22,15 @@ class Input extends Component {
                 
                 height:this.props.height,
                 width:this.props.width,
+                fontFamily:'amp',
+                fontWeight:'bold', 
+                fontSize:18,
                 textAlign:'center',
-                borderColor:'rgb(0, 0, 0)',
+                borderRadius:5,
                 padding:'4px 6px',
-                backgroundColor:'rgba(1,1,1,0.4)',
+                backgroundColor:'rgba(255,255,255,0.9)',
                 margin:15, 
-                color:'white'}}>
+                color:'rgb(65,76,82)'}}>
               
             </input>
          );

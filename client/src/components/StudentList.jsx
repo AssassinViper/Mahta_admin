@@ -21,8 +21,8 @@ class StudentList extends Component {
                     <div style={s.header}> مقدار هدیه </div>
                     <div style={s.header}> مقدار اعتبار </div>
                     <div style={s.header}> نام </div>
-                    <div style={s.header} onClick={this.props.sortByName}>  نام خانوادگی <img src={sort}/> </div>
-                    <div style={s.header} onClick={this.props.sortByCode}> کد خانواده <img src={sort}/></div>
+                    <div style={s.header} onClick={this.props.sortByName}>  نام خانوادگی <img style={s.sort_ic} src={sort}/> </div>
+                    <div style={s.header} onClick={this.props.sortByCode}> کد خانواده <img style={s.sort_ic} src={sort}/></div>
                     <div style={s.space}></div>
                 
                 </div>
@@ -43,8 +43,6 @@ class StudentList extends Component {
 
         let studentList = [];
         let i = 1;
-
-        alert("showing student list");
 
         list.forEach(element => {
             
@@ -70,18 +68,13 @@ const s = {
         flexDirection:'column',
         height:'95%',
         width:'98%',
-        borderStyle:'solid',
-        borderWidth:4,
-        borderColor:'purple'
     },
 
     space:{
-
         width:"1.45%"
     },
 
     list_con:{
-
         display:'flex',
         flexDirection:'column',
         height:'95%',
@@ -100,9 +93,25 @@ const s = {
 
     header:{
         width:'19.55%',
-        backgroundColor:'#f2f',
-        textAlign:'center'
+        display:'flex',
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'center',
+        borderRadius:2,
+        backgroundColor:'rgb(80,80,80)',
+        textAlign:'center',
+        color:'white',
+        fontFamily:'amp',
+    },
+
+    sort_ic:{
+
+        height:'80%',
+        margin:6,
+        cursor:'pointer'
     }
+
+
 }
  
 export default StudentList;

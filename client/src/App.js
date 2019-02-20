@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route , Link } from 'react-router-dom';
 import NeedAuth from './auth/NeedAuth';
 import './App.css';
+import bg from './assets/svg/bg.svg'
 
 import Navbar from './components/Navbar';
 import LoginPage from './pages/Login';
@@ -20,11 +21,39 @@ import StudentSpendCredit from './pages/StudentSpendCredit';
 
 
 class App extends Component {
+
+  constructor(props) {
+  super(props);
+  this.state = { width: 0, height: 0 };
+  this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+}
+
+componentDidMount() {
+  this.updateWindowDimensions();
+  window.addEventListener('resize', this.updateWindowDimensions);
+}
+
+componentWillUnmount() {
+  window.removeEventListener('resize', this.updateWindowDimensions);
+}
+
+updateWindowDimensions() {
+  this.setState({ width: window.innerWidth, height: window.innerHeight });
+}
+
   render() {
     return (
       <Router>
-
-        <div className="App" style={s.container}>
+        <div className="App" style={{
+          height:this.state.height, 
+          width:this.state.width,
+          display:'flex',
+          flexDirection:'column', 
+          alignItems:'center',
+          backgroundColor:'rgb(88,88,88)',
+          backgroundImage: `url(${bg})`,
+          backgroundSize:'cover',
+        }}>
 
           <Route exact path="/auth" component={LoginPage}/>
 
@@ -47,32 +76,6 @@ class App extends Component {
         </div>
       </Router>
     );
-  }
-}
-
-const s = {
-
-  container:{
-
-    display:'flex',
-    flexDirection:'column', 
-    alignItems:'center',
-    justifyContent:'center',
-    height:'auto',
-    width:'100%',
-    backgroundColor:'#fff',
-
-  },
-
-  pageContainer:{
-
-    display:'flex',
-    alignItems:'center',
-    justifyContent:'center',
-    height:520,
-    width: 1200,
-    backgroundColor:'#003',
-
   }
 }
 

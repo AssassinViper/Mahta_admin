@@ -1,34 +1,81 @@
 import React, { Component } from 'react';
-
 import NavButton from './NavButton';
-import logout from '../assets/icons/logout.png';
 
+const activeList = {
+    spendcredit:false,
+    commitgift:false,
+    commitpurchase:false,
+    groupcommit:false,
+    addstudent:false,
+    studentList:false
+}
 
 class Navbar extends Component {
-    state = {  }
+
+    constructor(props) {
+        super(props);
+        this.state = { width: 0, height: 0, activeButtons:Object.assign({},activeList) };
+        this.state.activeButtons.studentList=true;
+        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+      }
+      
+    componentDidMount() {
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
+    }
+    
+    componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions);
+    }
+    
+    updateWindowDimensions() {
+    this.setState({ width: window.innerWidth, height: window.innerHeight });
+    }
+
     render() { 
         return (
-            <div style={s.con}>
-
-                <button onClick={this.logout}>
-                    <img src={logout} style={{transform:'scaleX(-1)'}}/>
-                </button>
+            <div style={{
+                display:'flex',
+                justifyContent:'center',
+                margin:0,
+                height:85,
+                width:this.state.width,
+                backgroundColor:'rgb(63,74,80)'
+            }}>
 
                 <div style={s.logo_con}>
 
-                    
+                    <a onClick={this.logout} style={s.logout}>خروج</a>
 
+                    <div style={s.icon}>
+                        <div unselectable style={{fontFamily:'ebhar', color:'white', 
+                        fontSize:55, userSelect: 'none' }}>ادمین&thinsp;</div>
+                        <div unselectable style={{fontFamily:'ebhar', color:'rgb(220,96,36)', 
+                        fontSize:55, userSelect: 'none' }}>مهتا</div>
+                    </div>
                 </div>
 
-                <NavButton history={this.props.history} navTo="spendcredit" text="مصرف اعتبار"/>
-                <NavButton history={this.props.history} navTo="commitgift" text="ثبت هدیه"/>
-                <NavButton history={this.props.history} navTo="commitpurchase" text="ثبت خرید"/>
-                <NavButton history={this.props.history} navTo="groupcommit" text="ثبت گروهی"/>
-                <NavButton history={this.props.history} navTo="addstudent" text="دانش آموز جدید"/>
-                <NavButton history={this.props.history} navTo="" text="لیست دانش آموزان"/>
+                <NavButton history={this.props.history} active={this.state.activeButtons.spendcredit} 
+                activeButton={this.activeButton} navTo="spendcredit" text="مصرف اعتبار"/>
+                <NavButton history={this.props.history} active={this.state.activeButtons.commitgift} 
+                activeButton={this.activeButton} navTo="commitgift" text="ثبت هدیه"/>
+                <NavButton history={this.props.history} active={this.state.activeButtons.commitpurchase} 
+                activeButton={this.activeButton} navTo="commitpurchase" text="ثبت خرید"/>
+                <NavButton history={this.props.history} active={this.state.activeButtons.groupcommit} 
+                activeButton={this.activeButton} navTo="groupcommit" text="ثبت گروهی"/>
+                <NavButton history={this.props.history} active={this.state.activeButtons.addstudent} 
+                activeButton={this.activeButton} navTo="addstudent" text="دانش آموز جدید"/>
+                <NavButton history={this.props.history} active={this.state.activeButtons.studentList} 
+                activeButton={this.activeButton} navTo="" text="لیست دانش آموزان"/>
 
             </div>
          );
+    }
+
+    activeButton = (buttonName)=>{
+        this.state.activeButtons = Object.assign({},activeList);
+        this.state.activeButtons[buttonName] = true;
+        this.setState(this.state);
     }
 
     logout=()=>{
@@ -42,16 +89,39 @@ const s = {
 
         display:'flex',
         justifyContent:'space-between',
-        height:80,
+        height:'100%',
         width:1200,
-        backgroundColor:'rgba(0,0,0,0.15)'
+        backgroundColor:'rgb(63,74,80)'
     },
 
     logo_con:{
 
+        flexDirection:'row',
+        display:'flex',
+        justifyContent:'space-around',
         height:'100%',
         width:'20%',
-        backgroundColor:'rgba(0,0,0,0.25)'
+    },
+
+    icon:{
+
+        flexDirection:'row',
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center',
+    },
+
+    logout:{
+        height:'30%',
+        backgroundColor:'transparent',
+        color:'rgb(220,96,36)',
+        fontFamily:'amp',
+        fontSize:15,
+        padding:3,
+        margin:4,
+        borderRadius:4,
+        borderWidth:1,
+        borderStyle:'solid',
     }
 }
  

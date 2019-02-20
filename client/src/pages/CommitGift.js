@@ -129,12 +129,15 @@ class CommitGift extends Component {
 const s = {
 
     con:{
-        height:520,
-        width: 1200,
+        opacity:0.8,
         display:'flex',
         flexDirection:'column',
         alignItems:'center',
-        backgroundColor:'red'
+        justifyContent:'space-around',
+        height:500,
+        width:1200,
+        borderRadius:15,
+        backgroundColor:'rgb(216,92,32)',
     },
 
     space:{

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import { Redirect } from 'react-router-dom';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import SpendCreditHandler from '../handlers/SpendCreditHandler';
@@ -18,47 +19,58 @@ class SpendCredit extends Component {
     }
 
     render() { 
-        return ( 
-            <div style={s.con}>
 
-                <div style={s.space}/>
-                
+        if(this.SpendCreditData.code === undefined){
 
-                <Input height={35} width="20%" placeholder="(مبلغ خرید(تومان"  type="number"
-                ref={(ref=>this.priceInput = ref)}
-                onChange={(event)=>{this.SpendCreditData.price = event.target.value}}/>
+            return(
+                <Redirect to="/admin" />
+            );
 
-                
-                <label style={s.usefrom_con}>
-                از اعتبار&emsp;
-                    <input type="radio" value="credit" name="credit" 
-                        checked={this.state.usefrom === "credit"}
-                        onChange={this.onUseFromChanged} name="usefrom"/>
-                </label>
+        }else{
 
-                <label style={s.usefrom_con}>
-                از هدیه&emsp;
-                    <input type="radio" value="gift" name="gift" 
-                        checked={this.state.usefrom === "gift"}
-                        onChange={this.onUseFromChanged}name="usefrom"/>
-                </label>
-                
-                <Button height={50} width="15%" onClick={this.askModalOpen}>ثبت</Button>
+            return ( 
+                <div style={s.con}>
 
-                <YesNoModal open={this.state.askModal} commit={this.askModalCommit} cancel={this.askModalClose}>
-                    ثبت مصرف اعتبار با مشخصات زیر؟
-                </YesNoModal>
-                
-                <ErrorModal open={this.state.errorModal} onClose={this.errorModalClose}>
-                    خطا
-                </ErrorModal>
-                
-                <SuccessModal open={this.state.successModal} onClose={this.successModalClose}>
-                    عملیات ثبت مصرف اعتبار با موفقیت انجام شد
-                </SuccessModal>
+                    <div style={s.space}/>
+                    
 
-            </div>
-         );
+                    <Input height={35} width="20%" placeholder="(مبلغ خرید(تومان"  type="number"
+                    ref={(ref=>this.priceInput = ref)}
+                    onChange={(event)=>{this.SpendCreditData.price = event.target.value}}/>
+
+                    
+                    <label style={s.usefrom_con}>
+                    از اعتبار&emsp;
+                        <input type="radio" value="credit" name="credit" 
+                            checked={this.state.usefrom === "credit"}
+                            onChange={this.onUseFromChanged} name="usefrom"/>
+                    </label>
+
+                    <label style={s.usefrom_con}>
+                    از هدیه&emsp;
+                        <input type="radio" value="gift" name="gift" 
+                            checked={this.state.usefrom === "gift"}
+                            onChange={this.onUseFromChanged}name="usefrom"/>
+                    </label>
+                    
+                    <Button height={50} width="15%" onClick={this.askModalOpen}>ثبت</Button>
+
+                    <YesNoModal open={this.state.askModal} commit={this.askModalCommit} cancel={this.askModalClose}>
+                        ثبت مصرف اعتبار با مشخصات زیر؟
+                    </YesNoModal>
+                    
+                    <ErrorModal open={this.state.errorModal} onClose={this.errorModalClose}>
+                        خطا
+                    </ErrorModal>
+                    
+                    <SuccessModal open={this.state.successModal} onClose={this.successModalClose}>
+                        عملیات ثبت مصرف اعتبار با موفقیت انجام شد
+                    </SuccessModal>
+
+                </div>
+            );
+
+        }
     }
 
     onUseFromChanged = (event)=>{
@@ -138,12 +150,15 @@ class SpendCredit extends Component {
 const s = {
 
     con:{
-        height:520,
-        width: 1200,
+        opacity:0.8,
         display:'flex',
         flexDirection:'column',
         alignItems:'center',
-        backgroundColor:'#2fb'
+        justifyContent:'space-around',
+        height:500,
+        width:1200,
+        borderRadius:15,
+        backgroundColor:'rgb(55, 110, 198)',
     },
 
     space:{

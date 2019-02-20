@@ -2,10 +2,28 @@ import React, { Component } from 'react';
 
 
 class StudentNavButton extends Component {
-    state = {  }
+    state = {backgroundColor:'transparent'}
     render() { 
+
+        //alert(this.props.navTo+" : "+this.props.active);
+        
+        if(this.props.active){
+            this.state.backgroundColor="rgb(55, 110, 198)";
+        }else{
+            this.state.backgroundColor="transparent";
+        }
+
         return ( 
-            <button style={s.con} onClick={this.goTo}>
+            <button style={{
+                cursor:'pointer',
+                height:'100%',
+                width:'12%',
+                display:'flex',
+                alignItems:'center',
+                justifyContent:'center',
+                backgroundColor:this.state.backgroundColor,
+            }}
+             onClick={this.goTo}>
 
                 <p style={s.text}>{this.props.text}</p>
 
@@ -16,11 +34,10 @@ class StudentNavButton extends Component {
     goTo = ()=>{
 
         if(this.props.navTo == ""){
-
+            this.props.activeButton('info');
             this.props.history.push('/student');
-
         }else{
-
+            this.props.activeButton(this.props.navTo);
             this.props.history.push('/student/'+this.props.navTo);
         }
     }
@@ -37,9 +54,11 @@ const s = {
 
     text:{
 
+        cursor:'pointer',
+        fontFamily:'amp',
         fontSize:20,
-        fontColor:'white',
-        textAlign:'center'
+        color:'white',
+        textAlign:'center',
     }
 }
  

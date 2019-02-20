@@ -41,17 +41,19 @@ class Dashboard extends Component {
 
     render() { 
         return ( 
-            <div style={s.container}>
+            <div style={s.bg}>
+                <div style={s.container}>
 
-                <div style={s.space}/>
-                
-                <div style={s.list_con}>
-                    <StudentList getShowList={(showlist)=>this.showlist=showlist} history={this.props.history}
-                        sortByName={()=>{this.sortBy("name")}} sortByCode={()=>{this.sortBy("code")}}/>
+                    <div style={s.space}/>
+                    
+                    <div style={s.list_con}>
+                        <StudentList getShowList={(showlist)=>this.showlist=showlist} history={this.props.history}
+                            sortByName={()=>{this.sortBy("name")}} sortByCode={()=>{this.sortBy("code")}}/>
+                    </div>
+
+                    <SearchBar searchBtnClick={this.search}/>
+
                 </div>
-
-                <SearchBar searchBtnClick={this.search}/>
-
             </div>
          );
     }
@@ -94,15 +96,25 @@ class Dashboard extends Component {
 
 const s = {
 
+    bg:{
+
+        height:'100%',
+        width:'100%',
+        alignItems:'center',
+        justifyContent:'center',
+    },
+
     container:{
         
+        opacity:0.8,
         display:'flex',
         flexDirection:'column',
         alignItems:'center',
         justifyContent:'space-around',
-        height:520,
+        height:500,
         width:1200,
-        backgroundColor:'#002'
+        borderRadius:15,
+        backgroundColor:'rgb(216,92,32)',
     },
 
     list_con:{
@@ -112,8 +124,8 @@ const s = {
         display:'flex',
         alignItems:'center',
         justifyContent:'center',
-        backgroundColor:'pink'
-
+        borderRadius:12,
+        backgroundColor:'white'
     },
 
     space:{

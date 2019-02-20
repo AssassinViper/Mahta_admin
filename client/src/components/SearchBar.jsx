@@ -34,6 +34,10 @@ class SearchBar extends Component {
 const s={
     
     con:{
+        borderRadius:5,
+        borderStyle:'solid',
+        borderColor:'rgb(220,96,36)',
+        borderWidth:1,
         height:'8%',
         width:'40%',
         display:'flex',
@@ -47,13 +51,14 @@ const s={
         display:'flex',
         alignItems:'center',
         justifyContent:'center',
+        backgroundColor:'white',
+        tint:'rgb(220,96,36)'
     },
 
     input_con:{
         height:'100%',
         width:'90%',
         overflow: 'hidden',
-        backgroundColor:'blue'
     },
 
     input:{
@@ -63,6 +68,9 @@ const s={
         padding:'0px 10px',
         borderWidth:0,
         textAlign:'right',
+        fontFamily:'amp',
+        fontSize:17,
+        color:'rgb(220,96,36)',
     }
 }
  

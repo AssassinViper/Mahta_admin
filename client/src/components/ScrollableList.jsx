@@ -5,7 +5,7 @@ class ScrollableList extends Component {
 
     componentDidMount(){
 
-        this.loadList(this.props.list);
+        //this.loadList(this.props.list);
     }
 
     render() { 

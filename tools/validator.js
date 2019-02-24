@@ -12,8 +12,6 @@ function hasCode(req, res, params) {
     }
 
     return false;
-
-
 }
 
 module.exports = {hasCode};

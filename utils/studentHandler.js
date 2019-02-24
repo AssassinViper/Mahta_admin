@@ -67,6 +67,7 @@ async function addStudent(req, res, next) {
     newStudent.field = params.field;
     newStudent.phone = params.phone;
     newStudent.home = params.home;
+    newStudent.school = params.school;
 
     // check if inviterCode is valid
     if (params.inviterCode) {
@@ -145,7 +146,8 @@ async function editStudent(req, res, next) {
         grade: params.grade,
         field: params.field,
         phone: params.phone,
-        home: params.home
+        home: params.home,
+        school: params.school
     };
 
     await Student.findOneAndUpdate(query, student, {upsert:false}, function(err, student){

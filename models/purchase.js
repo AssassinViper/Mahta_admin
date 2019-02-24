@@ -11,12 +11,13 @@ let puchaseSchema = mongoose.Schema({
         required: true
     },
     percent:{
-        type: Number
+        type: Number,
+        max: 100,
     },
     info:{
         type: String
     },
-    created: {
+    created: { // TODO: shamsi date
         type: Date,
         default: Date.now
     }

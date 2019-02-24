@@ -8,6 +8,9 @@ module.exports = {
     INCORRECT_INVITER_ID : 'کد دعوت کننده نامعتبر',
     INCORRECT_PARAMS : 'پارامتر های ارسالی نامعتبر',
 
+    CREDIT_NOT_ENOUGH : 'اعتبار موجود کافی نیست',
+    GIFT_NOT_ENOUGH : 'هدیه موجود کافی نیست',
+
     MAHTA_CODE_EXISTS : 'کد مهتا تکراری',
     GP_NOT_FOUND : 'خرید یا هدیه ای وجود ندارد',
 

@@ -8,6 +8,7 @@ const validator = require('../tools/validator');
 
 // Requiring models
 let Student = require('../models/student');
+// let Latest = require('../models/latest');
 
 
 async function getStudentList(req, res, next) {
@@ -38,8 +39,6 @@ async function addStudent(req, res, next) {
     let query = { // no need need to convert to Number in add/edit :|
         code: params.code
     };
-
-    // let issue = false;
 
     // check if any student already own requested code
     await Student.findOne(query, function(err, student) {
@@ -102,7 +101,7 @@ async function addStudent(req, res, next) {
                         issue = true;
                         errHandler(err, res);
                     }
-                }))
+                }));
             }
         });
     }
@@ -121,6 +120,13 @@ async function addStudent(req, res, next) {
 
     // send student list
     getStudentList(req, res, next);
+
+    // update last added student
+    //if student had grade
+    if (newStudent.grade) {
+
+    }
+
 
 }
 
@@ -340,6 +346,120 @@ async  function getGPList(req, res, next) {
 
 }
 
+async  function spendCredit(req, res, next) {
+
+    let params = req.body;
+    let issue = false;
+
+    query = {
+        code: params.code,
+    };
+
+    await Student.findOne(query, function(err, student) {
+
+        if (err) {
+            issue = true;
+            errHandler(err, res);
+
+        } else if (!student) { // if found no student
+
+            issue = true;
+            res.status(consts.NOT_FOUND_CODE)
+                .json({
+                    error: consts.INCORRECT_MAHTA_ID
+                });
+        } else { // if found student
+
+            if (params.useFrom === 'credit') {
+
+                student.credit = student.credit - params.price;
+
+                // if student's credit was not enough
+                if (student.credit <= 0) {
+
+                    return res.status(consts.BAD_REQ_CODE)
+                        .json({
+                            error: consts.CREDIT_NOT_ENOUGH
+                        });
+                }
+            }
+
+            if (params.useFrom === 'gift') {
+
+                student.gift = student.gift - params.price;
+
+                // if student's credit was not enough
+                if (student.gift <= 0) {
+
+                    return res.status(consts.BAD_REQ_CODE)
+                        .json({
+                            error: consts.GIFT_NOT_ENOUGH
+                        });
+                }
+            }
 
 
-module.exports = {getStudentList, addStudent, editStudent, deleteStudent, getGPList};
+            student.save((err => {
+
+                if (err) {
+                    issue = true;
+                    errHandler(err, res);
+                } else {
+
+                    res.sendStatus(consts.SUCCESS_CODE);
+                }
+            }));
+
+        }
+    });
+
+}
+
+async  function groupCommit(req, res, next) {
+
+    let params = req.body;
+    let issue = false;
+
+    let studentId;
+
+    let response = {
+        gifts : [],
+        purchases : []
+    };
+
+    query = {
+        code: params.code
+    };
+
+    await Student.findOne(query, function(err, student) {
+
+        if (err) {
+            issue = true;
+            errHandler(err, res);
+
+        } else if (!student) { // if found no student
+
+            issue = true;
+            res.status(consts.NOT_FOUND_CODE)
+                .json({
+                    error: consts.INCORRECT_MAHTA_ID
+                });
+        } else { // if found student
+
+            gifts = student.gifts;
+            purchases = student.purchases;
+            studentId = student._id;
+        }
+    });
+
+    if (issue) return;
+
+
+    res.status(consts.SUCCESS_CODE)
+        .json(response);
+
+}
+
+
+
+module.exports = {getStudentList, addStudent, editStudent, deleteStudent, getGPList, groupCommit};

@@ -1,6 +1,6 @@
 let mongoose = require('mongoose');
 
-let lastAddedSchema = mongoose.Schema({
+let latestSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     code:{
         type: Number,
@@ -16,4 +16,4 @@ let lastAddedSchema = mongoose.Schema({
     }
 });
 
-let lastAddedSchema = module.exports = mongoose.model('lastAdded', lastAddedSchema);
+let latestSchema = module.exports = mongoose.model('latest', latestSchema);

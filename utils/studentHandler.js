@@ -3,7 +3,7 @@ const consts = require('./consts');
 const errHandler = require('./errHandler');
 const giftHandler = require('./giftHandler');
 const purchaseHandler = require('./purchaseHandler');
-const config  = require('../config/config');
+const config = require('../config/config');
 const validator = require('../tools/validator');
 
 // Requiring models
@@ -66,7 +66,8 @@ async function addStudent(req, res, next) {
     newStudent.lastName = params.lastName;
     newStudent.grade = params.grade;
     newStudent.field = params.field;
-    newStudent.phone = params.phoneNumber;
+    newStudent.phone = params.phone;
+    newStudent.home = params.home;
 
     // check if inviterCode is valid
     if (params.inviterCode) {
@@ -137,7 +138,8 @@ async function editStudent(req, res, next) {
         lastName: params.lastName,
         grade: params.grade,
         field: params.field,
-        phone: params.phone
+        phone: params.phone,
+        home: params.home
     };
 
     await Student.findOneAndUpdate(query, student, {upsert:false}, function(err, student){

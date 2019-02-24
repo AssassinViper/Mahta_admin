@@ -17,19 +17,31 @@ class Navbar extends Component {
         this.state = { width: 0, height: 0, activeButtons:Object.assign({},activeList) };
         this.state.activeButtons.studentList=true;
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
-      }
+    }
+
+    static lastButton = "studentList";
+
+    componentDidUpdate(){
+
+        if(this.state.activeButtons[Navbar.lastButton] === false){
+            this.activeButton(Navbar.lastButton);
+        }
+    }
       
     componentDidMount() {
-    this.updateWindowDimensions();
-    window.addEventListener('resize', this.updateWindowDimensions);
+        this.updateWindowDimensions();
+        window.addEventListener('resize', this.updateWindowDimensions);
     }
     
     componentWillUnmount() {
-    window.removeEventListener('resize', this.updateWindowDimensions);
+        window.removeEventListener('resize', this.updateWindowDimensions);
     }
     
     updateWindowDimensions() {
-    this.setState({ width: window.innerWidth, height: window.innerHeight });
+        let newState = Object.assign({},this.state);
+        newState.width = window.innerWidth;
+        newState.height = window.innerHeight;
+        this.setState(newState);
     }
 
     render() { 
@@ -38,6 +50,7 @@ class Navbar extends Component {
                 display:'flex',
                 justifyContent:'center',
                 margin:0,
+                minWidth:1200,
                 height:85,
                 width:this.state.width,
                 backgroundColor:'rgb(63,74,80)'
@@ -75,6 +88,7 @@ class Navbar extends Component {
     activeButton = (buttonName)=>{
         this.state.activeButtons = Object.assign({},activeList);
         this.state.activeButtons[buttonName] = true;
+        Navbar.lastButton = buttonName;
         this.setState(this.state);
     }
 
@@ -112,6 +126,7 @@ const s = {
     },
 
     logout:{
+        cursor:'pointer',
         height:'30%',
         backgroundColor:'transparent',
         color:'rgb(220,96,36)',

@@ -314,23 +314,9 @@ async  function getGPList(req, res, next) {
                 });
         } else { // if found student
 
-            // check if had gifts
-            if (student.gifts.length !== 0)    gifts = student.gifts;
-            // check if had purchases
-            if (student.purchases.length !== 0)    purchases = student.purchases;
-
-            // if student has neither purchases nor gifts
-            if (!gifts && !purchases) {
-
-                issue = true;
-                res.status(consts.NOT_FOUND_CODE)
-                    .json({
-                        error: consts.GP_NOT_FOUND
-                    });
-            } else {
-                studentId = student._id;
-            }
-
+            gifts = student.gifts;
+            purchases = student.purchases;
+            studentId = student._id;
         }
     });
 

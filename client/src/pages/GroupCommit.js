@@ -7,6 +7,16 @@ import YesNoModal from '../components/YesNoModal';
 import ErrorModal from '../components/ErrorModal';
 import SuccessModal from '../components/SuccessModal';
 import Dashboard from '../pages/Dashboard';
+import Select from 'react-select';
+
+const gradeOptions=[
+    {value:"هفتم", label:"هفتم"},
+    {value:"هشتم", label:"هشتم"},
+    {value:"نهم", label:"نهم"},
+    {value:"دهم", label:"دهم"},
+    {value:"یازدهم", label:"یازدهم"},
+    {value:"دوازدهم", label:"دوازدهم"},
+]
 
 class GroupCommit extends Component {
     state = { askModal:false, errorModal:false, successModal:false }
@@ -14,6 +24,7 @@ class GroupCommit extends Component {
     GroupCommitData = {
 
         number:"",
+        grade:"",
         price:""
     }
 
@@ -23,15 +34,21 @@ class GroupCommit extends Component {
 
                 <div style={s.space}/>
 
-                <Input height={35} width="20%" placeholder="تعداد دانش آموزان" type="number"
-                ref={(ref=>this.numberInput = ref)}
-                onChange={(event)=>{this.GroupCommitData.number = event.target.value}}/>
+                <div style={s.sec1}>
+                    <Input height={35} width={200} placeholder="تعداد دانش آموزان" type="number"
+                    ref={(ref=>this.numberInput = ref)}
+                    onChange={(event)=>{this.GroupCommitData.number = event.target.value}}/>
 
-                <Input height={35} width="20%" placeholder="مبلغ هدیه" type="number"
+                    <Select options={gradeOptions} styles={customStyles} placeholder="پایه"/>
+                </div>
+
+
+                <Input height={35} width={200} placeholder="مبلغ هدیه" type="number"
                 ref={(ref=>this.priceInput = ref)}
                 onChange={(event)=>{this.GroupCommitData.price = event.target.value}}/>
 
-                <Button height={50} width="15%" onClick={this.askModalOpen}>ثبت</Button>
+
+                <Button height={50} width="15%" fontColor={"rgba(216,92,32,0.9)"} onClick={this.askModalOpen}>ثبت</Button>
 
                 <YesNoModal open={this.state.askModal} commit={this.askModalCommit} cancel={this.askModalClose}>
                     ثبت گروهی با مشخصات زیر؟
@@ -121,21 +138,64 @@ class GroupCommit extends Component {
 const s = {
 
     con:{
-        opacity:0.8,
+        opacity:0.85,
         display:'flex',
         flexDirection:'column',
         alignItems:'center',
         justifyContent:'space-around',
-        height:500,
-        width:1200,
+        height:480,
+        width:1100,
         borderRadius:15,
         backgroundColor:'rgb(216,92,32)',
     },
 
     space:{
         height:'5%',
-    }
+    },
 
+    sec1:{
+        height:'15%',
+        width:'60%',
+        display:'flex',
+        alignItems:'center',
+        justifyContent:'space-around',
+        borderWidth:"1px",
+        borderStyle:"solid",
+        borderRadius:8,
+        borderColor:'rgba(255,255,255,0.1)'
+    },
+
+}
+
+const customStyles = {
+
+    option: (provided, state) => ({
+        ...provided,
+        borderBottom: '1px dotted pink',
+        color: state.isSelected ? 'red' : 'blue',
+        padding: 20,
+        fontFamily:"amp",
+      }),
+      control: () => ({
+        // none of react-select's styles are passed to <Control />
+        width: 100,
+        display:'flex',
+        flexDirection:'row',
+        borderStyle:"solid",
+        borderRadius:5,
+        borderWidth:2,
+        paddingLeft:20,
+        paddingRight:10,
+        fontFamily:"amp",
+        borderColor:'white',
+        backgroundColor:'white'
+      }),
+      singleValue: (provided, state) => {
+        const opacity = state.isDisabled ? 0.5 : 1;
+        const transition = 'opacity 300ms';
+    
+        return { ...provided, opacity, transition };
+      }
 }
  
 export default GroupCommit;

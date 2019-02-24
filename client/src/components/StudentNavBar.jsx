@@ -18,24 +18,36 @@ class StudentNavbar extends Component {
 
     constructor(props) {
         super(props);
-        this.state.activeButtons.info=true;
+        this.state.activeButtons['info'] = true;
         this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
-      
+
+    static lastButton = "info";
+
+    componentDidUpdate(){
+        
+        if(this.state.activeButtons[StudentNavbar.lastButton] === false){
+            this.activeButton(StudentNavbar.lastButton);
+        }
+    }
+
     componentDidMount() {
-    this.updateWindowDimensions();
-    window.addEventListener('resize', this.updateWindowDimensions);
+        this.updateWindowDimensions();
+        window.addEventListener('resize', this.updateWindowDimensions);
     }
     
     componentWillUnmount() {
-    window.removeEventListener('resize', this.updateWindowDimensions);
-    }
-    
-    updateWindowDimensions() {
-    this.setState({ width: window.innerWidth, height: window.innerHeight });
+        window.removeEventListener('resize', this.updateWindowDimensions);
     }
 
-    render() { 
+    updateWindowDimensions() {
+        let newState = Object.assign({},this.state);
+        newState.width = window.innerWidth;
+        newState.height = window.innerHeight;
+        this.setState(newState);
+    }
+
+    render() {
 
         return (
             <div style={{
@@ -44,6 +56,7 @@ class StudentNavbar extends Component {
                 margin:0,
                 height:85,
                 width:this.state.width,
+                minWidth:1200,
                 backgroundColor:'rgb(63,74,80)'
             }}>
 
@@ -78,9 +91,15 @@ class StudentNavbar extends Component {
     }
 
     activeButton = (buttonName)=>{
-        this.state.activeButtons = Object.assign({},activeList);
-        this.state.activeButtons[buttonName] = true;
-        this.setState(this.state);
+        let newState = Object.assign({}, this.state);
+        newState.activeButtons = Object.assign({},activeList);
+        newState.activeButtons[buttonName] = true;
+        if(buttonName != "studentList"){
+            StudentNavbar.lastButton = buttonName;
+        }else{
+            StudentNavbar.lastButton = 'info';
+        }
+        this.setState(newState);
     }
 
     logout=()=>{
@@ -117,6 +136,7 @@ const s = {
     },
 
     logout:{
+        cursor:'pointer',
         height:'30%',
         backgroundColor:'transparent',
         color:'rgb(55, 110, 198)',

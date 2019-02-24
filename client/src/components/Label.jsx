@@ -18,25 +18,29 @@ const s={
     con:{
         display:'flex',
         alignItems:'center',
-        height:40,
+        height:50,
         width:'95%',
-        backgroundColor:'#a1a'
+        
     },
 
     label:{
-        
+        color:'white',
+        fontFamily:'amp',
+        fontSize:16,
         textAlign:'right',
-        height:'auto',
         width:'40%',
+        paddingTop:2,
+        paddingBottom:2
     },
 
     text:{
-        //display:'flex',
-        //alignItems:'center',
+        color:'white',
+        fontFamily:'amp',
+        fontSize:20,
         textAlign:'right',
-        padding:'auto',
-        height:'auto',
         width:'60%',
+        paddingTop:2,
+        paddingBottom:2,
     }
 }
  

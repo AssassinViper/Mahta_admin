@@ -25,23 +25,28 @@ class CommitPurchase extends Component {
             <div style={s.con}>
 
                 <div style={s.space}/>
-                <Input height={35} width="20%" placeholder="کد خانواده" type="number"
+
+                <div style={s.sec1}>
+
+                    <Input height={35} width={200} placeholder="(مبلغ خرید(تومان"  type="number"
+                    ref={(ref=>this.priceInput = ref)}
+                    onChange={(event)=>{this.CommitPurchaseData.price = event.target.value}}/>
+
+                    <Input height={35} width={200} placeholder="درصد خانواده" type="number"
+                    ref={(ref=>this.percentInput = ref)}
+                    onChange={(event)=>{this.CommitPurchaseData.percent = event.target.value}}/>
+                    
+                </div>
+
+                <Input height={35} width={200} placeholder="کد خانواده" type="number"
                 ref={(ref=>this.codeInput = ref)}
                 onChange={(event)=>{this.CommitPurchaseData.code = event.target.value}}/>
 
-                <Input height={35} width="20%" placeholder="(مبلغ خرید(تومان"  type="number"
-                ref={(ref=>this.priceInput = ref)}
-                onChange={(event)=>{this.CommitPurchaseData.price = event.target.value}}/>
-
-                <Input height={35} width="20%" placeholder="درصد خانواده" type="number"
-                ref={(ref=>this.percentInput = ref)}
-                onChange={(event)=>{this.CommitPurchaseData.percent = event.target.value}}/>
-
-                <PlainText height={90} width="20%" placeholder="توضیحات"
+                <PlainText height={90} width="24%" placeholder="توضیحات"
                 ref={(ref=>this.infoPlainText = ref)} 
                 onChange={(event)=>{this.CommitPurchaseData.info = event.target.value}}/>
 
-                <Button height={50} width="15%" onClick={this.askModalOpen}>ثبت</Button>
+                <Button height={50} width="15%" fontColor={"rgba(216,92,32,0.9)"} onClick={this.askModalOpen}>ثبت</Button>
 
                 <YesNoModal open={this.state.askModal} commit={this.askModalCommit} cancel={this.askModalClose}>
                     ثبت اعتبار با مشخصات زیر؟
@@ -132,15 +137,27 @@ class CommitPurchase extends Component {
 const s = {
 
     con:{
-        opacity:0.8,
+        opacity:0.85,
         display:'flex',
         flexDirection:'column',
         alignItems:'center',
         justifyContent:'space-around',
-        height:500,
-        width:1200,
+        height:480,
+        width:1100,
         borderRadius:15,
         backgroundColor:'rgb(216,92,32)',
+    },
+
+    sec1:{
+        height:'15%',
+        width:'60%',
+        display:'flex',
+        alignItems:'center',
+        justifyContent:'space-around',
+        borderWidth:"1px",
+        borderStyle:"solid",
+        borderRadius:8,
+        borderColor:'rgba(255,255,255,0.1)'
     },
 
     space:{

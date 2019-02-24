@@ -32,22 +32,30 @@ class SpendCredit extends Component {
                 ref={(ref=>this.priceInput = ref)}
                 onChange={(event)=>{this.SpendCreditData.price = event.target.value}}/>
 
-                
-                <label style={s.usefrom_con}>
-                از اعتبار&emsp;
-                    <input type="radio" value="credit" name="credit" 
-                        checked={this.state.usefrom === "credit"}
-                        onChange={this.onUseFromChanged} name="usefrom"/>
-                </label>
+                <div style={s.sec1}>
 
-                <label style={s.usefrom_con}>
-                از هدیه&emsp;
-                    <input type="radio" value="gift" name="gift" 
-                        checked={this.state.usefrom === "gift"}
-                        onChange={this.onUseFromChanged}name="usefrom"/>
-                </label>
+                    <div style={s.sec2}>
+                        <label style={s.usefrom_con}>
+                        از اعتبار&emsp;
+                            <input type="radio" value="credit" name="credit" 
+                                checked={this.state.usefrom === "credit"}
+                                onChange={this.onUseFromChanged} name="usefrom"/>
+                        </label>
+                    </div>
+
+                    <div style={s.sec2}>
+                        <label style={s.usefrom_con}>
+                        از هدیه&emsp;
+                            <input type="radio" value="gift" name="gift"
+                                checked={this.state.usefrom === "gift"}
+                                onChange={this.onUseFromChanged}name="usefrom"/>
+                        </label>
+                    </div>
+
+                </div>
                 
-                <Button height={50} width="15%" onClick={this.askModalOpen}>ثبت</Button>
+                
+                <Button height={50} width="15%" fontColor={"rgba(216,92,32,0.9)"} onClick={this.askModalOpen}>ثبت</Button>
 
                 <YesNoModal open={this.state.askModal} commit={this.askModalCommit} cancel={this.askModalClose}>
                     ثبت مصرف اعتبار با مشخصات زیر؟
@@ -143,13 +151,13 @@ class SpendCredit extends Component {
 const s = {
 
     con:{
-        opacity:0.8,
+        opacity:0.85,
         display:'flex',
         flexDirection:'column',
         alignItems:'center',
         justifyContent:'space-around',
-        height:500,
-        width:1200,
+        height:480,
+        width:1100,
         borderRadius:15,
         backgroundColor:'rgb(216,92,32)',
     },
@@ -158,7 +166,32 @@ const s = {
         height:'5%',
     },
 
+    sec1:{
+        height:'15%',
+        width:'30%',
+        display:'flex',
+        alignItems:'center',
+        justifyContent:'space-around',
+        borderWidth:"1px",
+        borderStyle:"solid",
+        borderRadius:8,
+        borderColor:'rgba(255,255,255,0.1)'
+    },
+
+    sec2:{
+
+        height:'30%',
+        width:'50%',
+        display:'inline',
+        alignItems:'center',
+        justifyContent:'center',
+    },
+
     usefrom_con:{
+        fontFamily:'amp',
+        fontSize:18,
+        color:'white',
+        display:'inline',
         height:'5%',
         width:'20%',
     }

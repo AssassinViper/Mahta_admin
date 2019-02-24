@@ -11,10 +11,12 @@ import ErrorModal from '../components/ErrorModal';
 import SuccessModal from '../components/SuccessModal';
 
 const gradeOptions=[
-    {value:"9", label:"نهم"},
-    {value:"10", label:"دهم"},
-    {value:"11", label:"یازدهم"},
-    {value:"12", label:"دوازدهم"},
+    {value:"هفتم", label:"هفتم"},
+    {value:"هشتم", label:"هشتم"},
+    {value:"نهم", label:"نهم"},
+    {value:"دهم", label:"دهم"},
+    {value:"یازدهم", label:"یازدهم"},
+    {value:"دوازدهم", label:"دوازدهم"}
 ]
 
 const fieldOptions=[
@@ -49,21 +51,21 @@ class StudentEdit extends Component {
             return ( 
                 <div style={s.con}>
 
-                    <div style={s.delete_btn}>
-                        <Button onClick={this.deleteStudent}>حذف</Button>
-                    </div>
+                    
 
                     <div style={s.space}/>
+
+                    
                     
                     <div style={s.sec1}>
                         
                         <Input height={35} width={200} placeholder="نام خانوادگی" type="text"
-                        value={this.AddStudentData.lastName}
+                        defaultValue={this.AddStudentData.lastName}
                         ref={(ref=>this.lastNameInput = ref)}
                         onChange={(event)=>{this.AddStudentData.lastName = event.target.value}}/>
 
                         <Input height={35} width={200} placeholder="نام"type="text"
-                        value={this.AddStudentData.firstName}
+                        defaultValue={this.AddStudentData.firstName}
                         ref={(ref=>this.firstNameInput = ref)}
                         onChange={(event)=>{this.AddStudentData.firstName = event.target.value}}/>
 
@@ -71,30 +73,36 @@ class StudentEdit extends Component {
                     
                     <div style={s.sec1}>
 
-                        <Select options={gradeOptions} styles={customStyles} defaultValue={{value:"ensani", label:"انسانی"}} placeholder="پایه"/>
-                        <Select options={fieldOptions} styles={customStyles} placeholder="رشته"/>
+                        <Select options={gradeOptions} styles={customStyles} 
+                        defaultValue={{value:this.AddStudentData.grade, label:this.AddStudentData.grade}} placeholder="پایه"/>
+                        <Select options={fieldOptions} styles={customStyles} 
+                        defaultValue={{value:this.AddStudentData.field, label:this.AddStudentData.field}} placeholder="رشته"/>
 
                     </div>
                     
-                    <div style={s.sec1}>
-
-                        <Input height={35} width={200} placeholder="کد خانواده"type="number"
-                        value={this.AddStudentData.code}
-                        ref={(ref=>this.familyCodeInput = ref)}
-                        onChange={(event)=>{this.AddStudentData.familyCode = event.target.value}}/>
-
-                    </div>
                     
                     <div style={s.sec1}>
 
                         <Input height={35} width={200} placeholder="شماره تماس"type="number"
-                        value={this.AddStudentData.phone}
+                        defaultValue={this.AddStudentData.phone}
                         ref={(ref=>this.phoneInput = ref)}
                         onChange={(event)=>{this.AddStudentData.phone = event.target.value}}/>
 
+                        <Input height={35} width={200} placeholder="شماره منزل"type="number"
+                        defaultValue={this.AddStudentData.home}
+                        ref={(ref=>this.homeInput = ref)}
+                        onChange={(event)=>{this.AddStudentData.home = event.target.value}}/>
+
+                    </div>
+
+                    <div style={s.sec2}>
+
+                        <Button height={50} type="red" width={200} onClick={this.deleteStudent}>حذف</Button>
+
+                        <Button height={50}  width={200} fontColor={"rgba(55, 110, 198,0.9)"} onClick={this.askModalOpen}>ثبت</Button>
+
                     </div>
                     
-                    <Button height={50} width="15%" onClick={this.askModalOpen}>ثبت</Button>
 
                     <YesNoModal open={this.state.askModal} commit={this.askModalCommit} cancel={this.askModalClose}>
                         ثبت تغییرات با مشخصات زیر؟
@@ -137,8 +145,8 @@ class StudentEdit extends Component {
 
                 this.firstNameInput.clear();
                 this.lastNameInput.clear();
-                this.familyCodeInput.clear();
                 this.phoneInput.clear();
+                this.homeInput.clear();
 
                 Dashboard.StudentInfoList = res;
                 
@@ -203,13 +211,13 @@ class StudentEdit extends Component {
 const s = {
 
     con:{
-        opacity:0.8,
+        opacity:0.88,
         display:'flex',
         flexDirection:'column',
         alignItems:'center',
         justifyContent:'space-around',
-        height:500,
-        width:1200,
+        height:480,
+        width:1100,
         borderRadius:15,
         backgroundColor:'rgb(55, 110, 198)',
     },
@@ -227,8 +235,22 @@ const s = {
         display:'flex',
         alignItems:'center',
         justifyContent:'space-around',
-        borderWidth:"2px",
+        borderWidth:"1px",
         borderStyle:"solid",
+        borderRadius:8,
+        borderColor:'rgba(255,255,255,0.1)'
+    },
+
+    sec2:{
+        height:'15%',
+        width:'50%',
+        display:'flex',
+        alignItems:'center',
+        justifyContent:'space-around',
+        borderWidth:"0px",
+        borderStyle:"solid",
+        borderRadius:8,
+        borderColor:'rgba(255,255,255,0.1)'
     },
 
     space:{
@@ -243,6 +265,7 @@ const customStyles = {
         borderBottom: '1px dotted pink',
         color: state.isSelected ? 'red' : 'blue',
         padding: 20,
+        fontFamily:"amp",
       }),
       control: () => ({
         // none of react-select's styles are passed to <Control />
@@ -250,9 +273,13 @@ const customStyles = {
         display:'flex',
         flexDirection:'row',
         borderStyle:"solid",
-        borderWidth:3,
-        borderRadius:0,
-        
+        borderRadius:5,
+        borderWidth:2,
+        paddingLeft:20,
+        paddingRight:10,
+        fontFamily:"amp",
+        borderColor:'white',
+        backgroundColor:'white'
       }),
       singleValue: (provided, state) => {
         const opacity = state.isDisabled ? 0.5 : 1;

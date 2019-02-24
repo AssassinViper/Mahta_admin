@@ -67,7 +67,7 @@ const s = {
     con2:{
         
         display:'flex',
-        opacity:0.88,
+        opacity:0.85,
         flexDirection:'column',
         alignItems:'center',
         justifyContent:'center',

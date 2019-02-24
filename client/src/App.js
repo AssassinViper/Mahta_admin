@@ -26,20 +26,23 @@ class App extends Component {
   super(props);
   this.state = { width: 0, height: 0 };
   this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
-}
+  }
 
-componentDidMount() {
-  this.updateWindowDimensions();
-  window.addEventListener('resize', this.updateWindowDimensions);
-}
+  componentDidMount() {
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
+  }
 
-componentWillUnmount() {
-  window.removeEventListener('resize', this.updateWindowDimensions);
-}
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions);
+  }
 
-updateWindowDimensions() {
-  this.setState({ width: window.innerWidth, height: window.innerHeight });
-}
+  updateWindowDimensions() {
+    let newState = Object.assign({},this.state);
+    newState.width = window.innerWidth;
+    newState.height = window.innerHeight;
+    this.setState(newState);
+  }
 
   render() {
     return (
@@ -47,6 +50,8 @@ updateWindowDimensions() {
         <div className="App" style={{
           height:this.state.height, 
           width:this.state.width,
+          minWidth:1200,
+          minHeight:600,
           display:'flex',
           flexDirection:'column', 
           alignItems:'center',
@@ -58,7 +63,9 @@ updateWindowDimensions() {
           <Route exact path="/auth" component={LoginPage}/>
 
           <Route path="/admin" component={NeedAuth(Navbar)}/>
-          <Route path="/student" component={NeedAuth(StudentNavbar)}/>.
+          <Route path="/student" component={NeedAuth(StudentNavbar)}/>
+
+          <div style={{height:30}}/>
             
           <Route exact path="/admin" component={NeedAuth(Dashboard)}/>
           <Route exact path="/admin/addstudent" component={NeedAuth(AddStudent)}/>

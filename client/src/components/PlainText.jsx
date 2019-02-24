@@ -19,11 +19,13 @@ class PlainText extends Component {
                 width:this.props.width,
                 verticalAlign:'top',
                 textAlign:'right',
-                borderColor:'rgb(0, 0, 0)',
-                padding:'4px 6px',
-                backgroundColor:'rgba(1,1,1,0.4)',
+                borderColor:'white',
+                borderRadius:8,
+                padding:'6px 8px',
+                backgroundColor:'white',
                 margin:15,
-                color:'white'
+                fontFamily:'amp',
+                fontSize:15,
                 
             }}>
               

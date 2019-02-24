@@ -10,10 +10,12 @@ import ErrorModal from '../components/ErrorModal';
 import SuccessModal from '../components/SuccessModal';
 
 const gradeOptions=[
-    {value:"9", label:"نهم"},
-    {value:"10", label:"دهم"},
-    {value:"11", label:"یازدهم"},
-    {value:"12", label:"دوازدهم"},
+    {value:"هفتم", label:"هفتم"},
+    {value:"هشتم", label:"هشتم"},
+    {value:"نهم", label:"نهم"},
+    {value:"دهم", label:"دهم"},
+    {value:"یازدهم", label:"یازدهم"},
+    {value:"دوازدهم", label:"دوازدهم"}
 ]
 
 const fieldOptions=[
@@ -35,6 +37,7 @@ class AddStudent extends Component {
         grade:"نهم",
         field:"ریاضی",
         phone:"",
+        home:"",
         code:"",
         inviterCode:""
     }
@@ -79,13 +82,17 @@ class AddStudent extends Component {
                 
                 <div style={s.sec1}>
 
-                    <Input height={35} width={200} placeholder="شماره تماس"type="number"
+                    <Input height={35} width={200} placeholder="شماره تماس" type="number"
                     ref={(ref=>this.phoneInput = ref)}
                     onChange={(event)=>{this.AddStudentData.phone = Number(event.target.value)}}/>
 
+                    <Input height={35} width={200} placeholder="شماره منزل" type="number"
+                    ref={(ref=>this.homeInput = ref)}
+                    onChange={(event)=>{this.AddStudentData.home = Number(event.target.value)}}/>
+
                 </div>
                 
-                <Button height={50} width="15%" onClick={this.askModalOpen}>ثبت</Button>
+                <Button height={50} width="15%" fontColor={"rgba(216,92,32,0.9)"} onClick={this.askModalOpen}>ثبت</Button>
 
                 <YesNoModal open={this.state.askModal} commit={this.askModalCommit} cancel={this.askModalClose}>
                     ثبت دانش آموز با مشخصات زیر؟
@@ -115,6 +122,7 @@ class AddStudent extends Component {
                 this.codeInput.clear();
                 this.inviterCodeInput.clear();
                 this.phoneInput.clear();
+                this.home.clear();
 
                 Dashboard.StudentInfoList = res;
 
@@ -180,13 +188,13 @@ class AddStudent extends Component {
 const s = {
 
     con:{
-        opacity:0.8,
+        opacity:0.85,
         display:'flex',
         flexDirection:'column',
         alignItems:'center',
         justifyContent:'space-around',
-        height:500,
-        width:1200,
+        height:480,
+        width:1100,
         borderRadius:15,
         backgroundColor:'rgb(216,92,32)',
     },
@@ -197,10 +205,10 @@ const s = {
         display:'flex',
         alignItems:'center',
         justifyContent:'space-around',
-        borderWidth:"2px",
+        borderWidth:"1px",
         borderStyle:"solid",
         borderRadius:8,
-        borderColor:'white'
+        borderColor:'rgba(255,255,255,0.1)'
     },
 
     space:{

@@ -2,16 +2,41 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 import Dashboard from '../pages/Dashboard';
 import Label from '../components/Label';
+import StudentGPListHandler from '../handlers/StudentGPListHandler';
 import ScrollableList from '../components/ScrollableList';
 
 class StudentInfo extends Component {
-    state = {  }
+    state = { gifts:[], purchases:[], invites:[] }
 
     constructor(props){
         super(props);
         this.student = Dashboard.selectedStudent;
         
     }
+
+    
+
+    componentDidMount(){
+
+        if(this.student.code != undefined){
+
+            StudentGPListHandler({code:this.student.code}, 
+                (res)=>{
+
+                    this.gifts = res.gifts;
+                    this.purchases = res.purchases;
+                    this.setState()
+
+
+                },(err)=>{
+
+                    alert(err)
+                })
+        }
+        
+
+    }
+
     render() { 
 
         if(this.student.code === undefined){
@@ -61,19 +86,19 @@ class StudentInfo extends Component {
                     <div style={s.scroll_sec}>
                         <div style={s.sc_title}>لیست دعوت ها</div>
                         <div style={s.sc_con}>
-                            <ScrollableList/>
+                            <ScrollableList list={this.gifts}/>
                         </div>
                     </div>
                     <div style={s.scroll_sec}>
                         <div style={s.sc_title}>لیست هدایا</div>
                         <div style={s.sc_con}>
-                            <ScrollableList/>   
+                            <ScrollableList list={this.gifts}/>   
                         </div>
                     </div>
                     <div style={s.scroll_sec}>
                         <div style={s.sc_title}>لیست خریدها</div>
                         <div style={s.sc_con}>
-                            <ScrollableList/>   
+                            <ScrollableList list={this.gifts}/>   
                         </div>
                     </div>
 
@@ -89,21 +114,23 @@ class StudentInfo extends Component {
 const s = {
 
     container:{
-        opacity:0.8,
+        opacity:0.88,
         display:'flex',
         flexDirection:'column',
         alignItems:'center',
         justifyContent:'space-around',
-        height:500,
-        width:1200,
+        height:480,
+        width:1100,
         borderRadius:15,
         backgroundColor:'rgb(55, 110, 198)',
     },
 
     sec1:{
-        height:'35%',
+        height:'30%',
         width:'90%',
-        backgroundColor:'#5a7'
+        display:'flex',
+        justifyContent:'space-between',
+        flexDirection:'column'
     },
 
     sec2:{
@@ -111,32 +138,36 @@ const s = {
         height:'55%',
         justifyContent:'space-between',
         width:'90%',
-        backgroundColor:'#198'
     },
 
     scroll_sec:{
 
         height:'100%',
-        width:'33%',
-        backgroundColor:'#a66'
+        width:'32.5%',
+        borderRadius:10,
+        borderStyle:'solid',
+        borderWidth:2,
+        borderColor:'rgba(255,255,255,0.2)'
     },
 
     sc_title:{
 
         height:'10%',
         width:"100%",
-        backgroundColor:'#26f'
+        fontSize:15,
+        fontFamily:'amp',
+        color:'rgba(255,255,255,0.7)'
     },
 
     sc_con:{
-
         height:'90%',
         width:'100%',
     },
     
     row:{
         display:'flex',
-        height:'50%',
+        justifyContent:'space-between',
+        height:'48%',
         width:'100%',
     },
 
@@ -145,9 +176,11 @@ const s = {
         alignItems:'center',
         justifyContent:'center',
         height:'100%',
-        width:'25%',
+        width:'24.5%',
+        borderRadius:8,
         borderStyle:'solid',
-        borderWidth:1
+        borderWidth:1,
+        borderColor:'rgba(255,255,255,0.15)'
     }
 }
  

@@ -12,8 +12,8 @@ class Input extends Component {
         return ( 
             <input 
             placeholder={this.props.placeholder}
-            value={this.props.value}
             type={this.props.type || "text"}
+            defaultValue={this.props.defaultValue}
             onChange={this.props.onChange}
             maxLength={this.props.maxLength || 200}
             ref={(ref)=>this.input=ref}

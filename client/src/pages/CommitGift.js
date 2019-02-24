@@ -35,11 +35,11 @@ class CommitGift extends Component {
                 ref={(ref=>this.priceInput = ref)}
                 onChange={(event)=>{this.CommitGiftData.price = event.target.value}}/>
 
-                <PlainText height={90} width="20%" placeholder="توضیحات"
+                <PlainText height={90} width="24%" placeholder="توضیحات"
                 ref={(ref=>this.infoPlainText = ref)} 
                 onChange={(event)=>{this.CommitGiftData.info = event.target.value}}/>
 
-                <Button height={50} width="15%" onClick={this.askModalOpen}>ثبت</Button>
+                <Button height={50} width="15%" fontColor={"rgba(216,92,32,0.9)"} onClick={this.askModalOpen}>ثبت</Button>
 
                 <YesNoModal open={this.state.askModal} commit={this.askModalCommit} cancel={this.askModalClose}>
                     ثبت هدیه؟
@@ -129,13 +129,13 @@ class CommitGift extends Component {
 const s = {
 
     con:{
-        opacity:0.8,
+        opacity:0.85,
         display:'flex',
         flexDirection:'column',
         alignItems:'center',
         justifyContent:'space-around',
-        height:500,
-        width:1200,
+        height:480,
+        width:1100,
         borderRadius:15,
         backgroundColor:'rgb(216,92,32)',
     },

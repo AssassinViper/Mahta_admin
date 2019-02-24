@@ -106,13 +106,13 @@ const s = {
 
     container:{
         
-        opacity:0.8,
+        opacity:0.85,
         display:'flex',
         flexDirection:'column',
         alignItems:'center',
         justifyContent:'space-around',
-        height:500,
-        width:1200,
+        height:480,
+        width:1150,
         borderRadius:15,
         backgroundColor:'rgb(216,92,32)',
     },

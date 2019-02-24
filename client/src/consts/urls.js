@@ -10,6 +10,7 @@ const urls = {
     deleteStudent:"/api/admin/deleteStudent",
     studentInfo:"/api/admin/studentInfo",
     studentEdit:"/api/admin/studentEdit",
+    studentGPList:"/api/admin/getGPList"
 }
 
 export default urls;

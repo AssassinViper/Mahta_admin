@@ -8,7 +8,7 @@ const validator = require('../tools/validator');
 
 // Requiring models
 let Student = require('../models/student');
-// let Latest = require('../models/latest');
+let Latest = require('../models/latest'); // TODO: must use this on commit group and inserting sample json
 
 
 async function getStudentList(req, res, next) {
@@ -349,7 +349,7 @@ async  function getGPList(req, res, next) {
 async  function spendCredit(req, res, next) {
 
     let params = req.body;
-    let issue = false;
+    let issue = validator.validateSpendCredit(req, res, params);
 
     query = {
         code: params.code,
@@ -376,8 +376,8 @@ async  function spendCredit(req, res, next) {
 
                 // if student's credit was not enough
                 if (student.credit <= 0) {
-
-                    return res.status(consts.BAD_REQ_CODE)
+                    issue = true;
+                    res.status(consts.BAD_REQ_CODE)
                         .json({
                             error: consts.CREDIT_NOT_ENOUGH
                         });
@@ -390,31 +390,34 @@ async  function spendCredit(req, res, next) {
 
                 // if student's credit was not enough
                 if (student.gift <= 0) {
-
-                    return res.status(consts.BAD_REQ_CODE)
+                    issue = true;
+                    res.status(consts.BAD_REQ_CODE)
                         .json({
                             error: consts.GIFT_NOT_ENOUGH
                         });
                 }
             }
 
-
             student.save((err => {
 
                 if (err) {
                     issue = true;
                     errHandler(err, res);
-                } else {
-
-                    res.sendStatus(consts.SUCCESS_CODE);
                 }
             }));
 
         }
     });
 
+    if (issue) return;
+
+    // send student list
+    getStudentList(req, res, next);
+
 }
 
+// TODO: params beinging,ending
+// result check if codes are not repeated and build students
 async  function groupCommit(req, res, next) {
 
     let params = req.body;
@@ -462,4 +465,4 @@ async  function groupCommit(req, res, next) {
 
 
 
-module.exports = {getStudentList, addStudent, editStudent, deleteStudent, getGPList, groupCommit};
+module.exports = {getStudentList, addStudent, editStudent, deleteStudent, getGPList, spendCredit, groupCommit};

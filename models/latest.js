@@ -16,4 +16,4 @@ let latestSchema = mongoose.Schema({
     }
 });
 
-let latestSchema = module.exports = mongoose.model('latest', latestSchema);
+let Latest = module.exports = mongoose.model('latest', latestSchema);

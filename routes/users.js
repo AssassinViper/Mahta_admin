@@ -92,7 +92,13 @@ router.post('/commitPurchase', withAuth, purchaseHandler.commitPurchase, student
 router.post('/commitGift', withAuth, giftHandler.commitGift, studentHandler.getStudentList);
 
 router.post('/getGPList', withAuth, studentHandler.getGPList);
+
+router.post('/spendCredit', withAuth, studentHandler.spendCredit);
+
 router.post('/getGPList', withAuth, studentHandler.groupCommit);
+
+
+
 
 
 

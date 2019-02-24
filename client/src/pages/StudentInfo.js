@@ -25,7 +25,7 @@ class StudentInfo extends Component {
 
                     this.gifts = res.gifts;
                     this.purchases = res.purchases;
-                    this.setState()
+                    //this.setState()
 
 
                 },(err)=>{

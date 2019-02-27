@@ -42,7 +42,17 @@ class Dashboard extends Component {
     render() { 
         return ( 
             <div style={s.bg}>
-                <div style={s.container}>
+                <div style={{opacity:0.85,
+                            display:'flex',
+                            height:(this.props.height*(0.78)),
+                            minHeight:440,
+                            width:(this.props.width*(0.86)),
+                            minWidth:900,
+                            flexDirection:'column',
+                            alignItems:'center',
+                            justifyContent:'space-around',
+                            borderRadius:15,
+                            backgroundColor:'rgb(216,92,32)',}}>
 
                     <div style={s.space}/>
                     
@@ -111,8 +121,8 @@ const s = {
         flexDirection:'column',
         alignItems:'center',
         justifyContent:'space-around',
-        height:480,
-        width:1150,
+        height:'70%',
+        width:'80%',
         borderRadius:15,
         backgroundColor:'rgb(216,92,32)',
     },

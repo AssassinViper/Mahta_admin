@@ -11,7 +11,7 @@ import Dashboard from '../pages/Dashboard';
 
 class CommitPurchase extends Component {
     state = { askModal:false, errorModal:false, successModal:false }
-
+    
     CommitPurchaseData = {
 
         code:"",
@@ -22,7 +22,17 @@ class CommitPurchase extends Component {
 
     render() { 
         return ( 
-            <div style={s.con}>
+            <div style={{opacity:0.85,
+                display:'flex',
+                height:(this.props.height*(0.78)),
+                minHeight:440,
+                width:(this.props.width*(0.86)),
+                minWidth:900,
+                flexDirection:'column',
+                alignItems:'center',
+                justifyContent:'space-around',
+                borderRadius:15,
+                backgroundColor:'rgb(216,92,32)'}}>
 
                 <div style={s.space}/>
 
@@ -32,7 +42,7 @@ class CommitPurchase extends Component {
                     ref={(ref=>this.priceInput = ref)}
                     onChange={(event)=>{this.CommitPurchaseData.price = event.target.value}}/>
 
-                    <Input height={35} width={200} placeholder="درصد خانواده" type="number"
+                    <Input height={35} width={200} placeholder="درصد خانواده" type="number" max={100}
                     ref={(ref=>this.percentInput = ref)}
                     onChange={(event)=>{this.CommitPurchaseData.percent = event.target.value}}/>
                     

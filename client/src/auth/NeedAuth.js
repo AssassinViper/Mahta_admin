@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 
-function NeedAuth(Comp) {
+function NeedAuth(Comp,prop) {
   return class extends Component {
 
-    state = {component:null};
+    constructor(props){
+      super(props);
+
+      this.prop = prop;
+    }
+
+    state = {component:null, height:0, width:0};
 
     componentDidMount() {
       // TODO: change this to POST
@@ -16,7 +22,12 @@ function NeedAuth(Comp) {
         })
       .then(res => {
         if (res.status === 200) {
-          this.setState({component:<Comp {...this.props} />});
+
+          if(this.prop.height != undefined){
+            
+            this.setState({component:<Comp history={this.props.history} height={this.prop.height} width={this.prop.width}/>});
+          }
+
         } else {
           const error = new Error(res.error);
           throw error;

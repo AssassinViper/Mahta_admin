@@ -3,7 +3,7 @@ import { Redirect } from 'react-router-dom';
 import Dashboard from '../pages/Dashboard';
 import Input from '../components/Input';
 import Button from '../components/Button';
-import AddStudentHandler from '../handlers/AddStudentHandler';
+import StudentEditHandler from '../handlers/StudentEditHandler';
 import DeleteStudentHandler from '../handlers/DeleteStudentHandler';
 import Select from 'react-select';
 import YesNoModal from '../components/YesNoModal';
@@ -49,7 +49,17 @@ class StudentEdit extends Component {
         }else{
 
             return ( 
-                <div style={s.con}>
+                <div style={{opacity:0.85,
+                    display:'flex',
+                    height:(this.props.height*(0.78)),
+                    minHeight:440,
+                    width:(this.props.width*(0.86)),
+                    minWidth:900,
+                    flexDirection:'column',
+                    alignItems:'center',
+                    justifyContent:'space-around',
+                    borderRadius:15,
+                    backgroundColor:'rgb(55, 110, 198)'}}>
 
                     
 
@@ -126,8 +136,6 @@ class StudentEdit extends Component {
         DeleteStudentHandler({code:this.AddStudentData.code},
             (res)=>{
                 
-                console.log(res);
-                
                 Dashboard.StudentInfoList = res;
 
                 alert("deleted")
@@ -140,15 +148,12 @@ class StudentEdit extends Component {
 
     commit = ()=>{
 
-        AddStudentHandler(this.AddStudentData,
+        StudentEditHandler(this.AddStudentData,
             (res)=>{
 
-                this.firstNameInput.clear();
-                this.lastNameInput.clear();
-                this.phoneInput.clear();
-                this.homeInput.clear();
-
                 Dashboard.StudentInfoList = res;
+
+                Dashboard.selectedStudent = this.AddStudentData;
                 
                 this.successModalOpen();
 

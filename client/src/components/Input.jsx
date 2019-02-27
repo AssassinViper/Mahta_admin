@@ -17,6 +17,7 @@ class Input extends Component {
             onChange={this.props.onChange}
             maxLength={this.props.maxLength || 200}
             ref={(ref)=>this.input=ref}
+            max={this.props.max}
             
             style={{
                 

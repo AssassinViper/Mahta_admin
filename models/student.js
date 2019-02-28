@@ -1,5 +1,7 @@
 let mongoose = require('mongoose');
 
+let dConverter = require('../tools/dateConverter');
+
 let studentSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     code:{
@@ -48,8 +50,10 @@ let studentSchema = mongoose.Schema({
         }
     ],
     created: {
-        type: Date,
-        default: Date.now
+        type: String,
+        default: () => {
+            return dConverter.getLiveDate();
+        }
     },
     password: String
 });

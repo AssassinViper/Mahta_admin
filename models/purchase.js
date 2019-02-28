@@ -1,5 +1,7 @@
 let mongoose = require('mongoose');
 
+let dConverter = require('../tools/dateConverter');
+
 let puchaseSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     owner:{
@@ -17,9 +19,11 @@ let puchaseSchema = mongoose.Schema({
     info:{
         type: String
     },
-    created: { // TODO: shamsi date
-        type: Date,
-        default: Date.now
+    created: {
+        type: String,
+        default: () => {
+            return dConverter.getLiveDate();
+        }
     }
 });
 

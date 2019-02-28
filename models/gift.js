@@ -1,6 +1,6 @@
 let mongoose = require('mongoose');
 
-let dConverter = require('../tools/dateConverter');
+let moment = require('moment-timezone');
 
 let giftSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
@@ -16,9 +16,9 @@ let giftSchema = mongoose.Schema({
         type: String
     },
     created: {
-        type: String,
+        type: Date,
         default: () => {
-            return dConverter.getLiveDate();
+            return moment().tz("Asia/Tehran").format('YYYY-MM-DD HH:mm:ss.SSS')+'Z'
         }
     }
 });

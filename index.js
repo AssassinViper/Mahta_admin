@@ -102,12 +102,6 @@ const faker = require('./tools/faker');
 faker.insertFakeAdmin();
 faker.insertFakeStudents();
 
-var moment = require('moment-timezone');
-moment().tz("Asia/Tehran").format();
-
-let converter = require('./tools/dateConverter');
-
-let date = new Date();
 
 
 

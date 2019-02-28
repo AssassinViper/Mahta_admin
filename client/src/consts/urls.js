@@ -9,7 +9,7 @@ const urls = {
     addStudent:"/api/admin/addStudent",
     deleteStudent:"/api/admin/deleteStudent",
     studentInfo:"/api/admin/studentInfo",
-    studentEdit:"/api/admin/studentEdit",
+    studentEdit:"/api/admin/editStudent",
     studentGPList:"/api/admin/getGPList"
 }
 

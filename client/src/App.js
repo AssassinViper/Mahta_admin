@@ -62,23 +62,23 @@ class App extends Component {
 
           <Route exact path="/auth" component={LoginPage}/>
 
-          <Route path="/admin" component={NeedAuth(Navbar)}/>
-          <Route path="/student" component={NeedAuth(StudentNavbar)}/>
+          <Route path="/admin" component={NeedAuth(Navbar, this.state)}/>
+          <Route path="/student" component={NeedAuth(StudentNavbar, this.state)}/>
 
           <div style={{height:30}}/>
             
-          <Route exact path="/admin" component={NeedAuth(Dashboard)}/>
-          <Route exact path="/admin/addstudent" component={NeedAuth(AddStudent)}/>
-          <Route exact path="/admin/commitgift" component={NeedAuth(CommitGift)}/>
-          <Route exact path="/admin/commitpurchase" component={NeedAuth(CommitPurchase)}/>
-          <Route exact path="/admin/groupcommit" component={NeedAuth(GroupCommit)}/>
-          <Route exact path="/admin/spendcredit" component={NeedAuth(SpendCredit)}/>
+          <Route exact path="/admin" component={NeedAuth(Dashboard, this.state)}/>
+          <Route exact path="/admin/addstudent" component={NeedAuth(AddStudent, this.state)}/>
+          <Route exact path="/admin/commitgift" component={NeedAuth(CommitGift, this.state)}/>
+          <Route exact path="/admin/commitpurchase" component={NeedAuth(CommitPurchase, this.state)}/>
+          <Route exact path="/admin/groupcommit" component={NeedAuth(GroupCommit, this.state)}/>
+          <Route exact path="/admin/spendcredit" component={NeedAuth(SpendCredit, this.state)}/>
 
-          <Route exact path="/student" component={NeedAuth(StudentInfo)} />
-          <Route exact path="/student/edit" component={NeedAuth(StudentEdit)}/>
-          <Route exact path="/student/commitpurchase" component={NeedAuth(StudentCommitPurchase)}/>
-          <Route exact path="/student/commitgift" component={NeedAuth(StudentCommitGift)}/>
-          <Route exact path="/student/spendcredit" component={NeedAuth(StudentSpendCredit)}/>
+          <Route exact path="/student" component={NeedAuth(StudentInfo, this.state)} />
+          <Route exact path="/student/edit" component={NeedAuth(StudentEdit, this.state)}/>
+          <Route exact path="/student/commitpurchase" component={NeedAuth(StudentCommitPurchase, this.state)}/>
+          <Route exact path="/student/commitgift" component={NeedAuth(StudentCommitGift, this.state)}/>
+          <Route exact path="/student/spendcredit" component={NeedAuth(StudentSpendCredit, this.state)}/>
 
         </div>
       </Router>

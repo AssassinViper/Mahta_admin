@@ -46,6 +46,7 @@ const s={
     },
 
     icon_con:{
+        cursor:'pointer',
         height:'100%',
         width:'10%',
         display:'flex',

@@ -20,7 +20,17 @@ class SpendCredit extends Component {
 
     render() { 
         return ( 
-            <div style={s.con}>
+            <div style={{opacity:0.85,
+                display:'flex',
+                height:(this.props.height*(0.78)),
+                minHeight:440,
+                width:(this.props.width*(0.86)),
+                minWidth:900,
+                flexDirection:'column',
+                alignItems:'center',
+                justifyContent:'space-around',
+                borderRadius:15,
+                backgroundColor:'rgb(216,92,32)'}}>
 
                 <div style={s.space}/>
                 

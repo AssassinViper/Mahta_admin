@@ -47,7 +47,7 @@ class Dashboard extends Component {
                             height:(this.props.height*(0.78)),
                             minHeight:440,
                             width:(this.props.width*(0.86)),
-                            minWidth:900,
+                            minWidth:1000,
                             flexDirection:'column',
                             alignItems:'center',
                             justifyContent:'space-around',

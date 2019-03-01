@@ -36,6 +36,7 @@ class AddStudent extends Component {
         lastName:"",
         grade:"نهم",
         field:"ریاضی",
+        school:"",
         phone:"",
         home:"",
         code:"",
@@ -72,8 +73,15 @@ class AddStudent extends Component {
                 
                 <div style={s.sec1}>
 
-                    <Select options={gradeOptions} styles={customStyles} placeholder="پایه"/>
+                    
                     <Select options={fieldOptions} styles={customStyles} placeholder="رشته"/>
+
+                    <Input height={35} width={200} placeholder="مدرسه"type="text"
+                        defaultValue={this.AddStudentData.school}
+                        ref={(ref=>this.schoolInput = ref)}
+                        onChange={(event)=>{this.AddStudentData.school = event.target.value}}/>
+
+                    <Select options={gradeOptions} styles={customStyles} placeholder="پایه"/>
 
 
                 </div>
@@ -133,6 +141,7 @@ class AddStudent extends Component {
                 this.inviterCodeInput.clear();
                 this.phoneInput.clear();
                 this.homeInput.clear();
+                this.schoolInput.clear();
 
                 Dashboard.StudentInfoList = res;
 
@@ -252,7 +261,6 @@ const customStyles = {
       singleValue: (provided, state) => {
         const opacity = state.isDisabled ? 0.5 : 1;
         const transition = 'opacity 300ms';
-    
         return { ...provided, opacity, transition };
       }
 }

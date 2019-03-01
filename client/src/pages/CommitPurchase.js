@@ -14,9 +14,9 @@ class CommitPurchase extends Component {
     
     CommitPurchaseData = {
 
-        code:"",
-        price:"",
-        percent:"",
+        code:0,
+        price:0,
+        percent:0,
         info:""
     }
 
@@ -40,17 +40,17 @@ class CommitPurchase extends Component {
 
                     <Input height={35} width={200} placeholder="(مبلغ خرید(تومان"  type="number"
                     ref={(ref=>this.priceInput = ref)}
-                    onChange={(event)=>{this.CommitPurchaseData.price = event.target.value}}/>
+                    onChange={(event)=>{this.CommitPurchaseData.price = Number(event.target.value)}}/>
 
                     <Input height={35} width={200} placeholder="درصد خانواده" type="number" max={100}
                     ref={(ref=>this.percentInput = ref)}
-                    onChange={(event)=>{this.CommitPurchaseData.percent = event.target.value}}/>
+                    onChange={(event)=>{this.CommitPurchaseData.percent = Number(event.target.value)}}/>
                     
                 </div>
 
                 <Input height={35} width={200} placeholder="کد خانواده" type="number"
                 ref={(ref=>this.codeInput = ref)}
-                onChange={(event)=>{this.CommitPurchaseData.code = event.target.value}}/>
+                onChange={(event)=>{this.CommitPurchaseData.code = Number(event.target.value)}}/>
 
                 <PlainText height={90} width="24%" placeholder="توضیحات"
                 ref={(ref=>this.infoPlainText = ref)} 

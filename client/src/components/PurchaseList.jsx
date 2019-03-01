@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 
-import StudentListItem from './StudentListItem';
-import sort from '../assets/icons/sort.png'
+import PurchaseListItem from './PurchaseListItem';
 
-class StudentList extends Component {
-    state = { studentList:[]}
+class PurchaseList extends Component {
+    state = { CompList:[] }
 
     componentDidMount(){
 
-        this.props.getShowList(this.showList);
+        this.showList(this.props.list)
     }
 
     render() { 
@@ -18,20 +17,18 @@ class StudentList extends Component {
 
                 <div style={s.header_con}>
                     
-                    <div style={s.header2}> مقدار هدیه </div>
-                    <div style={s.header2}> مقدار اعتبار </div>
-                    <div style={s.header}> پایه تحصیلی </div>
-                    <div style={s.header}> نام </div>
-                    <div style={s.header} onClick={this.props.sortByName}>  نام خانوادگی <img style={s.sort_ic} src={sort}/> </div>
-                    <div style={s.header2} onClick={this.props.sortByCode}> کد خانواده <img style={s.sort_ic} src={sort}/></div>
+                    <div style={s.header2}> توضیحات </div>
+                    <div style={s.header}> تاریخ </div>
+                    <div style={s.header3}> درصد خانواده </div>
+                    <div style={s.header}> قیمت </div>
+                    
                     <div style={s.space}></div>
                 
                 </div>
 
                 <div style={s.list_con}>
-                
                     <div style={{height:'auto'}}>
-                        {this.state.studentList}
+                        {this.state.CompList}
                     </div>
 
                 </div>
@@ -42,22 +39,24 @@ class StudentList extends Component {
 
     showList = (list)=>{
 
-        let studentList = [];
+        let CompList = [];
         let i = 1;
 
         list.forEach(element => {
             
-            studentList.push(
+            alert(element.price);
 
-                <StudentListItem key={i} history={this.props.history} studentInfo={element}/>
+            CompList.push(
+
+                <PurchaseListItem key={i} history={this.props.history} element={element}/>
+                
             )
 
             i++;
-            console.log(i);
             
         });
         
-        this.state.studentList= studentList;
+        this.state.CompList= CompList;
         this.setState(this.state);
     }
 }
@@ -93,7 +92,7 @@ const s = {
     },
 
     header:{
-        width:'20.03%',
+        width:'22%',
         display:'flex',
         flexDirection:'row',
         alignItems:'center',
@@ -106,7 +105,20 @@ const s = {
     },
 
     header2:{
-        width:'12.35%',
+        width:'40%',
+        display:'flex',
+        flexDirection:'row',
+        alignItems:'center',
+        justifyContent:'center',
+        borderRadius:2,
+        backgroundColor:'rgb(80,80,80)',
+        textAlign:'center',
+        color:'white',
+        fontFamily:'amp',
+    },
+
+    header3:{
+        width:'13.8%',
         display:'flex',
         flexDirection:'row',
         alignItems:'center',
@@ -128,4 +140,4 @@ const s = {
 
 }
  
-export default StudentList;
+export default PurchaseList;

@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 
-import StudentListItem from './StudentListItem';
-import sort from '../assets/icons/sort.png'
+import InviteListItem from '../components/InviteListItem';
 
-class StudentList extends Component {
-    state = { studentList:[]}
+class InvitesList extends Component {
+    state = { studentList:[] }
 
     componentDidMount(){
 
-        this.props.getShowList(this.showList);
+        //this.props.getShowList(this.showList);
     }
 
     render() { 
@@ -18,18 +17,15 @@ class StudentList extends Component {
 
                 <div style={s.header_con}>
                     
-                    <div style={s.header2}> مقدار هدیه </div>
-                    <div style={s.header2}> مقدار اعتبار </div>
-                    <div style={s.header}> پایه تحصیلی </div>
+                    <div style={s.header}> نام خانوادگی </div>
                     <div style={s.header}> نام </div>
-                    <div style={s.header} onClick={this.props.sortByName}>  نام خانوادگی <img style={s.sort_ic} src={sort}/> </div>
-                    <div style={s.header2} onClick={this.props.sortByCode}> کد خانواده <img style={s.sort_ic} src={sort}/></div>
+                    <div style={s.header}> کد خانواده </div>
+                    
                     <div style={s.space}></div>
                 
                 </div>
 
                 <div style={s.list_con}>
-                
                     <div style={{height:'auto'}}>
                         {this.state.studentList}
                     </div>
@@ -49,7 +45,7 @@ class StudentList extends Component {
             
             studentList.push(
 
-                <StudentListItem key={i} history={this.props.history} studentInfo={element}/>
+                <InviteListItem key={i} history={this.props.history} studentInfo={element}/>
             )
 
             i++;
@@ -93,20 +89,7 @@ const s = {
     },
 
     header:{
-        width:'20.03%',
-        display:'flex',
-        flexDirection:'row',
-        alignItems:'center',
-        justifyContent:'center',
-        borderRadius:2,
-        backgroundColor:'rgb(80,80,80)',
-        textAlign:'center',
-        color:'white',
-        fontFamily:'amp',
-    },
-
-    header2:{
-        width:'12.35%',
+        width:'32.5%',
         display:'flex',
         flexDirection:'row',
         alignItems:'center',
@@ -128,4 +111,4 @@ const s = {
 
 }
  
-export default StudentList;
+export default InvitesList;

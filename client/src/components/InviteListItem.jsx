@@ -6,12 +6,9 @@ class StudentListItem extends Component {
     render() { 
         return ( 
             <div style={s.con} onClick={()=>{this.showInfo(this.props.studentInfo)}}>
-                  <div style={s.sec2}>{this.props.studentInfo.gift}&emsp;</div>
-                  <div style={s.sec2}>{this.props.studentInfo.credit}&emsp;</div>
-                  <div style={s.sec}>{this.props.studentInfo.grade}&emsp;</div>
-                  <div style={s.sec}>{this.props.studentInfo.firstName}&emsp;</div>
-                  <div style={s.sec}>{this.props.studentInfo.lastName}&emsp;</div>
-                  <div style={s.sec2}>{this.props.studentInfo.code}&emsp;</div>
+                <div style={s.sec}>{this.props.studentInfo.firstName}&emsp;</div>
+                <div style={s.sec}>{this.props.studentInfo.lastName}&emsp;</div>
+                <div style={s.sec2}>{this.props.studentInfo.code}&emsp;</div>
             </div>
          );
     }
@@ -42,7 +39,7 @@ const s = {
 
     sec:{
         height:'100%',
-        width:'20.35%',
+        width:'32.5%',
         textAlign:'right',
         borderRadius:2,
         fontFamily:'amp',

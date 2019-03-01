@@ -5,7 +5,7 @@ class SuccessModal extends Component {
     state = {  }
     render() { 
         return ( 
-            <Modal styles={{modal:s.con}} open={this.props.open} onClose={this.props.onClose} center>
+            <Modal styles={{modal:s.con, closeButton:{...{cursor:"pointer"}}}} open={this.props.open} onClose={this.props.onClose} center>
                 <h2>{this.props.children}</h2>
             </Modal>
          );

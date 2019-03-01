@@ -6,7 +6,7 @@ class YesNoModal extends Component {
     state = {  }
     render() { 
         return ( 
-            <Modal styles={{modal:s.con}} open={this.props.open} onClose={this.props.onClose} showCloseIcon={false} center>
+            <Modal styles={{modal:s.con, closeButton:{...{cursor:"pointer"}}}} open={this.props.open} onClose={this.props.onClose} showCloseIcon={false} center>
                 <h2>{this.props.children}</h2>
                 <div style={s.sec}>
                     <Button onClick={this.props.commit}>ثبت</Button>

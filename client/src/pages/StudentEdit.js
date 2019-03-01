@@ -83,11 +83,18 @@ class StudentEdit extends Component {
                     
                     <div style={s.sec1}>
 
-                        <Select options={gradeOptions} styles={customStyles} 
-                        defaultValue={{value:this.AddStudentData.grade, label:this.AddStudentData.grade}} placeholder="پایه"/>
                         <Select options={fieldOptions} styles={customStyles} 
                         defaultValue={{value:this.AddStudentData.field, label:this.AddStudentData.field}} placeholder="رشته"/>
 
+                        
+                        <Input height={35} width={200} placeholder="مدرسه"type="text"
+                        defaultValue={this.AddStudentData.school}
+                        ref={(ref=>this.schoolInput = ref)}
+                        onChange={(event)=>{this.AddStudentData.school = event.target.value}}/>
+                        
+                        <Select options={gradeOptions} styles={customStyles} 
+                        defaultValue={{value:this.AddStudentData.grade, label:this.AddStudentData.grade}} placeholder="پایه"/>
+                        
                     </div>
                     
                     

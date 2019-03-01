@@ -1,5 +1,7 @@
 let mongoose = require('mongoose');
 
+let moment = require('moment-timezone');
+
 let puchaseSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     owner:{
@@ -17,9 +19,11 @@ let puchaseSchema = mongoose.Schema({
     info:{
         type: String
     },
-    created: { // TODO: shamsi date
+    created: {
         type: Date,
-        default: Date.now
+        default: () => {
+            return moment().tz("Asia/Tehran").format('YYYY-MM-DD HH:mm:ss.SSS')+'Z'
+        }
     }
 });
 

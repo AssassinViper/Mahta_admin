@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 let User = require('../models/user');
 let Student = require('../models/student');
 
+
 module.exports = {
 
     insertFakeAdmin: () => {

@@ -2,8 +2,6 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const expressValidator = require('express-validator');
-const session = require('express-session');
 const cookieParser = require('cookie-parser');
 
 const config = require('./config/config');
@@ -109,7 +107,6 @@ faker.insertFakeStudents();
 
 
 
-
 // Route Files
 let users = require('./routes/users');
 app.use('/api/admin', users);
@@ -117,10 +114,19 @@ app.use('/api/admin', users);
 // just for fun :)
 app.get('/api/info', (req, res) => {
 
-    res.send(req.headers);
+    // res.send(req.headers);
+
+    let Student = require('./models/student');
+
+
+    Student.find({}).sort({created: -1}).find(function(err,docs){
+
+        res.send(docs)
+    });
+
 });
 
 
 const port = 4000;
 
-app.listen(port, '127.0.0.1', () => console.log(`Server Started on port ${port}`));
+app.listen(port, config.hostAddress, () => config.log(`Server Started on port ${port}`));

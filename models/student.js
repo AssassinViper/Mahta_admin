@@ -1,5 +1,7 @@
 let mongoose = require('mongoose');
 
+let moment = require('moment-timezone');
+
 let studentSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     code:{
@@ -49,7 +51,9 @@ let studentSchema = mongoose.Schema({
     ],
     created: {
         type: Date,
-        default: Date.now
+        default: () => {
+            return moment().tz("Asia/Tehran").format('YYYY-MM-DD HH:mm:ss.SSS')+'Z'
+        }
     },
     password: String
 });

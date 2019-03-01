@@ -49,7 +49,7 @@ router.post('/authenticate', (req, res) => {
                     // Issue token
                     const payload = { username: username };
                     const token = jwt.sign(payload, secret, {
-                        expiresIn: '3h'
+                        expiresIn: '5h'
                     });
 
                     try {

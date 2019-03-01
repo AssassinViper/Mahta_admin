@@ -23,6 +23,7 @@ async function getStudentList(req, res, next) {
 
         } else {
             res.status(consts.SUCCESS_CODE).json(students);
+
         }
     });
 }

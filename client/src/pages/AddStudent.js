@@ -30,6 +30,8 @@ const fieldOptions=[
 class AddStudent extends Component {
     state = { askModal:false, errorModal:false, successModal:false }
 
+    errorMassage="خطا در شبکه"
+
     AddStudentData = {
 
         firstName:"",
@@ -117,7 +119,7 @@ class AddStudent extends Component {
                 </YesNoModal>
                 
                 <ErrorModal open={this.state.errorModal} onClose={this.errorModalClose}>
-                    خطا
+                    {this.errorMassage}
                 </ErrorModal>
                 
                 <SuccessModal open={this.state.successModal} onClose={this.successModalClose}>
@@ -149,7 +151,7 @@ class AddStudent extends Component {
 
             },(err)=>{
 
-                alert(err);
+                this.errorMassage = err;
                 this.errorModalOpen();
             }
         );

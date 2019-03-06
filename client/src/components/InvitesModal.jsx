@@ -8,7 +8,7 @@ class InvitesModal extends Component {
         return ( 
             <Modal styles={{modal:s.con, closeButton:{...{cursor:"pointer"}}}} open={this.props.open} onClose={this.props.onClose} center>
                 <div style={s.list_con}>
-                    <InvitesList/>
+                    <InvitesList history={this.props.history} updateInfo={this.props.updateInfo}/>
                 </div>
             </Modal>
          );

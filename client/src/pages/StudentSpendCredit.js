@@ -53,7 +53,7 @@ class SpendCredit extends Component {
 
                     <div style={s.sec2}>
                         <label style={s.usefrom_con}>
-                        از اعتبار&emsp;
+                        ({Dashboard.selectedStudent.credit})از اعتبار&emsp;
                             <input type="radio" value="credit" name="credit" 
                                 checked={this.state.usefrom === "credit"}
                                 onChange={this.onUseFromChanged} name="usefrom"/>
@@ -62,7 +62,7 @@ class SpendCredit extends Component {
 
                     <div style={s.sec2}>
                         <label style={s.usefrom_con}>
-                        از هدیه&emsp;
+                        ({Dashboard.selectedStudent.gift})از هدیه&emsp;
                             <input type="radio" value="gift" name="gift"
                                 checked={this.state.usefrom === "gift"}
                                 onChange={this.onUseFromChanged}name="usefrom"/>

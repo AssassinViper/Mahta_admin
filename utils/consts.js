@@ -3,7 +3,7 @@ module.exports = {
     ERR: 'خطای داخلی',
 
     INCORRECT_USER: 'نام کاربری نادرست',
-    INCORRECT_PASSWORD : 'گذرواژه نادرست',
+    INCORRECT_PASSWORD : 'رمز عبور نادرست',
     INCORRECT_MAHTA_ID: 'کد مهتا نامعتبر',
     INCORRECT_INVITER_ID : 'کد دعوت کننده نامعتبر',
     INCORRECT_PARAMS : 'پارامتر های ارسالی نامعتبر',

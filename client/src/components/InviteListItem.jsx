@@ -5,20 +5,26 @@ class StudentListItem extends Component {
     state = {  }
     render() { 
         return ( 
-            <div style={s.con} onClick={()=>{this.showInfo(this.props.studentInfo)}}>
+            <div style={s.con} onClick={this.showInfo}>
                 <div style={s.sec}>{this.props.studentInfo.firstName}&emsp;</div>
                 <div style={s.sec}>{this.props.studentInfo.lastName}&emsp;</div>
-                <div style={s.sec2}>{this.props.studentInfo.code}&emsp;</div>
+                <div style={s.sec}>{this.props.studentInfo.code}&emsp;</div>
             </div>
          );
     }
 
-    showInfo(studentInfo){
-        
-        Dashboard.selectedStudent = studentInfo;
-        console.log(studentInfo);
-        
-        this.props.history.push('/student');
+    showInfo = ()=>{
+
+        Dashboard.StudentInfoList.forEach(s=>{
+
+            if(s.code == this.props.studentInfo.code){
+
+                Dashboard.selectedStudent = s;
+            }
+        });
+
+        this.props.history.push("/student");
+        this.props.updateInfo();
     }
 }
 
@@ -39,17 +45,7 @@ const s = {
 
     sec:{
         height:'100%',
-        width:'32.5%',
-        textAlign:'right',
-        borderRadius:2,
-        fontFamily:'amp',
-        cursor:'pointer',
-        backgroundColor:'rgb(210,210,210)'
-    },
-
-    sec2:{
-        height:'100%',
-        width:'12.5%',
+        width:'33%',
         textAlign:'right',
         borderRadius:2,
         fontFamily:'amp',

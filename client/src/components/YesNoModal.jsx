@@ -7,10 +7,10 @@ class YesNoModal extends Component {
     render() { 
         return ( 
             <Modal styles={{modal:s.con, closeButton:{...{cursor:"pointer"}}}} open={this.props.open} onClose={this.props.onClose} showCloseIcon={false} center>
-                <h2>{this.props.children}</h2>
+                <h2 style={s.text}>{this.props.children}</h2>
                 <div style={s.sec}>
-                    <Button onClick={this.props.commit}>ثبت</Button>
-                    <Button onClick={this.props.cancel}>لغو</Button>
+                    <Button type="green" onClick={this.props.commit}>ثبت</Button>
+                    <Button type="red" onClick={this.props.cancel}>لغو</Button>
                 </div>
             </Modal>
          );
@@ -26,12 +26,19 @@ const s = {
         alignItems:'center',
         width:'30%',
         borderRadius:5,
+        //backgroundColor:'rgb(216,92,32)'
     },
 
     sec:{
         display:'flex',
         alignItems:'center',
         justifyContent:'center'
+    },
+
+    text:{
+        color:'rgb(80,80,80)',
+        fontFamily:'amp',
+        textAlign:'right',
     }
 }
  

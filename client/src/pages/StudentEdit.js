@@ -26,7 +26,6 @@ const fieldOptions=[
     {value:"ensani", label:"انسانی"},
 ]
 
-
   
 
 class StudentEdit extends Component {
@@ -38,6 +37,8 @@ class StudentEdit extends Component {
         this.AddStudentData = Object.assign({},Dashboard.selectedStudent);
         this.defaultGrade = "";
         this.defaultField = "";
+        this.yesNoDialog = "";
+        this.successDialog = "";
     }
 
     render() {
@@ -114,28 +115,43 @@ class StudentEdit extends Component {
 
                     <div style={s.sec2}>
 
-                        <Button height={50} type="red" width={200} onClick={this.deleteStudent}>حذف</Button>
+                        <Button height={50} type="red" width={200} onClick={this.OpenDeleteModal}>حذف</Button>
 
-                        <Button height={50}  width={200} fontColor={"rgba(55, 110, 198,0.9)"} onClick={this.askModalOpen}>ثبت</Button>
+                        <Button height={50}  width={200} fontColor={"rgba(55, 110, 198,0.9)"} onClick={this.OpenEditModal}>ثبت</Button>
 
                     </div>
                     
 
                     <YesNoModal open={this.state.askModal} commit={this.askModalCommit} cancel={this.askModalClose}>
-                        ثبت تغییرات با مشخصات زیر؟
+                        {this.yesNoDialog}
                     </YesNoModal>
                     
                     <ErrorModal open={this.state.errorModal} onClose={this.errorModalClose}>
-                        خطا
+                        {this.modalError}
                     </ErrorModal>
                     
                     <SuccessModal open={this.state.successModal} onClose={this.successModalClose}>
-                        عملیات ثبت تغییرات با موفقیت انجام شد
+                        {this.successDialog}
                     </SuccessModal>
 
                 </div>
             );
         }
+    }
+
+    OpenDeleteModal = ()=>{
+
+        this.yesNoDialog="دانش آموز حذف گردد؟";
+        this.successDialog="حذف دانش آموز با موفقیت انجام شد";
+        this.modalType="delete";
+        this.askModalOpen();
+    }
+
+    OpenEditModal = ()=>{
+        this.yesNoDialog = "ثبت تغییرات با مشخصات زیر؟";
+        this.successDialog = "عملیات ثبت تغییرات با موفقیت انجام شد";
+        this.modalType="edit";
+        this.askModalOpen();
     }
 
     deleteStudent = ()=>{
@@ -145,11 +161,12 @@ class StudentEdit extends Component {
                 
                 Dashboard.StudentInfoList = res;
 
-                alert("deleted")
+                this.successModalOpen();
             },
             (err)=>{
                 
-                alert(err);
+                this.modalError = err;
+                this.errorModalOpen();
             });
     }
 
@@ -174,7 +191,12 @@ class StudentEdit extends Component {
     askModalCommit = ()=>{
 
         this.askModalClose();
-        this.commit();
+
+        if(this.modalType == "edit"){
+            this.commit();
+        }else if(this.modalType == "delete"){
+            this.deleteStudent();
+        }
     }
 
     askModalOpen = ()=>{
@@ -217,6 +239,8 @@ class StudentEdit extends Component {
         let newState = Object.assign({}, this.state);
         newState.successModal =false;
         this.setState(newState);
+
+        this.props.history.push("/admin");
     }
 }
 

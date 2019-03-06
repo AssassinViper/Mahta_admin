@@ -13,22 +13,19 @@ class StudentInfo extends Component {
 
     constructor(props){
         super(props);
-        this.student = Dashboard.selectedStudent;
+        this.state.student = Dashboard.selectedStudent;
     }
 
     componentDidMount(){
 
-        if(this.student.code != undefined){
+        if(this.state.student.code != undefined){
 
-            StudentGPListHandler({code:this.student.code}, 
+            StudentGPListHandler({code:this.state.student.code}, 
                 (res)=>{
 
                     let newState = Object.assign({}, this.state);
                     newState.gifts = res.gifts;
                     newState.purchases = res.purchases;
-
-                    console.log(res.gifts);
-                    
                     
                     this.setState(newState);
 
@@ -41,7 +38,7 @@ class StudentInfo extends Component {
 
     render() { 
 
-        if(this.student.code === undefined){
+        if(this.state.student.code === undefined){
 
             return(
                 <Redirect to="/admin" />
@@ -67,38 +64,38 @@ class StudentInfo extends Component {
                 <div style={s.sec1}>
                     <div style={s.row}>
                         <div style={s.column}>
-                            <Label text={this.student.lastName} label="نام خانوادگی"/>
+                            <Label text={this.state.student.lastName} label="نام خانوادگی"/>
                         </div>
                         <div style={s.column}>
-                            <Label text={this.student.firstName} label="نام "/>
+                            <Label text={this.state.student.firstName} label="نام "/>
                         </div>
                         <div style={s.column}>
-                            <Label text={this.student.code} label="کد خانواده"/>
+                            <Label text={this.state.student.code} label="کد خانواده"/>
                         </div>
                     </div>
                     <div style={s.row}>
                         <div style={s.column}>
-                            <Label text={this.student.school} label="مدرسه"/>
+                            <Label text={this.state.student.school} label="مدرسه"/>
                         </div>
                         <div style={s.column}>
-                            <Label text={this.student.phone} label="شماره تماس"/>
+                            <Label text={this.state.student.phone} label="شماره تماس"/>
                         </div>
                         <div style={s.column}>
-                            <Label text={this.student.phone} label="شماره منزل"/>
+                            <Label text={this.state.student.phone} label="شماره منزل"/>
                         </div>
                     </div>
                     <div style={s.row}>
                         <div style={s.column2}>
-                            <Label text={this.student.gift} label="هدیه"/>
+                            <Label text={this.state.student.gift} label="هدیه"/>
                         </div>
                         <div style={s.column2}>
-                            <Label text={this.student.credit} label="اعتبار"/>
+                            <Label text={this.state.student.credit} label="اعتبار"/>
                         </div>
                         <div style={s.column2}>
-                            <Label text={this.student.grade} label="پایه"/>
+                            <Label text={this.state.student.grade} label="پایه"/>
                         </div>
                         <div style={s.column2}>
-                            <Label text={this.student.field} label="رشته"/>
+                            <Label text={this.state.student.field} label="رشته"/>
                         </div>
                     </div>  
                 </div>
@@ -118,12 +115,34 @@ class StudentInfo extends Component {
 
                 <div style={s.space}/>
 
-                <InvitesModal open={this.state.invitesModal} onClose={this.invitesModalClose}/>
+                <InvitesModal open={this.state.invitesModal} onClose={this.invitesModalClose} updateInfo={this.updateInfo} history={this.props.history}/>
                 <GiftsModal open={this.state.giftsModal} onClose={this.giftsModalClose} list={this.state.gifts}/>
                 <PurchaseModal open={this.state.purchasesModal} onClose={this.purchasesModalClose} list={this.state.purchases}/>
+
+
             </div>
         );
         }
+    }
+
+    updateInfo = ()=>{
+
+        let newState = Object.assign({}, this.state);
+        newState.student = Dashboard.selectedStudent;
+        newState.invitesModal=false;
+
+        StudentGPListHandler({code:newState.student.code}, 
+            (res)=>{
+
+                newState.gifts = res.gifts;
+                newState.purchases = res.purchases;
+                
+                this.setState(newState);
+
+            },(err)=>{
+
+                alert(err)
+            })
     }
 
     invitesModalOpen = ()=>{

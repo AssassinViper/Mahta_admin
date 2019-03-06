@@ -46,7 +46,7 @@ const s = {
     sec:{
         height:'100%',
         width:'29.1%',
-        textAlign:'right',
+        textAlign:'center',
         borderRadius:2,
         fontFamily:'amp',
         cursor:'pointer',

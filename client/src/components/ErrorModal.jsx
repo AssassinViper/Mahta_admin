@@ -6,7 +6,7 @@ class ErrorModal extends Component {
     render() { 
         return ( 
             <Modal styles={{modal:s.con}} open={this.props.open} onClose={this.props.onClose} center>
-                <h2>{this.props.children}</h2>
+                <h2 style={s.err}>{this.props.children}</h2>
             </Modal>
          );
 
@@ -24,6 +24,11 @@ const s = {
         borderStyle:'solid',
         borderColor:'#db3b3b',
         borderWidth:2,
+    },
+
+    err:{
+        fontFamily:'amp',
+        textAlign:'right',
     }
 }
  

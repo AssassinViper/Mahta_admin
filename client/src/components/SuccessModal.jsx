@@ -6,7 +6,7 @@ class SuccessModal extends Component {
     render() { 
         return ( 
             <Modal styles={{modal:s.con, closeButton:{...{cursor:"pointer"}}}} open={this.props.open} onClose={this.props.onClose} center>
-                <h2>{this.props.children}</h2>
+                <h2 style={s.text}>{this.props.children}</h2>
             </Modal>
          );
 
@@ -24,6 +24,12 @@ const s = {
         borderStyle:'solid',
         borderColor:'#129e00',
         borderWidth:2,
+    },
+
+    text:{
+        color:'rgb(80,80,80)',
+        fontFamily:'amp',
+        textAlign:'right',
     }
 }
  

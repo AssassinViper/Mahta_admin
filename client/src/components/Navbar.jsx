@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import NavButton from './NavButton';
+import {Cookies}  from 'react-cookie';
 
 const activeList = {
     spendcredit:false,
@@ -93,7 +94,23 @@ class Navbar extends Component {
     }
 
     logout=()=>{
-        alert('loging out')
+        fetch('/api/admin/logout', {
+            method:"POST",
+            body: "",
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include'
+            })
+            .then(res =>{
+    
+                if(res.status === 200){
+                    
+                    this.props.history.push('/auth');
+
+                }else{
+    
+                    alert(res);
+                }
+            });
     }
 }
 

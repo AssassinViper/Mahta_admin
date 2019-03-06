@@ -16,7 +16,7 @@ async function getStudentList(req, res, next) {
     // config.log(req.cookies.token);
 
     // projecting fields
-    await Student.find({}, { _id: 0, __v: 0 }, (err, students) => {
+    await Student.find({}, { __v: 0 }, (err, students) => {
 
         if (err) {
             errHandler(err);

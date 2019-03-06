@@ -75,7 +75,16 @@ router.post('/authenticate', (req, res) => {
 
 });
 
+// for loging out
+router.post('/logout', (req, res)=>{
+    const token = jwt.sign({username:"unknown"},"something",{expiresIn:'1s'});
+    try {
+        res.cookie('token', token, { httpOnly: true }).sendStatus(200);
 
+    } catch (e) {
+        res.status(404).send("مشکل در خروج");
+    }
+});
 
 router.post('/checkToken', withAuth, function(req, res) {
 
@@ -83,7 +92,6 @@ router.post('/checkToken', withAuth, function(req, res) {
 });
 
 router.post('/getStudentList', withAuth, studentHandler.getStudentList);
-
 router.post('/addStudent', withAuth, studentHandler.addStudent);
 router.post('/editStudent', withAuth, studentHandler.editStudent);
 router.post('/deleteStudent', withAuth, studentHandler.deleteStudent);

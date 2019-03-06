@@ -20,7 +20,7 @@ class PurchaseListItem extends Component {
         let short_info = this.props.element.info;
         if( short_info.length > 38){
 
-            short_info = short_info.slice(0,38) + "...";
+            short_info = "..."+short_info.slice(0,38);
         }
         
 

@@ -1,13 +1,32 @@
 import React, { Component } from 'react';
 
 import InviteListItem from '../components/InviteListItem';
+import Dashboard from '../pages/Dashboard';
 
 class InvitesList extends Component {
-    state = { studentList:[] }
+    state = { invitesList:[] }
 
     componentDidMount(){
 
-        //this.props.getShowList(this.showList);
+        //Dashboard.selectedStudent.invites;
+
+        console.log();
+
+        let inviteds = Dashboard.selectedStudent.inviteds;
+        let elements = [];
+
+        inviteds.forEach(e=>{
+
+            Dashboard.StudentInfoList.forEach(s=>{
+
+                if(s._id == e){
+
+                    elements.push({lastName:s.lastName, firstName:s.firstName, code:s.code});
+                }
+            })
+        })
+
+        this.showList(elements);
     }
 
     render() { 
@@ -27,7 +46,7 @@ class InvitesList extends Component {
 
                 <div style={s.list_con}>
                     <div style={{height:'auto'}}>
-                        {this.state.studentList}
+                        {this.state.invitesList}
                     </div>
 
                 </div>
@@ -38,22 +57,20 @@ class InvitesList extends Component {
 
     showList = (list)=>{
 
-        let studentList = [];
+        let invitesList = [];
         let i = 1;
 
         list.forEach(element => {
             
-            studentList.push(
+            invitesList.push(
 
-                <InviteListItem key={i} history={this.props.history} studentInfo={element}/>
+                <InviteListItem key={i} history={this.props.history} updateInfo={this.props.updateInfo} studentInfo={element}/>
             )
 
             i++;
-            console.log(i);
-            
         });
         
-        this.state.studentList= studentList;
+        this.state.invitesList= invitesList;
         this.setState(this.state);
     }
 }

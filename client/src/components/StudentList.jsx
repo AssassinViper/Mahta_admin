@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 
 import StudentListItem from './StudentListItem';
-import sort from '../assets/icons/sort.png'
+import sort1 from '../assets/icons/sort1.png';
+import sort2 from '../assets/icons/sort2.png';
+import sort3 from '../assets/icons/sort3.png';
+import sort4 from '../assets/icons/sort4.png';
 
 class StudentList extends Component {
-    state = { studentList:[]}
+    state = { studentList:[], NameSort:sort2, CodeSort:sort4}
 
     componentDidMount(){
 
@@ -22,8 +25,8 @@ class StudentList extends Component {
                     <div style={s.header2}> مقدار اعتبار </div>
                     <div style={s.header}> پایه تحصیلی </div>
                     <div style={s.header}> نام </div>
-                    <div style={s.header} onClick={this.props.sortByName}>  نام خانوادگی <img style={s.sort_ic} src={sort}/> </div>
-                    <div style={s.header2} onClick={this.props.sortByCode}> کد خانواده <img style={s.sort_ic} src={sort}/></div>
+                    <div style={s.header} onClick={this.sortByName}>  نام خانوادگی <img style={s.sort_ic} src={this.state.NameSort}/> </div>
+                    <div style={s.header2} onClick={this.sortByCode}> کد خانواده <img style={s.sort_ic} src={this.state.CodeSort}/></div>
                     <div style={s.space}></div>
                 
                 </div>
@@ -38,6 +41,40 @@ class StudentList extends Component {
 
             </div>
         );
+    }
+
+    sortByName = ()=>{
+
+        let newState = Object.assign({},this.state);
+
+        if(this.state.NameSort === sort2){
+            newState.NameSort = sort4;
+            newState.CodeSort = sort2;
+        }else if(this.state.NameSort === sort4){
+            newState.NameSort = sort3;
+            newState.CodeSort = sort2;
+        }else if(this.state.NameSort === sort3){
+            newState.NameSort = sort4;
+            newState.CodeSort = sort2;
+        }
+        this.setState(newState, this.props.sortByName);
+    }
+
+    sortByCode = ()=>{
+
+        let newState = Object.assign({},this.state);
+
+        if(this.state.CodeSort === sort2){
+            newState.NameSort = sort2;
+            newState.CodeSort = sort4;
+        }else if(this.state.CodeSort === sort4){
+            newState.NameSort = sort2;
+            newState.CodeSort = sort3;
+        }else if(this.state.CodeSort === sort3){
+            newState.NameSort = sort2;
+            newState.CodeSort = sort4;
+        }
+        this.setState(newState,this.props.sortByCode);
     }
 
     showList = (list)=>{

@@ -42,8 +42,6 @@ class GiftList extends Component {
         let i = 1;
 
         list.forEach(element => {
-            
-            alert(element.price);
 
             CompList.push(
 

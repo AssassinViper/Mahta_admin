@@ -16,7 +16,7 @@ const AddStudentHandler = (json, onFetched, onError)=>{
             
             }else{
 
-                onError("error");
+                res.json().then(res=> onError(res.error));
             }
         }).catch(err=>{
 

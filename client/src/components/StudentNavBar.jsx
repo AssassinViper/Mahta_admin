@@ -103,7 +103,23 @@ class StudentNavbar extends Component {
     }
 
     logout=()=>{
-        alert('loging out')
+        fetch('/api/admin/logout', {
+            method:"POST",
+            body: "",
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include'
+            })
+            .then(res =>{
+    
+                if(res.status === 200){
+                    
+                    this.props.history.push('/auth');
+
+                }else{
+    
+                    alert(res);
+                }
+            });
     }
 }
 

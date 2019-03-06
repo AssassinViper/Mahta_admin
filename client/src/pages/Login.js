@@ -6,6 +6,7 @@ import lock from '../assets/svg/lock.svg'
 
 
 class LoginPage extends Component{
+    state={errorMassage:""}
 
     username = "";
     password = "";
@@ -17,9 +18,11 @@ class LoginPage extends Component{
             <div style={s.con}>
 
                 <div style={s.con2}>
+                    <div style={s.space}/>
                     <Input height={30} width="80%" placeholder="نام کاربری" onChange={(e)=>{this.username = e.target.value}}/>
                     <Input height={30} width="80%" placeholder="رمز عبور" type={"password"}onChange={(e)=>{this.password = e.target.value}}/>
                     <Button height={50} width="60%" onClick={this.authenticate} >ورود</Button>
+                    <div style={s.error}>{this.state.errorMassage}</div>
                 </div>
 
             </div>
@@ -41,10 +44,20 @@ class LoginPage extends Component{
 
             }else{
 
-                alert("Incorrect username or password")
+                res.json().then(res=>{
+
+                    let newState=Object.assign({}, this.state);
+                    newState.errorMassage=res.error;
+                    this.setState(newState);
+                });
             }
         })
-        .catch(err => {alert(err)});
+        .catch(err => {
+            
+            let newState=Object.assign({}, this.state);
+            newState.errorMassage="خطای اتصال به سرور";
+            this.setState(newState);
+        });
     }
 }
 
@@ -76,7 +89,30 @@ const s = {
         borderRadius:12,
         boxShadow:'4px 4px 4px rgba(0,0,0,0.5)',
         backgroundColor:'rgb(220,96,36)',
+    },
+
+    error:{
+
+        height:20,
+        fontFamily:'amp',
+        fontSize:16,
+        color:'rgb(198, 15, 34)',
+        textAlign:'center'
+    },
+
+    space:{
+        height:30
+    },
+
+    create:{
+
+        position:'absolute',
+        bottom:5,
+        fontSize:10,
+        fontFamily:'amp',
+        color:'white',
     }
 }
+const create=<div style={s.create}>&emsp;&emsp;&emsp;&emsp;برنامه نویسی و طراحی سایت : امیرمحمد پاکدل  &emsp; | &emsp; برنامه نویس سرور : محمد نوری</div>
 
 export default LoginPage;

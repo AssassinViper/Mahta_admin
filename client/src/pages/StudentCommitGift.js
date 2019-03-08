@@ -11,7 +11,10 @@ import SuccessModal from '../components/SuccessModal';
 
 
 class CommitGift extends Component {
+    
     state = { askModal:false, errorModal:false, successModal:false }
+
+    errorMassage="خطا در شبکه"
 
     CommitGiftData = {
 
@@ -59,7 +62,7 @@ class CommitGift extends Component {
                     </YesNoModal>
 
                     <ErrorModal open={this.state.errorModal} onClose={this.errorModalClose}>
-                        خطا
+                        {this.errorMassage}
                     </ErrorModal>
 
                     <SuccessModal open={this.state.successModal} onClose={this.successModalClose}>
@@ -85,6 +88,7 @@ class CommitGift extends Component {
 
             },(err)=>{
 
+                this.errorMassage = err;
                 this.errorModalOpen();
             }
         );

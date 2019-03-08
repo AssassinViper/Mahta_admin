@@ -7,6 +7,7 @@ const activeList = {
     commitgift:false,
     commitpurchase:false,
     groupcommit:false,
+    groupgift:false,
     addstudent:false,
     studentList:false
 }
@@ -51,7 +52,7 @@ class Navbar extends Component {
                 display:'flex',
                 justifyContent:'center',
                 margin:0,
-                minWidth:1200,
+                minWidth:1280,
                 height:85,
                 width:this.state.width,
                 backgroundColor:'rgb(63,74,80)'
@@ -68,18 +69,21 @@ class Navbar extends Component {
                         fontSize:55, userSelect: 'none' }}>مهتا</div>
                     </div>
                 </div>
+                <div style={s.space}/>
 
                 <NavButton history={this.props.history} active={this.state.activeButtons.spendcredit} 
                 activeButton={this.activeButton} navTo="spendcredit" text="مصرف اعتبار"/>
+                <NavButton history={this.props.history} active={this.state.activeButtons.groupgift} 
+                activeButton={this.activeButton} navTo="groupgift" text="هدیه گروهی"/>
                 <NavButton history={this.props.history} active={this.state.activeButtons.commitgift} 
                 activeButton={this.activeButton} navTo="commitgift" text="ثبت هدیه"/>
                 <NavButton history={this.props.history} active={this.state.activeButtons.commitpurchase} 
                 activeButton={this.activeButton} navTo="commitpurchase" text="ثبت خرید"/>
                 <NavButton history={this.props.history} active={this.state.activeButtons.groupcommit} 
                 activeButton={this.activeButton} navTo="groupcommit" text="ثبت گروهی"/>
-                <NavButton history={this.props.history} active={this.state.activeButtons.addstudent} 
+                <NavButton history={this.props.history} active={this.state.activeButtons.addstudent} width={'10%'}
                 activeButton={this.activeButton} navTo="addstudent" text="دانش آموز جدید"/>
-                <NavButton history={this.props.history} active={this.state.activeButtons.studentList} 
+                <NavButton history={this.props.history} active={this.state.activeButtons.studentList} width={'12%'}
                 activeButton={this.activeButton} navTo="" text="لیست دانش آموزان"/>
 
             </div>
@@ -116,13 +120,9 @@ class Navbar extends Component {
 
 const s = {
 
-    con:{
+    space:{
 
-        display:'flex',
-        justifyContent:'space-between',
-        height:'100%',
-        width:1200,
-        backgroundColor:'rgb(63,74,80)'
+        width:'5%',
     },
 
     logo_con:{

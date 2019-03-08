@@ -12,15 +12,17 @@ const AddStudentHandler = (json, onFetched, onError)=>{
 
             if(res.status === 200){
                 
-                res.json().then(res=> onFetched(res));
+                res.json().then(res=> onFetched(res))
+                .catch(err=>{ onFetched(res) });
             
             }else{
 
-                res.json().then(res=> onError(res.error));
+                res.json().then(res=> onError(res.error))
+                .catch(err=>{ onError(res) });
             }
         }).catch(err=>{
 
-            onError(err);
+            onError("خطای شبکه و اتصال به سرور");
         });
 }
 

@@ -15,9 +15,8 @@ class StudentNavButton extends Component {
 
         return ( 
             <button style={{
-                cursor:'pointer',
                 height:'100%',
-                width:'12%',
+                width: this.props.width || '9%',
                 display:'flex',
                 alignItems:'center',
                 justifyContent:'center',
@@ -56,7 +55,7 @@ const s = {
 
         cursor:'pointer',
         fontFamily:'amp',
-        fontSize:20,
+        fontSize:18,
         color:'white',
         textAlign:'center',
     }

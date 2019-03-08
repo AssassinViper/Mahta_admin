@@ -10,6 +10,7 @@ import AddStudent from './pages/AddStudent';
 import CommitGift from './pages/CommitGift';
 import CommitPurchase from './pages/CommitPurchase';
 import GroupCommit from './pages/GroupCommit';
+import GroupGift from './pages/GroupGift';
 import SpendCredit from './pages/SpendCredit';
 import Dashboard from './pages/Dashboard';
 import StudentInfo from './pages/StudentInfo';
@@ -50,7 +51,7 @@ class App extends Component {
         <div className="App" style={{
           height:this.state.height, 
           width:this.state.width,
-          minWidth:1200,
+          minWidth:1280,
           minHeight:600,
           display:'flex',
           flexDirection:'column', 
@@ -70,6 +71,7 @@ class App extends Component {
           <Route exact path="/admin" component={NeedAuth(Dashboard, this.state)}/>
           <Route exact path="/admin/addstudent" component={NeedAuth(AddStudent, this.state)}/>
           <Route exact path="/admin/commitgift" component={NeedAuth(CommitGift, this.state)}/>
+          <Route exact path="/admin/groupgift" component={NeedAuth(GroupGift, this.state)}/>
           <Route exact path="/admin/commitpurchase" component={NeedAuth(CommitPurchase, this.state)}/>
           <Route exact path="/admin/groupcommit" component={NeedAuth(GroupCommit, this.state)}/>
           <Route exact path="/admin/spendcredit" component={NeedAuth(SpendCredit, this.state)}/>

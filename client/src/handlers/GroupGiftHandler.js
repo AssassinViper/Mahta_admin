@@ -1,15 +1,13 @@
 import urls from '../consts/urls';
-import Dashboard from '../pages/Dashboard';
 
-const GetStudentList = (onFetched, onError)=>{
+const GroupGiftHandler = (json, onFetched, onError)=>{
 
-    //alert('getting list')
-
-    fetch(urls.getStudentList,
-        {method:"POST", 
-        body: "",
+    fetch(urls.groupGift, {
+        method:"POST",
+        body: JSON.stringify(json),
         headers: {'Content-Type': 'application/json'},
-        credentials: 'include'})
+        credentials: 'include'
+        })
         .then(res =>{
 
             if(res.status === 200){
@@ -28,18 +26,4 @@ const GetStudentList = (onFetched, onError)=>{
         });
 }
 
-const UpdateStudentList = (onSuccess, onError)=>{
-
-    GetStudentList((res)=>{
-
-        Dashboard.StudentInfoList = res;
-        
-        onSuccess();
-
-    }, (err)=>{
-
-        onError(err);
-    })
-}
-
-export {GetStudentList}
+export default GroupGiftHandler;

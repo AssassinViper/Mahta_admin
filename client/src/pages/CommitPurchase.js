@@ -12,6 +12,8 @@ import Dashboard from '../pages/Dashboard';
 class CommitPurchase extends Component {
     state = { askModal:false, errorModal:false, successModal:false }
     
+    errorMassage="خطا در شبکه"
+
     CommitPurchaseData = {
 
         code:0,
@@ -63,7 +65,7 @@ class CommitPurchase extends Component {
                 </YesNoModal>
                 
                 <ErrorModal open={this.state.errorModal} onClose={this.errorModalClose}>
-                    خطا
+                    {this.errorMassage}
                 </ErrorModal>
                 
                 <SuccessModal open={this.state.successModal} onClose={this.successModalClose}>
@@ -90,6 +92,7 @@ class CommitPurchase extends Component {
             },
             (err)=>{
 
+                this.errorMassage = err;
                 this.errorModalOpen();
             }
         );

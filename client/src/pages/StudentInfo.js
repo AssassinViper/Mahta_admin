@@ -5,11 +5,15 @@ import Dashboard from '../pages/Dashboard';
 import Label from '../components/Label';
 import StudentGPListHandler from '../handlers/StudentGPListHandler';
 import InvitesModal from '../components/InvitesModal';
+import ErrorModal from '../components/ErrorModal';
 import PurchaseModal from '../components/PurchaseModal';
 import GiftsModal from '../components/GiftsModal';
 
 class StudentInfo extends Component {
-    state = { invitesModal:false, giftsModal:false, purchasesModal:false, gifts:[], purchases:[]}     
+    
+    state = { errorModal:false, invitesModal:false, 
+        giftsModal:false, purchasesModal:false, gifts:[], purchases:[]}     
+
 
     constructor(props){
         super(props);
@@ -31,7 +35,7 @@ class StudentInfo extends Component {
 
                 },(err)=>{
 
-                    alert(err)
+                    this.errorMassage = err;
                 })
         }
     }
@@ -119,10 +123,12 @@ class StudentInfo extends Component {
                 <GiftsModal open={this.state.giftsModal} onClose={this.giftsModalClose} list={this.state.gifts}/>
                 <PurchaseModal open={this.state.purchasesModal} onClose={this.purchasesModalClose} list={this.state.purchases}/>
 
+                <ErrorModal open={this.state.errorModal} onClose={this.errorModalClose}>
+                    {this.errorMassage}
+                </ErrorModal>
 
             </div>
-        );
-        }
+        );}
     }
 
     updateInfo = ()=>{
@@ -184,6 +190,20 @@ class StudentInfo extends Component {
 
         let newState = Object.assign({}, this.state);
         newState.purchasesModal = false;
+        this.setState(newState);
+    }
+
+    errorModalOpen = ()=>{
+
+        let newState = Object.assign({}, this.state);
+        newState.errorModal =true;
+        this.setState(newState);
+    }
+
+    errorModalClose = ()=>{
+
+        let newState = Object.assign({}, this.state);
+        newState.errorModal =false;
         this.setState(newState);
     }
 }

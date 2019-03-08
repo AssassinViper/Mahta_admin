@@ -15,14 +15,15 @@ const gradeOptions=[
     {value:"نهم", label:"نهم"},
     {value:"دهم", label:"دهم"},
     {value:"یازدهم", label:"یازدهم"},
-    {value:"دوازدهم", label:"دوازدهم"}
+    {value:"دوازدهم", label:"دوازدهم"},
+    {value:"فارغ التحصیل", label:"فارغ التحصیل"}
 ]
 
 const fieldOptions=[
-    {value:"riazi", label:"ریاضی"},
-    {value:"tajrobi", label:"تجربی"},
-    {value:"honar", label:"هنر"},
-    {value:"ensani", label:"انسانی"},
+    {value:"ریاضی", label:"ریاضی"},
+    {value:"تجربی", label:"تجربی"},
+    {value:"هنر", label:"هنر"},
+    {value:"انسانی", label:"انسانی"},
 ]
 
   
@@ -76,14 +77,18 @@ class AddStudent extends Component {
                 <div style={s.sec1}>
 
                     
-                    <Select options={fieldOptions} styles={customStyles} placeholder="رشته"/>
+                    <Select options={fieldOptions} styles={customStyles} placeholder="رشته" onChange={(e)=>{
+                        this.AddStudentData.field = e.value
+                    }}/>
 
                     <Input height={35} width={200} placeholder="مدرسه"type="text"
                         defaultValue={this.AddStudentData.school}
                         ref={(ref=>this.schoolInput = ref)}
                         onChange={(event)=>{this.AddStudentData.school = event.target.value}}/>
 
-                    <Select options={gradeOptions} styles={customStyles} placeholder="پایه"/>
+                    <Select options={gradeOptions} styles={customStyles} placeholder="پایه" onChange={(e)=>{
+                        this.AddStudentData.grade = e.value
+                    }}/>
 
 
                 </div>

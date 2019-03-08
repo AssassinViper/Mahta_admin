@@ -21,6 +21,8 @@ const gradeOptions=[
 class GroupCommit extends Component {
     state = { askModal:false, errorModal:false, successModal:false }
 
+    errorMassage="خطا در شبکه"
+
     GroupCommitData = {
 
         number:"",
@@ -65,7 +67,7 @@ class GroupCommit extends Component {
                 </YesNoModal>
                 
                 <ErrorModal open={this.state.errorModal} onClose={this.errorModalClose}>
-                    خطا
+                    {this.errorMassage}
                 </ErrorModal>
                 
                 <SuccessModal open={this.state.successModal} onClose={this.successModalClose}>
@@ -91,6 +93,7 @@ class GroupCommit extends Component {
             },
             (err)=>{
 
+                this.errorMassage = err;
                 this.errorModalOpen();
             }
         );

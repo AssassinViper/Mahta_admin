@@ -70,8 +70,12 @@ class StudentNavbar extends Component {
                 <div unselectable style={{fontFamily:'ebhar', color:'rgb(55, 110, 198)', 
                 fontSize:55, userSelect: 'none' }}>مهتا</div>
             </div>
+
+            
             
             </div>
+
+                <div style={s.space}/>
 
                 <StudentNavButton history={this.props.history} active={this.state.activeButtons.spendcredit} 
                 activeButton={this.activeButton} navTo="spendcredit" text="مصرف اعتبار"/>
@@ -83,7 +87,7 @@ class StudentNavbar extends Component {
                 activeButton={this.activeButton} navTo="edit" text="ویرایش"/>
                 <StudentNavButton history={this.props.history} active={this.state.activeButtons.info} 
                 activeButton={this.activeButton} navTo="" text="مشخصات"/>
-                <NavButton history={this.props.history} active={this.state.activeButtons.studentList} 
+                <NavButton history={this.props.history} active={this.state.activeButtons.studentList} width={'12%'}
                 activeButton={this.activeButton} navTo="" text="لیست دانش آموزان"/>
 
             </div>
@@ -132,6 +136,12 @@ const s = {
         height:'100%',
         width:1200,
         backgroundColor:'rgb(63,74,80)'
+    },
+
+    space:{
+
+        width:'13.8%',
+        height:'100%',
     },
 
     logo_con:{

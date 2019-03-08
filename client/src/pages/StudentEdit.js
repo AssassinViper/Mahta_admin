@@ -16,14 +16,15 @@ const gradeOptions=[
     {value:"نهم", label:"نهم"},
     {value:"دهم", label:"دهم"},
     {value:"یازدهم", label:"یازدهم"},
-    {value:"دوازدهم", label:"دوازدهم"}
+    {value:"دوازدهم", label:"دوازدهم"},
+    {value:"فارغ التحصیل", label:"فارغ التحصیل"}
 ]
 
 const fieldOptions=[
-    {value:"riazi", label:"ریاضی"},
-    {value:"tajrobi", label:"تجربی"},
-    {value:"honar", label:"هنر"},
-    {value:"ensani", label:"انسانی"},
+    {value:"ریاضی", label:"ریاضی"},
+    {value:"تجربی", label:"تجربی"},
+    {value:"هنر", label:"هنر"},
+    {value:"انسانی", label:"انسانی"},
 ]
 
   
@@ -34,7 +35,7 @@ class StudentEdit extends Component {
     constructor(props){
 
         super(props);
-        this.AddStudentData = Object.assign({},Dashboard.selectedStudent);
+        this.StudentEditData = Object.assign({},Dashboard.selectedStudent);
         this.defaultGrade = "";
         this.defaultField = "";
         this.yesNoDialog = "";
@@ -43,7 +44,7 @@ class StudentEdit extends Component {
 
     render() {
 
-        if(this.AddStudentData.code === undefined){
+        if(this.StudentEditData.code === undefined){
 
             return(<Redirect to="/admin" />);
 
@@ -71,30 +72,32 @@ class StudentEdit extends Component {
                     <div style={s.sec1}>
                         
                         <Input height={35} width={200} placeholder="نام خانوادگی" type="text"
-                        defaultValue={this.AddStudentData.lastName}
+                        defaultValue={this.StudentEditData.lastName}
                         ref={(ref=>this.lastNameInput = ref)}
-                        onChange={(event)=>{this.AddStudentData.lastName = event.target.value}}/>
+                        onChange={(event)=>{this.StudentEditData.lastName = event.target.value}}/>
 
                         <Input height={35} width={200} placeholder="نام"type="text"
-                        defaultValue={this.AddStudentData.firstName}
+                        defaultValue={this.StudentEditData.firstName}
                         ref={(ref=>this.firstNameInput = ref)}
-                        onChange={(event)=>{this.AddStudentData.firstName = event.target.value}}/>
+                        onChange={(event)=>{this.StudentEditData.firstName = event.target.value}}/>
 
                     </div>
                     
                     <div style={s.sec1}>
 
                         <Select options={fieldOptions} styles={customStyles} 
-                        defaultValue={{value:this.AddStudentData.field, label:this.AddStudentData.field}} placeholder="رشته"/>
+                        defaultValue={{value:this.StudentEditData.field, label:this.StudentEditData.field}} 
+                        placeholder="رشته" onChange={(e)=>{this.StudentEditData.field = e.value}}/>
 
                         
                         <Input height={35} width={200} placeholder="مدرسه"type="text"
-                        defaultValue={this.AddStudentData.school}
+                        defaultValue={this.StudentEditData.school}
                         ref={(ref=>this.schoolInput = ref)}
-                        onChange={(event)=>{this.AddStudentData.school = event.target.value}}/>
+                        onChange={(event)=>{this.StudentEditData.school = event.target.value}}/>
                         
                         <Select options={gradeOptions} styles={customStyles} 
-                        defaultValue={{value:this.AddStudentData.grade, label:this.AddStudentData.grade}} placeholder="پایه"/>
+                        defaultValue={{value:this.StudentEditData.grade, label:this.StudentEditData.grade}} 
+                        placeholder="پایه" onChange={(e)=>{this.StudentEditData.grade = e.value}}/>
                         
                     </div>
                     
@@ -102,14 +105,14 @@ class StudentEdit extends Component {
                     <div style={s.sec1}>
 
                         <Input height={35} width={200} placeholder="شماره تماس"type="number"
-                        defaultValue={this.AddStudentData.phone}
+                        defaultValue={this.StudentEditData.phone}
                         ref={(ref=>this.phoneInput = ref)}
-                        onChange={(event)=>{this.AddStudentData.phone = event.target.value}}/>
+                        onChange={(event)=>{this.StudentEditData.phone = event.target.value}}/>
 
                         <Input height={35} width={200} placeholder="شماره منزل"type="number"
-                        defaultValue={this.AddStudentData.home}
+                        defaultValue={this.StudentEditData.home}
                         ref={(ref=>this.homeInput = ref)}
-                        onChange={(event)=>{this.AddStudentData.home = event.target.value}}/>
+                        onChange={(event)=>{this.StudentEditData.home = event.target.value}}/>
 
                     </div>
 
@@ -156,7 +159,7 @@ class StudentEdit extends Component {
 
     deleteStudent = ()=>{
 
-        DeleteStudentHandler({code:this.AddStudentData.code},
+        DeleteStudentHandler({code:this.StudentEditData.code},
             (res)=>{
                 
                 Dashboard.StudentInfoList = res;
@@ -172,12 +175,12 @@ class StudentEdit extends Component {
 
     commit = ()=>{
 
-        StudentEditHandler(this.AddStudentData,
+        StudentEditHandler(this.StudentEditData,
             (res)=>{
 
                 Dashboard.StudentInfoList = res;
 
-                Dashboard.selectedStudent = this.AddStudentData;
+                Dashboard.selectedStudent = this.StudentEditData;
                 
                 this.successModalOpen();
 

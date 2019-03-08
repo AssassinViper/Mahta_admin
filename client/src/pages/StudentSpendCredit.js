@@ -12,6 +12,8 @@ import Dashboard from './Dashboard';
 class SpendCredit extends Component {
     state = { usefrom:"credit", askModal:false, errorModal:false, successModal:false }
 
+    errorMassage="خطا در شبکه"
+
     SpendCreditData = {
 
         code:Dashboard.selectedStudent.code,
@@ -78,7 +80,7 @@ class SpendCredit extends Component {
                     </YesNoModal>
                     
                     <ErrorModal open={this.state.errorModal} onClose={this.errorModalClose}>
-                        خطا
+                        {this.errorMassage}
                     </ErrorModal>
                     
                     <SuccessModal open={this.state.successModal} onClose={this.successModalClose}>
@@ -111,6 +113,7 @@ class SpendCredit extends Component {
 
             },(err)=>{
 
+                this.errorMassage = err;
                 this.errorModalOpen();
             }
         );

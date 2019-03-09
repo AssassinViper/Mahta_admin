@@ -76,14 +76,13 @@ class GroupGift extends Component {
 
                 </div>
 
-
                 <Input height={35} width={200} placeholder="مبلغ هدیه" type="number"
                 ref={(ref=>this.priceInput = ref)}
-                onChange={(event)=>{this.GroupCommitData.price = Number(event.target.value)}}/>
+                onChange={(event)=>{this.GroupGiftData.price = Number(event.target.value)}}/>
 
                 <PlainText height={90} width="24%" placeholder="توضیحات"
                 ref={(ref=>this.infoPlainText = ref)} 
-                onChange={(event)=>{this.CommitGiftData.info = event.target.value}}/>
+                onChange={(event)=>{this.GroupGiftData.info = event.target.value}}/>
 
 
                 <Button height={50} width="15%" fontColor={"rgba(216,92,32,0.9)"} onClick={this.askModalOpen}>ثبت</Button>
@@ -113,7 +112,7 @@ class GroupGift extends Component {
                 this.schoolInput.clear();
                 this.priceInput.clear();
 
-                Dashboard.StudentInfoList = res;
+                Dashboard.StudentInfoList = [];
                 
                 this.successModalOpen();
             },

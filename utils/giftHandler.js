@@ -67,6 +67,47 @@ async function commitGift(req, res, next) {
     next();
 }
 
+async function groupGift(req, res){
+
+    let params = req.body;
+    let price = params.price || 0;
+    let info = params.info || "هدایای گروهی";
+    let query = {}
+
+    if(params.grade != undefined && params.grade != 'all'){
+
+        query.grade = params.grade;
+    }
+
+    if(params.field != undefined && params.field != 'all'){
+
+        query.field = params.field;
+    }
+
+    if(params.school != undefined && params.school != 'all'){
+
+        query.school = params.school;
+    }
+    
+    let students = await Student.find(query);
+
+    students.forEach(async function(s){
+
+        let newGift = new Gift({});
+        newGift._id = new mongoose.Types.ObjectId();
+        newGift.owner= s._id;
+        newGift.price= price;
+        newGift.info= info;
+
+        s.gifts.push(newGift);
+        s.gift += price;
+        await s.save();
+        await newGift.save();
+    })
+
+    res.status(consts.SUCCESS_CODE).send("OK");
+}
+
 async function deleteGifts(ownerId) {
 
     await Gift.deleteMany({ owner: ownerId }, function(err, info) {
@@ -107,6 +148,6 @@ async function getGifts(ownerId, response) {
 
 }
 
-module.exports = {commitGift, deleteGifts, getGifts};
+module.exports = {commitGift, groupGift, deleteGifts, getGifts};
 
 

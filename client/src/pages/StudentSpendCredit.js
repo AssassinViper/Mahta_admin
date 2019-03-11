@@ -17,7 +17,7 @@ class SpendCredit extends Component {
     SpendCreditData = {
 
         code:Dashboard.selectedStudent.code,
-        price:"",
+        price:0,
     }
 
     render() { 
@@ -48,7 +48,7 @@ class SpendCredit extends Component {
 
                     <Input height={35} width="20%" placeholder="(مبلغ خرید(تومان"  type="number"
                     ref={(ref=>this.priceInput = ref)}
-                    onChange={(event)=>{this.SpendCreditData.price = event.target.value}}/>
+                    onChange={(event)=>{this.SpendCreditData.price = Number(event.target.value)}}/>
 
                     
                     <div style={s.sec1}>

@@ -66,7 +66,7 @@ class GroupGift extends Component {
                         this.GroupGiftData.field = e.value;
                     }}/>
 
-                    <Input height={35} width={200} placeholder="مدرسه"type="text"
+                    <Input height={35} width={200} placeholder="همه مدارس"type="text"
                         ref={(ref=>this.schoolInput = ref)}
                         onChange={(event)=>{this.GroupGiftData.school = event.target.value}}/>
 

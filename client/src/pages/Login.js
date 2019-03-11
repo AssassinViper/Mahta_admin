@@ -42,6 +42,12 @@ class LoginPage extends Component{
 
                 this.props.history.push("/admin")
 
+            }else if(res.status === 500){
+
+                let newState=Object.assign({}, this.state);
+                    newState.errorMassage="خطای اختلال در سرور";
+                    this.setState(newState);
+
             }else{
 
                 res.json().then(res=>{

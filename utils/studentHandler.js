@@ -352,10 +352,29 @@ async  function getGPList(req, res, next) {
 async  function spendCredit(req, res, next) {
 
     let params = req.body;
-    let issue = validator.validateSpendCredit(req, res, params);
+    let issue = false;//validator.validateSpendCredit(req, res, params);
+
+    let code = Number(params.code) || 0;
+    let price = Number(params.price) || 0;
+    let useFrom = params.useFrom || "";
+
+    if(code == "" || code <= 0){
+        res.status(consts.NOT_FOUND_CODE).json({error: consts.INCORRECT_MAHTA_ID});
+        return;
+    }
+
+    if(price <= 0){
+        res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_PRICE});
+        return;
+    }
+
+    if(useFrom == "" || (useFrom != "gift" && useFrom != "credit")){
+        res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_USE_FROM});
+        return;
+    }
 
     query = {
-        code: params.code,
+        code: code,
     };
 
     await Student.findOne(query, function(err, student) {
@@ -367,10 +386,9 @@ async  function spendCredit(req, res, next) {
         } else if (!student) { // if found no student
 
             issue = true;
-            res.status(consts.NOT_FOUND_CODE)
-                .json({
-                    error: consts.INCORRECT_MAHTA_ID
-                });
+            res.status(consts.NOT_FOUND_CODE).json({error: consts.INCORRECT_MAHTA_ID});
+            return;
+
         } else { // if found student
 
             if (params.useFrom === 'credit') {
@@ -384,6 +402,7 @@ async  function spendCredit(req, res, next) {
                         .json({
                             error: consts.CREDIT_NOT_ENOUGH
                         });
+                    return;
                 }
             }
 
@@ -398,6 +417,7 @@ async  function spendCredit(req, res, next) {
                         .json({
                             error: consts.GIFT_NOT_ENOUGH
                         });
+                    return;
                 }
             }
 
@@ -406,6 +426,7 @@ async  function spendCredit(req, res, next) {
                 if (err) {
                     issue = true;
                     errHandler(err, res);
+                    return;
                 }
             }));
 

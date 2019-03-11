@@ -12,31 +12,36 @@ async function commitGift(req, res, next) {
 
     let params = req.body;
     let issue = false;
-
+    
+    let price = params.price || 0;
+    let info = params.info || "";
     let gift = new Gift({});
     let inviterId;
+
+    // validation
+    if(price <= 0){
+        res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_PRICE});
+        return;
+    }
 
     // find student
     await Student.findOne({ code: params.code }, function(err, student) {
 
         if (err) {
+            
             errHandler(err, res);
 
         } else if (!student) { // if no student found
-
             issue = true;
-            res.status(consts.NOT_FOUND_CODE)
-                .json({
-                    error: consts.INCORRECT_MAHTA_ID
-                });
+            res.status(consts.NOT_FOUND_CODE).json({error: consts.INCORRECT_MAHTA_ID});
 
         } else { // if student was found
 
             // creating gift
             gift._id = new mongoose.Types.ObjectId();
             gift.owner = student._id;
-            gift.price = params.price;
-            gift.info = params.info;
+            gift.price = price;
+            gift.info = info;
 
             // updating student
             student.gifts.push(gift);
@@ -74,22 +79,37 @@ async function groupGift(req, res){
     let info = params.info || "هدایای گروهی";
     let query = {}
 
-    if(params.grade != undefined && params.grade != 'all'){
+    if(price <= 0){
+        res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_PRICE});
+        return;
+    }
+
+    if(params.grade != undefined && params.grade != "" && params.grade != 'all'){
 
         query.grade = params.grade;
     }
 
-    if(params.field != undefined && params.field != 'all'){
+    if(params.field != undefined && params.field != "" && params.field != 'all'){
 
         query.field = params.field;
     }
 
-    if(params.school != undefined && params.school != 'all'){
+    if(params.school != undefined && params.school != "" && params.school != 'all'){
 
         query.school = params.school;
     }
+
+    console.log(query);
+    
     
     let students = await Student.find(query);
+
+    console.log(students);
+    
+    if(students.length == 0){
+        res.status(consts.BAD_REQ_CODE).json({error:consts.NO_STUDENT_MATCHED});
+        return;
+    }
 
     students.forEach(async function(s){
 

@@ -15,6 +15,10 @@ const CommitGiftHandler = (json, onFetched, onError)=>{
                 res.json().then(res=> onFetched(res))
                 .catch(err=>{ onFetched(res) });
             
+            }else if(res.status === 500){
+
+                onError("خطای حاصل از نقص سرور")
+
             }else{
 
                 res.json().then(res=> onError(res.error))

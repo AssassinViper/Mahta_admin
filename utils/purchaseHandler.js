@@ -13,14 +13,34 @@ async function commitPurchase(req, res, next) {
     let params = req.body;
     let issue = false;
 
+    let code = params.code;
+    let price = params.price;
+    let percent = params.percent;
+
     let purchase = new Purchase({});
     let inviterId;
+
+    if(percent < 0 || percent > 100){
+        res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_PERCENT});
+        return;
+    }
+
+    if(price <= 0){
+        res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_PRICE});
+        return;
+    }
+
+    if(code == "" || code <= 0){
+        res.status(consts.NOT_FOUND_CODE).json({error: consts.INCORRECT_MAHTA_ID});
+        return;
+    }
 
     // find student
     await Student.findOne({ code: params.code }, function(err, student) {
 
         if (err) {
             errHandler(err, res);
+            return;
 
         } else if (!student) { // if no student found
 
@@ -29,6 +49,8 @@ async function commitPurchase(req, res, next) {
                 .json({
                     error: consts.INCORRECT_MAHTA_ID
                 });
+
+            return;    
 
         } else { // if student was found
 
@@ -48,6 +70,7 @@ async function commitPurchase(req, res, next) {
                 if (err) {
                     // issue = true;
                     errHandler(err, res);
+                    return;
                 }
             }));
 
@@ -56,6 +79,7 @@ async function commitPurchase(req, res, next) {
                 if (err) {
                     // issue = true;
                     errHandler(err, res);
+                    return;
                 }
             }));
         }
@@ -75,12 +99,14 @@ async function commitPurchase(req, res, next) {
 
             if (err) {
                 config.log(err);
+                return;
                 // errHandler(err);
 
 
             } else if (!student) { // if no inviter found
 
                 config.log('Could not find student inviter');
+                return;
                 // res.status(consts.NOT_FOUND_CODE)
                 //     .json({
                 //         error: consts.INCORRECT_INVITER_ID
@@ -93,6 +119,7 @@ async function commitPurchase(req, res, next) {
                 // saving inviter
                 student.save((err => {
                     if (err) errHandler(err, res);
+                    return;
                 }));
 
             }

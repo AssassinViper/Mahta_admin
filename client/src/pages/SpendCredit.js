@@ -16,8 +16,8 @@ class SpendCredit extends Component {
 
     SpendCreditData = {
 
-        code:"",
-        price:""
+        code:0,
+        price:0
     }
 
     render() { 
@@ -38,11 +38,11 @@ class SpendCredit extends Component {
                 
                 <Input height={35} width="20%" placeholder="کد خانواده" type="number"
                 ref={(ref=>this.codeInput = ref)}
-                onChange={(event)=>{this.SpendCreditData.code = event.target.value}}/>
+                onChange={(event)=>{this.SpendCreditData.code = Number(event.target.value)}}/>
 
                 <Input height={35} width="20%" placeholder="(مبلغ خرید(تومان"  type="number"
                 ref={(ref=>this.priceInput = ref)}
-                onChange={(event)=>{this.SpendCreditData.price = event.target.value}}/>
+                onChange={(event)=>{this.SpendCreditData.price = Number(event.target.value)}}/>
 
                 <div style={s.sec1}>
 

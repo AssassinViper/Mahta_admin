@@ -16,18 +16,19 @@ const gradeOptions=[
     {value:"دهم", label:"دهم"},
     {value:"یازدهم", label:"یازدهم"},
     {value:"دوازدهم", label:"دوازدهم"},
+    {value:"فارغ التحصیل", label:"فارغ التحصیل"}
 ]
 
 class GroupCommit extends Component {
+    
     state = { askModal:false, errorModal:false, successModal:false }
 
     errorMassage="خطا در شبکه"
 
     GroupCommitData = {
 
-        number:"",
-        grade:"",
-        price:""
+        number:0,
+        grade:""
     }
 
     render() { 
@@ -46,18 +47,11 @@ class GroupCommit extends Component {
 
                 <div style={s.space}/>
 
-                <div style={s.sec1}>
-                    <Input height={35} width={200} placeholder="تعداد دانش آموزان" type="number"
+                <Select options={gradeOptions} styles={customStyles} placeholder="پایه"/>
+
+                <Input height={35} width={200} placeholder="تعداد دانش آموزان" type="number"
                     ref={(ref=>this.numberInput = ref)}
-                    onChange={(event)=>{this.GroupCommitData.number = event.target.value}}/>
-
-                    <Select options={gradeOptions} styles={customStyles} placeholder="پایه"/>
-                </div>
-
-
-                <Input height={35} width={200} placeholder="مبلغ هدیه" type="number"
-                ref={(ref=>this.priceInput = ref)}
-                onChange={(event)=>{this.GroupCommitData.price = event.target.value}}/>
+                    onChange={(event)=>{this.GroupCommitData.number = Number(event.target.value)}}/>
 
 
                 <Button height={50} width="15%" fontColor={"rgba(216,92,32,0.9)"} onClick={this.askModalOpen}>ثبت</Button>
@@ -163,7 +157,7 @@ const s = {
     },
 
     space:{
-        height:'5%',
+        height:'2%',
     },
 
     sec1:{

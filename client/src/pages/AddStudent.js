@@ -37,8 +37,8 @@ class AddStudent extends Component {
 
         firstName:"",
         lastName:"",
-        grade:"نهم",
-        field:"ریاضی",
+        grade:"",
+        field:"",
         school:"",
         phone:"",
         home:"",
@@ -65,7 +65,7 @@ class AddStudent extends Component {
                 <div style={s.sec1}>
                     
                     <Input height={35} width={200} placeholder="نام خانوادگی" type="text"
-                    ref={(ref=>this.lastNameInput = ref)}
+                    ref={(ref=>this.lastNameInput = ref)} value={this.st}
                     onChange={(event)=>{this.AddStudentData.lastName = event.target.value}}/>
 
                     <Input height={35} width={200} placeholder="نام"type="text"
@@ -138,7 +138,6 @@ class AddStudent extends Component {
     commit = ()=>{
 
         
-
         AddStudentHandler(this.AddStudentData,
             (res)=>{
 

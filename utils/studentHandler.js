@@ -26,14 +26,13 @@ async function getStudentList(req, res, next) {
 
         }
     });
-}
+}//done
 
 async function addStudent(req, res, next) {
 
     let params = req.body;
-
-    let issue = validator.hasCode(req, res, params);
-    if (issue) return;
+    let issue = validator.addStudent(req, res);
+    if(issue){return};
 
     let newStudent = new Student({});
 
@@ -43,23 +42,18 @@ async function addStudent(req, res, next) {
 
     // check if any student already own requested code
     await Student.findOne(query, function(err, student) {
-
+        
         if (err) {
-            issue = true;
             errHandler(err, res);
+            return;
 
         } else if (student) { // if a student owns requested Code
 
-            issue = true; // must use Promises or async/await to make this shit work
-            res.status(consts.BAD_REQ_CODE)
-                .json({
-                    error: consts.MAHTA_CODE_EXISTS
-                });
+            res.status(consts.BAD_REQ_CODE).json({error: consts.MAHTA_CODE_EXISTS});
+            return;
         }
     });
-
-    if (issue) return;
-
+    
     newStudent._id = new mongoose.Types.ObjectId();
     newStudent.code = params.code;
     newStudent.firstName = params.firstName;
@@ -67,7 +61,7 @@ async function addStudent(req, res, next) {
     newStudent.grade = params.grade;
     newStudent.field = params.field;
     newStudent.phone = params.phone;
-    newStudent.home = params.home;
+    newStudent.home = params.home || 0;
     newStudent.school = params.school;
 
     // check if inviterCode is valid
@@ -77,16 +71,13 @@ async function addStudent(req, res, next) {
         await Student.findOne({ code: Number(params.inviterCode) }, function(err, student) {
 
             if (err) {
-                issue = true;
                 errHandler(err, res);
+                return;
 
             } else if (!student) { // if found no inviter
 
-                issue = true;
-                res.status(consts.BAD_REQ_CODE)
-                    .json({
-                        error: consts.INCORRECT_INVITER_ID
-                    });
+                res.status(consts.BAD_REQ_CODE).json({error: consts.INCORRECT_INVITER_ID});
+                return;
 
             } else { // if inviterCode is valid
 
@@ -95,51 +86,37 @@ async function addStudent(req, res, next) {
 
                 // adding ref to inviter
                 student.inviteds.push(newStudent);
-
+                
                 // saving inviter
                 student.save((err => {
-
+                    
                     if (err) {
-                        issue = true;
                         errHandler(err, res);
+                        return;
                     }
+                    
+                    newStudent.save((err => {
+                        if (err) {
+                            errHandler(err, res);
+                            config.log(`error at saving new student`);
+                            return;
+                        }
+                        res.status(consts.SUCCESS_CODE).send("OK");
+                    }));
                 }));
             }
         });
-    }
-
-    if (issue) return;
-
-    await newStudent.save((err => {
-        if (err) {
-            issue = true;
-            errHandler(err, res);
-            config.log(`error at saving new student`);
-        }
-    }));
-
-    if (issue) return;
-
-    // send student list
-    getStudentList(req, res, next);
-
-    // update last added student
-    //if student had grade
-    if (newStudent.grade) {
-
-    }
-
-
-}
+    }    
+}//done
 
 async function editStudent(req, res, next) {
 
     let params = req.body;
-    let issue = false;
 
-    let query = {
-        code: params.code
-    };
+    let issue = validator.addStudent(req, res);
+    if(issue){return};
+
+    let query = {code: params.code};
 
     let student = {
         firstName: params.firstName,
@@ -154,32 +131,24 @@ async function editStudent(req, res, next) {
     await Student.findOneAndUpdate(query, student, {upsert:false}, function(err, student){
 
         if (err) {
-            issue = true;
             errHandler(err, res);
+            return;
 
         } else if (!student) {
 
-            issue = true;
-            res.status(consts.NOT_FOUND_CODE)
-                .json({
-                    error: consts.INCORRECT_MAHTA_ID
-                });
+            res.status(consts.NOT_FOUND_CODE).json({error: consts.INCORRECT_MAHTA_ID});
+            return;
         }
     });
-
-    if (issue) return;
-
-    // send student list
-    getStudentList(req, res, next);
-
-}
+}//done
 
 async function deleteStudent(req, res, next) {
 
     let params = req.body;
 
-    let issue = validator.hasCode(req, res, params);
-    if (issue) return;
+    if(validator.hasCode(req, res, params)){
+        return;
+    }
 
     let inviterId;
     let gifts;
@@ -195,17 +164,13 @@ async function deleteStudent(req, res, next) {
     let studentToDelete = await Student.findOne(query, function(err, student) {
 
         if (err) { // if there were errors running query
-
-            issue = true;
             errHandler(err, res);
+            return;
 
         } else if (!student) { // if found no student
 
-            issue = true;
-            res.status(consts.BAD_REQ_CODE)
-                .json({
-                    error: consts.INCORRECT_MAHTA_ID
-                });
+            res.status(consts.BAD_REQ_CODE).json({error: consts.INCORRECT_MAHTA_ID});
+            return;
 
         } else { // if found student
 
@@ -218,8 +183,6 @@ async function deleteStudent(req, res, next) {
         }
     });
 
-    if (issue) return;
-
     // if student had inviter
     if (inviterId) {
 
@@ -227,9 +190,8 @@ async function deleteStudent(req, res, next) {
         await Student.findOne({_id:inviterId}, function(err, student) {
 
             if (err) {
-
-                issue = true;
                 errHandler(err, res);
+                return;
 
             } else if (!student) { // if found no inviter
 
@@ -247,8 +209,8 @@ async function deleteStudent(req, res, next) {
                 student.save(err => {
                     if (err) {
 
-                        issue = true;
                         errHandler(err);
+                        return;
 
                     } else {
                         config.log(`inviter's property updated`);
@@ -257,8 +219,6 @@ async function deleteStudent(req, res, next) {
             }
         });
     }
-
-    if (issue) return;
 
     // if student had gifts
     if (gifts) {
@@ -270,27 +230,20 @@ async function deleteStudent(req, res, next) {
         await purchaseHandler.deletePurchases(studentToDelete._id);
     }
 
-    if (issue) return;
-
     // remove student
     await Student.deleteOne(studentToDelete ,(err, student) => {
 
         if (err) {
 
-            issue = true;
             errHandler(err, res);
+            return;
 
         } else {
-            config.log(`Removed student`);
+            
+            res.status(consts.SUCCESS_CODE).send("OK")
         }
     });
-
-    if (issue) return;
-
-    // send student list
-    getStudentList(req, res, next);
-
-}
+}//done
 
 async  function getGPList(req, res, next) {
 
@@ -434,10 +387,6 @@ async  function spendCredit(req, res, next) {
     });
 
     if (issue) return;
-
-    // send student list
-    getStudentList(req, res, next);
-
 }
 
 // TODO: params beinging,ending
@@ -486,7 +435,5 @@ async  function groupCommit(req, res, next) {
         .json(response);
 
 }
-
-
 
 module.exports = {getStudentList, addStudent, editStudent, deleteStudent, getGPList, spendCredit, groupCommit};

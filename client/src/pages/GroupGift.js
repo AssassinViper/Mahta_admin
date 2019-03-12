@@ -47,9 +47,9 @@ class GroupGift extends Component {
         return ( 
             <div style={{opacity:0.85,
                 display:'flex',
-                height:(this.props.height*(0.78)),
+                height:'78vh',
                 minHeight:440,
-                width:(this.props.width*(0.86)),
+                width:'80vw',
                 minWidth:900,
                 flexDirection:'column',
                 alignItems:'center',

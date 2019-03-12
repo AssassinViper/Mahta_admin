@@ -10,7 +10,7 @@ import Dashboard from '../pages/Dashboard';
 
 class SpendCredit extends Component {
 
-    state = { usefrom:"credit", askModal:false, errorModal:false, successModal:false }
+    state = { askModal:false, errorModal:false, successModal:false }
 
     errorMassage="خطا در شبکه"
 
@@ -24,9 +24,9 @@ class SpendCredit extends Component {
         return ( 
             <div style={{opacity:0.85,
                 display:'flex',
-                height:(this.props.height*(0.78)),
+                height:'78vh',
                 minHeight:440,
-                width:(this.props.width*(0.86)),
+                width:'80vw',
                 minWidth:900,
                 flexDirection:'column',
                 alignItems:'center',
@@ -40,31 +40,9 @@ class SpendCredit extends Component {
                 ref={(ref=>this.codeInput = ref)}
                 onChange={(event)=>{this.SpendCreditData.code = Number(event.target.value)}}/>
 
-                <Input height={35} width="20%" placeholder="(مبلغ خرید(تومان"  type="number"
+                <Input height={35} width="20%" placeholder="(مبلغ برداشت(تومان"  type="number"
                 ref={(ref=>this.priceInput = ref)}
                 onChange={(event)=>{this.SpendCreditData.price = Number(event.target.value)}}/>
-
-                <div style={s.sec1}>
-
-                    <div style={s.sec2}>
-                        <label style={s.usefrom_con}>
-                        از اعتبار&emsp;
-                            <input type="radio" value="credit" name="credit" 
-                                checked={this.state.usefrom === "credit"}
-                                onChange={this.onUseFromChanged} name="usefrom"/>
-                        </label>
-                    </div>
-
-                    <div style={s.sec2}>
-                        <label style={s.usefrom_con}>
-                        از هدیه&emsp;
-                            <input type="radio" value="gift" name="gift"
-                                checked={this.state.usefrom === "gift"}
-                                onChange={this.onUseFromChanged}name="usefrom"/>
-                        </label>
-                    </div>
-
-                </div>
                 
                 
                 <Button height={50} width="15%" fontColor={"rgba(216,92,32,0.9)"} onClick={this.askModalOpen}>ثبت</Button>
@@ -91,8 +69,6 @@ class SpendCredit extends Component {
     }
 
     commit = ()=>{
-
-        this.SpendCreditData.useFrom = this.state.usefrom;
         
         SpendCreditHandler(this.SpendCreditData,
             (res)=>{
@@ -100,7 +76,7 @@ class SpendCredit extends Component {
                 this.codeInput.clear();
                 this.priceInput.clear();
 
-                Dashboard.StudentInfoList = res;
+                Dashboard.StudentInfoList = [];
                 
                 this.successModalOpen();
 

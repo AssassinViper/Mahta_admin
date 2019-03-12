@@ -44,10 +44,10 @@ class Dashboard extends Component {
             <div style={s.bg}>
                 <div style={{opacity:0.85,
                             display:'flex',
-                            height:(this.props.height*(0.78)),
+                            height:'78vh',
                             minHeight:440,
-                            width:(this.props.width*(0.86)),
-                            minWidth:1000,
+                            width:'86vw',
+                            minWidth:900,
                             flexDirection:'column',
                             alignItems:'center',
                             justifyContent:'space-around',

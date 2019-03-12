@@ -87,9 +87,6 @@ async function commitPurchase(req, res, next) {
 
     if (issue) return;
 
-    // sending student list
-    next();
-
     // NOTE: headers are sent, client would not know if there was an err increasing inviter's credit
 
     if (inviterId) { // if student does have a inviter
@@ -122,10 +119,12 @@ async function commitPurchase(req, res, next) {
                     return;
                 }));
 
+                res.status(consts.SUCCESS_CODE).send("OK");
             }
         });
     }
-
+    
+    
 }
 
 async function deletePurchases(ownerId) {

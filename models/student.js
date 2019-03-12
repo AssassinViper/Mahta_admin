@@ -17,8 +17,8 @@ let studentSchema = mongoose.Schema({
     grade: String, //TODO: new year function
     field: String,
     school: String,
-    phone: Number,
-    home: Number,
+    phone: String,
+    home: String,
     credit: {
         type: Number,
         default: 0

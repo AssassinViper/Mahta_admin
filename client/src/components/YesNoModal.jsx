@@ -25,6 +25,7 @@ const s = {
         flexDirection:'column',
         alignItems:'center',
         width:'30%',
+        minWidth:200,
         borderRadius:5,
         //backgroundColor:'rgb(216,92,32)'
     },

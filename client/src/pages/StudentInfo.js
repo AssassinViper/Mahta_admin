@@ -12,7 +12,7 @@ import GiftsModal from '../components/GiftsModal';
 class StudentInfo extends Component {
     
     state = { errorModal:false, invitesModal:false, 
-        giftsModal:false, purchasesModal:false, gifts:[], purchases:[]}     
+        giftsModal:false, purchasesModal:false, gifts:[], purchases:[], inviterCode:""}     
 
 
     constructor(props){
@@ -20,9 +20,19 @@ class StudentInfo extends Component {
         this.state.student = Dashboard.selectedStudent;
     }
 
+    inviter = {};
+
     componentDidMount(){
 
         if(this.state.student.code != undefined){
+
+            let inv_id = Dashboard.selectedStudent.inviter;
+            let inv_code = "";
+            Dashboard.StudentInfoList.forEach(s=>{
+                if(s._id == inv_id){
+                    this.inviter = s;
+                }
+            })
 
             StudentGPListHandler({code:this.state.student.code}, 
                 (res)=>{
@@ -30,6 +40,7 @@ class StudentInfo extends Component {
                     let newState = Object.assign({}, this.state);
                     newState.gifts = res.gifts;
                     newState.purchases = res.purchases;
+                    newState.inviterCode = this.inviter.code;
                     
                     this.setState(newState);
 
@@ -53,9 +64,9 @@ class StudentInfo extends Component {
             
             <div style={{opacity:0.85,
                 display:'flex',
-                height:(this.props.height*(0.78)),
+                height:'78vh',
                 minHeight:440,
-                width:(this.props.width*(0.86)),
+                width:'80vw',
                 minWidth:900,
                 flexDirection:'column',
                 alignItems:'center',
@@ -67,13 +78,17 @@ class StudentInfo extends Component {
                 
                 <div style={s.sec1}>
                     <div style={s.row}>
-                        <div style={s.column}>
+                        <div style={s.column2}>
                             <Label text={this.state.student.lastName} label="نام خانوادگی"/>
                         </div>
-                        <div style={s.column}>
+                        <div style={s.column2}>
                             <Label text={this.state.student.firstName} label="نام "/>
                         </div>
-                        <div style={s.column}>
+                        <div style={s.column2}>
+                            {/*<Label cursor="pointer" text={"\uD83D\uDEC8  "+this.state.inviterCode} label="کد معرف"/>*/}
+                            <Label text={this.state.inviterCode} label="کد معرف"/>
+                        </div>
+                        <div style={s.column2}>
                             <Label text={this.state.student.code} label="کد خانواده"/>
                         </div>
                     </div>
@@ -149,6 +164,13 @@ class StudentInfo extends Component {
 
                 alert(err)
             })
+    }
+
+    getInviterCode = ()=>{
+
+        
+
+        //return("bb")
     }
 
     invitesModalOpen = ()=>{

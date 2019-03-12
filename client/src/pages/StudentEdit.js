@@ -53,9 +53,9 @@ class StudentEdit extends Component {
             return ( 
                 <div style={{opacity:0.85,
                     display:'flex',
-                    height:(this.props.height*(0.78)),
+                    height:'78vh',
                     minHeight:440,
-                    width:(this.props.width*(0.86)),
+                    width:'80vw',
                     minWidth:900,
                     flexDirection:'column',
                     alignItems:'center',
@@ -104,15 +104,15 @@ class StudentEdit extends Component {
                     
                     <div style={s.sec1}>
 
-                        <Input height={35} width={200} placeholder="شماره تماس"type="number"
+                        <Input height={35} width={200} placeholder="شماره همراه"type="tel"
                         defaultValue={this.StudentEditData.phone}
                         ref={(ref=>this.phoneInput = ref)}
-                        onChange={(event)=>{this.StudentEditData.phone = Number(event.target.value)}}/>
+                        onChange={(event)=>{this.StudentEditData.phone = event.target.value}}/>
 
-                        <Input height={35} width={200} placeholder="شماره منزل"type="number"
+                        <Input height={35} width={200} placeholder="شماره منزل"type="tel"
                         defaultValue={this.StudentEditData.home}
                         ref={(ref=>this.homeInput = ref)}
-                        onChange={(event)=>{this.StudentEditData.home = Number(event.target.value)}}/>
+                        onChange={(event)=>{this.StudentEditData.home = event.target.value}}/>
 
                     </div>
 
@@ -162,7 +162,7 @@ class StudentEdit extends Component {
         DeleteStudentHandler({code:this.StudentEditData.code},
             (res)=>{
                 
-                Dashboard.StudentInfoList = res;
+                Dashboard.StudentInfoList = [];
 
                 this.successModalOpen();
             },
@@ -178,7 +178,7 @@ class StudentEdit extends Component {
         StudentEditHandler(this.StudentEditData,
             (res)=>{
 
-                Dashboard.StudentInfoList = res;
+                Dashboard.StudentInfoList = [];
 
                 Dashboard.selectedStudent = this.StudentEditData;
                 

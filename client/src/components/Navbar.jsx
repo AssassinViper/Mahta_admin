@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import NavButton from './NavButton';
-import {Cookies}  from 'react-cookie';
 
 const activeList = {
     spendcredit:false,
@@ -18,7 +17,7 @@ class Navbar extends Component {
         super(props);
         this.state = { width: 0, height: 0, activeButtons:Object.assign({},activeList) };
         this.state.activeButtons.studentList=true;
-        this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+        //this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     }
 
     static lastButton = "studentList";
@@ -31,12 +30,12 @@ class Navbar extends Component {
     }
       
     componentDidMount() {
-        this.updateWindowDimensions();
-        window.addEventListener('resize', this.updateWindowDimensions);
+        ///this.updateWindowDimensions();
+        //window.addEventListener('resize', this.updateWindowDimensions);
     }
     
     componentWillUnmount() {
-        window.removeEventListener('resize', this.updateWindowDimensions);
+        //window.removeEventListener('resize', this.updateWindowDimensions);
     }
     
     updateWindowDimensions() {
@@ -53,8 +52,9 @@ class Navbar extends Component {
                 justifyContent:'center',
                 margin:0,
                 minWidth:1280,
-                height:85,
-                width:this.state.width,
+                minHeight:80,
+                height:'13vh',
+                width:'100vw',
                 backgroundColor:'rgb(63,74,80)'
             }}>
 
@@ -72,13 +72,13 @@ class Navbar extends Component {
                 <div style={s.space}/>
 
                 <NavButton history={this.props.history} active={this.state.activeButtons.spendcredit} 
-                activeButton={this.activeButton} navTo="spendcredit" text="مصرف اعتبار"/>
+                activeButton={this.activeButton} navTo="spendcredit" text="برداشت اعتبار"/>
+                <NavButton history={this.props.history} active={this.state.activeButtons.commitpurchase} 
+                activeButton={this.activeButton} navTo="commitpurchase" text="ثبت خرید"/>
                 <NavButton history={this.props.history} active={this.state.activeButtons.groupgift} 
                 activeButton={this.activeButton} navTo="groupgift" text="هدیه گروهی"/>
                 <NavButton history={this.props.history} active={this.state.activeButtons.commitgift} 
                 activeButton={this.activeButton} navTo="commitgift" text="ثبت هدیه"/>
-                <NavButton history={this.props.history} active={this.state.activeButtons.commitpurchase} 
-                activeButton={this.activeButton} navTo="commitpurchase" text="ثبت خرید"/>
                 <NavButton history={this.props.history} active={this.state.activeButtons.groupcommit} 
                 activeButton={this.activeButton} navTo="groupcommit" text="ثبت گروهی"/>
                 <NavButton history={this.props.history} active={this.state.activeButtons.addstudent} width={'10%'}

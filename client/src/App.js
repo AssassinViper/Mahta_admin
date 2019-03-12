@@ -28,16 +28,16 @@ class App extends Component {
   constructor(props) {
   super(props);
   this.state = { width: 0, height: 0 };
-  this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+  //this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
   }
 
   componentDidMount() {
-    this.updateWindowDimensions();
-    window.addEventListener('resize', this.updateWindowDimensions);
+    //this.updateWindowDimensions();
+    //window.addEventListener('resize', this.updateWindowDimensions);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.updateWindowDimensions);
+    //window.removeEventListener('resize', this.updateWindowDimensions);
   }
 
   updateWindowDimensions() {
@@ -51,8 +51,8 @@ class App extends Component {
     return (
       <Router>
         <div className="App" style={{
-          height:this.state.height, 
-          width:this.state.width,
+          height:'100vh', 
+          width:'100vw',
           minWidth:1280,
           minHeight:600,
           display:'flex',

@@ -50,9 +50,9 @@ class AddStudent extends Component {
         return ( 
             <div style={{opacity:0.85,
                 display:'flex',
-                height:(this.props.height*(0.78)),
+                height:'78vh',
                 minHeight:440,
-                width:(this.props.width*(0.86)),
+                width:'80vw',
                 minWidth:900,
                 flexDirection:'column',
                 alignItems:'center',
@@ -107,13 +107,13 @@ class AddStudent extends Component {
                 
                 <div style={s.sec1}>
 
-                    <Input height={35} width={200} placeholder="شماره تماس" type="number"
+                    <Input height={35} width={200} placeholder="شماره همراه" type="tel"
                     ref={(ref=>this.phoneInput = ref)}
-                    onChange={(event)=>{this.AddStudentData.phone = Number(event.target.value)}}/>
+                    onChange={(event)=>{this.AddStudentData.phone = event.target.value}}/>
 
-                    <Input height={35} width={200} placeholder="شماره منزل" type="number"
+                    <Input height={35} width={200} placeholder="شماره منزل" type="tel"
                     ref={(ref=>this.homeInput = ref)}
-                    onChange={(event)=>{this.AddStudentData.home = Number(event.target.value)}}/>
+                    onChange={(event)=>{this.AddStudentData.home = event.target.value}}/>
 
                 </div>
                 
@@ -149,7 +149,7 @@ class AddStudent extends Component {
                 this.homeInput.clear();
                 this.schoolInput.clear();
 
-                Dashboard.StudentInfoList = res;
+                Dashboard.StudentInfoList = [];
 
                 this.successModalOpen();
 

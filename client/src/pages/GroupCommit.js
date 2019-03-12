@@ -28,16 +28,16 @@ class GroupCommit extends Component {
     GroupCommitData = {
 
         number:0,
-        grade:""
+        gift:0,
     }
 
     render() { 
         return ( 
             <div style={{opacity:0.85,
                 display:'flex',
-                height:(this.props.height*(0.78)),
+                height:'78vh',
                 minHeight:440,
-                width:(this.props.width*(0.86)),
+                width:'80vw',
                 minWidth:900,
                 flexDirection:'column',
                 alignItems:'center',
@@ -47,11 +47,13 @@ class GroupCommit extends Component {
 
                 <div style={s.space}/>
 
-                <Select options={gradeOptions} styles={customStyles} placeholder="پایه"/>
-
                 <Input height={35} width={200} placeholder="تعداد دانش آموزان" type="number"
                     ref={(ref=>this.numberInput = ref)}
                     onChange={(event)=>{this.GroupCommitData.number = Number(event.target.value)}}/>
+
+                <Input height={35} width={200} placeholder="هدیه اولیه" type="number"
+                    ref={(ref=>this.giftInput = ref)}
+                    onChange={(event)=>{this.GroupCommitData.gift = Number(event.target.value)}}/>
 
 
                 <Button height={50} width="15%" fontColor={"rgba(216,92,32,0.9)"} onClick={this.askModalOpen}>ثبت</Button>
@@ -79,9 +81,9 @@ class GroupCommit extends Component {
             (res)=>{
 
                 this.numberInput.clear();
-                this.priceInput.clear();
+                this.giftInput.clear();
 
-                Dashboard.StudentInfoList = res;
+                Dashboard.StudentInfoList = [];
                 
                 this.successModalOpen();
             },

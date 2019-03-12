@@ -11,12 +11,10 @@ let Gift = require('../models/gift');
 async function commitGift(req, res, next) {
 
     let params = req.body;
-    let issue = false;
     
     let price = params.price || 0;
     let info = params.info || "";
     let gift = new Gift({});
-    let inviterId;
 
     // validation
     if(price <= 0){
@@ -30,10 +28,11 @@ async function commitGift(req, res, next) {
         if (err) {
             
             errHandler(err, res);
+            return;
 
         } else if (!student) { // if no student found
-            issue = true;
             res.status(consts.NOT_FOUND_CODE).json({error: consts.INCORRECT_MAHTA_ID});
+            return;
 
         } else { // if student was found
 
@@ -53,6 +52,7 @@ async function commitGift(req, res, next) {
                 if (err) {
                     errHandler(err, res);
                     config.log(`err in saving student`);
+                    return;
                 }
 
             }));
@@ -62,14 +62,13 @@ async function commitGift(req, res, next) {
                 if (err) {
                     errHandler(err, res);
                     config.log(`err in saving gift`);
+                    return;
                 }
             }));
+
+            res.status(consts.SUCCESS_CODE).send("OK");
         }
     });
-
-    if (issue) return;
-
-    next();
 }
 
 async function groupGift(req, res){

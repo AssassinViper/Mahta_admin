@@ -20,6 +20,7 @@ const s = {
         flexDirection:'column',
         alignItems:'center',
         width:'30%',
+        minWidth:200,
         borderRadius:5,
         borderStyle:'solid',
         borderColor:'#db3b3b',

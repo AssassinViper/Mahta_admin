@@ -23,10 +23,10 @@ const s = {
 
     con:{
         display:'flex',
-        height:"78%",
+        height:'78vh',
         minHeight:440,
-        width:"86%",
-        minWidth:1000,
+        width:'86vw',
+        minWidth:900,
         flexDirection:'column',
         alignItems:'center',
         justifyContent:'space-around',

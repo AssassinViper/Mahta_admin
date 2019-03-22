@@ -14,7 +14,7 @@ let studentSchema = mongoose.Schema({
     firstName: { type: String, trim: true },
     lastName: { type: String, trim: true },
 
-    grade: String, //TODO: new year function
+    grade: String,
     field: String,
     school: String,
     phone: Number,

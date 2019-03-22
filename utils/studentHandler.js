@@ -8,7 +8,6 @@ const validator = require('../tools/validator');
 
 // Requiring models
 let Student = require('../models/student');
-let Latest = require('../models/latest'); // TODO: must use this on commit group and inserting sample json
 
 
 async function getStudentList(req, res, next) {
@@ -292,7 +291,7 @@ async function deleteStudent(req, res, next) {
 
 }
 
-async  function getGPList(req, res, next) {
+async function getGPList(req, res, next) {
 
     let params = req.body;
     let issue = false;
@@ -349,7 +348,7 @@ async  function getGPList(req, res, next) {
 
 }
 
-async  function spendCredit(req, res, next) {
+async function spendCredit(req, res, next) {
 
     let params = req.body;
     let issue = validator.validateSpendCredit(req, res, params);
@@ -419,8 +418,8 @@ async  function spendCredit(req, res, next) {
 
 }
 
-// TODO: params beinging,ending
-// result check if codes are not repeated and build students
+// TODO: create a number of students with random code
+// check if codes are not repeated
 async  function groupCommit(req, res, next) {
 
     let params = req.body;

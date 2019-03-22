@@ -75,7 +75,7 @@ router.post('/authenticate', (req, res) => {
 
 });
 
-// for loging out
+
 router.post('/logout', (req, res)=>{
     const token = jwt.sign({username:"unknown"},"something",{expiresIn:'1s'});
     try {
@@ -103,7 +103,7 @@ router.post('/getGPList', withAuth, studentHandler.getGPList);
 
 router.post('/spendCredit', withAuth, studentHandler.spendCredit);
 
-router.post('/getGPList', withAuth, studentHandler.groupCommit);
+router.post('/groupCommit', withAuth, studentHandler.groupCommit);
 
 
 

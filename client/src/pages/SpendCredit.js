@@ -63,11 +63,6 @@ class SpendCredit extends Component {
          );
     }
 
-    onUseFromChanged = (event)=>{
-
-        this.setState({usefrom:event.currentTarget.value});
-    }
-
     commit = ()=>{
         
         SpendCreditHandler(this.SpendCreditData,

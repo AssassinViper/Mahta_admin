@@ -10,7 +10,7 @@ import ErrorModal from '../components/ErrorModal';
 import SuccessModal from '../components/SuccessModal';
 
 class CommitPurchase extends Component {
-    state = { askModal:false, errorModal:false, successModal:false }
+    state = { askModal:false, errorModal:false, successModal:false, usefrom:'gift'}
     
     errorMassage="خطا در شبکه"
     
@@ -103,6 +103,8 @@ class CommitPurchase extends Component {
 
     commit = ()=>{
 
+        this.CommitPurchaseData.useFrom = this.state.usefrom;
+
         CommitPurchaseHandler(this.CommitPurchaseData,
             (res)=>{
 
@@ -120,6 +122,12 @@ class CommitPurchase extends Component {
                 this.errorModalOpen();
             }
         );
+    }
+
+    onUseFromChanged =(event)=>{
+        let newState = Object.assign({},this.state);
+        newState.usefrom = event.currentTarget.value;
+        this.setState(newState);
     }
 
     askModalCommit = ()=>{
@@ -199,7 +207,7 @@ const s = {
 
     sec2:{
         height:'13%',
-        width:'30%',
+        width:'40%',
         display:'flex',
         alignItems:'center',
         justifyContent:'space-around',

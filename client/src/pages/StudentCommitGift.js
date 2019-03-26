@@ -83,6 +83,7 @@ class CommitGift extends Component {
                 this.infoPlainText.clear();
 
                 Dashboard.StudentInfoList = [];
+                Dashboard.selectedStudent.gift += this.CommitGiftData.price;
                 
                 this.successModalOpen();
 

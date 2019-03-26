@@ -5,7 +5,7 @@ let moment = require('moment-timezone');
 let studentSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
     code:{
-        type: Number,
+        type: String,
         required: true,
         unique: true,
         dropDups: true,
@@ -13,8 +13,7 @@ let studentSchema = mongoose.Schema({
     },
     firstName: { type: String, trim: true },
     lastName: { type: String, trim: true },
-
-    grade: String, //TODO: new year function
+    grade: String,
     field: String,
     school: String,
     phone: String,
@@ -55,7 +54,7 @@ let studentSchema = mongoose.Schema({
             return moment().tz("Asia/Tehran").format('YYYY-MM-DD HH:mm:ss.SSS')+'Z'
         }
     },
-    password: String
+    password: String,
 });
 
 let Student = module.exports = mongoose.model('Student', studentSchema);

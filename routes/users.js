@@ -75,7 +75,7 @@ router.post('/authenticate', (req, res) => {
 
 });
 
-// for loging out
+
 router.post('/logout', (req, res)=>{
     const token = jwt.sign({username:"unknown"},"something",{expiresIn:'1s'});
     try {

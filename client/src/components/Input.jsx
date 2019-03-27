@@ -15,6 +15,8 @@ class Input extends Component {
             type={this.props.type || "text"}
             defaultValue={this.props.defaultValue}
             onChange={this.props.onChange}
+            title={this.props.title}
+            pattern={this.props.pattern}
             maxLength={this.props.maxLength || 200}
             ref={(ref)=>this.input=ref}
             max={this.props.max}

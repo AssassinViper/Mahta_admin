@@ -10,12 +10,14 @@ import SuccessModal from '../components/SuccessModal';
 import Dashboard from './Dashboard';
 
 class SpendCredit extends Component {
-    state = { usefrom:"credit", askModal:false, errorModal:false, successModal:false }
+    state = { credit:Dashboard.selectedStudent.credit, askModal:false, errorModal:false, successModal:false }
+
+    errorMassage="خطا در شبکه"
 
     SpendCreditData = {
 
         code:Dashboard.selectedStudent.code,
-        price:"",
+        price:0,
     }
 
     render() { 
@@ -31,9 +33,9 @@ class SpendCredit extends Component {
             return ( 
                 <div style={{opacity:0.85,
                     display:'flex',
-                    height:(this.props.height*(0.78)),
+                    height:'78vh',
                     minHeight:440,
-                    width:(this.props.width*(0.86)),
+                    width:'80vw',
                     minWidth:900,
                     flexDirection:'column',
                     alignItems:'center',
@@ -46,29 +48,10 @@ class SpendCredit extends Component {
 
                     <Input height={35} width="20%" placeholder="(مبلغ خرید(تومان"  type="number"
                     ref={(ref=>this.priceInput = ref)}
-                    onChange={(event)=>{this.SpendCreditData.price = event.target.value}}/>
+                    onChange={(event)=>{this.SpendCreditData.price = Number(event.target.value)}}/>
 
-                    
-                    <div style={s.sec1}>
-
-                    <div style={s.sec2}>
-                        <label style={s.usefrom_con}>
-                        ({Dashboard.selectedStudent.credit})از اعتبار&emsp;
-                            <input type="radio" value="credit" name="credit" 
-                                checked={this.state.usefrom === "credit"}
-                                onChange={this.onUseFromChanged} name="usefrom"/>
-                        </label>
-                    </div>
-
-                    <div style={s.sec2}>
-                        <label style={s.usefrom_con}>
-                        ({Dashboard.selectedStudent.gift})از هدیه&emsp;
-                            <input type="radio" value="gift" name="gift"
-                                checked={this.state.usefrom === "gift"}
-                                onChange={this.onUseFromChanged}name="usefrom"/>
-                        </label>
-                    </div>
-
+                    <div style={s.text}>
+                        {"("+this.state.credit +") : "+" مقدار اعتبار به تومان"}
                     </div>
                     
                     <Button height={50} width="15%" fontColor={"rgba(55, 110, 198,0.9)"} onClick={this.askModalOpen}>ثبت</Button>
@@ -78,7 +61,7 @@ class SpendCredit extends Component {
                     </YesNoModal>
                     
                     <ErrorModal open={this.state.errorModal} onClose={this.errorModalClose}>
-                        خطا
+                        {this.errorMassage}
                     </ErrorModal>
                     
                     <SuccessModal open={this.state.successModal} onClose={this.successModalClose}>
@@ -105,12 +88,14 @@ class SpendCredit extends Component {
 
                 this.priceInput.clear();
 
-                Dashboard.StudentInfoList = res;
+                Dashboard.StudentInfoList = [];
+                Dashboard.selectedStudent.credit -= this.SpendCreditData.price;
                 
                 this.successModalOpen();
 
             },(err)=>{
 
+                this.errorMassage = err;
                 this.errorModalOpen();
             }
         );
@@ -161,6 +146,7 @@ class SpendCredit extends Component {
 
         let newState = Object.assign({}, this.state);
         newState.successModal =false;
+        newState.credit = Dashboard.selectedStudent.credit;
         this.setState(newState);
     }
 }
@@ -211,6 +197,13 @@ const s = {
         display:'inline',
         height:'5%',
         width:'20%',
+    },
+
+    text:{
+        fontFamily:'amp',
+        fontSize:18,
+        color:'white',
+        display:'inline'
     }
 
 }

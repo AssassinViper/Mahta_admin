@@ -11,29 +11,70 @@ let Purchase = require('../models/purchase');
 async function commitPurchase(req, res, next) {
 
     let params = req.body;
-    let issue = false;
+
+    let code = params.code;
+    let price = params.price;
+    let percent = params.percent;
+    let useFrom = params.useFrom;
 
     let purchase = new Purchase({});
     let inviterId;
+
+    if(percent < 0 || percent > 100){
+        res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_PERCENT});
+        return;
+    }
+
+    if(price <= 0){
+        res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_PRICE});
+        return;
+    }
+
+    if(code == "" || code <= 0){
+        res.status(consts.NOT_FOUND_CODE).json({error: consts.INCORRECT_MAHTA_ID});
+        return;
+    }
+
+    if(useFrom == "" || (useFrom != "gift" && useFrom != "credit")){
+        res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_USE_FROM});
+        return;
+    }
 
     // find student
     await Student.findOne({ code: params.code }, function(err, student) {
 
         if (err) {
             errHandler(err, res);
+            return;
 
         } else if (!student) { // if no student found
 
-            issue = true;
-            res.status(consts.NOT_FOUND_CODE)
-                .json({
-                    error: consts.INCORRECT_MAHTA_ID
-                });
+            res.status(consts.NOT_FOUND_CODE).json({error: consts.INCORRECT_MAHTA_ID});
+            return;    
 
         } else { // if student was found
 
-            // if had an inviter
-            if (student.inviter) inviterId = student.inviter;
+            //check the gift or credit amount
+            if(useFrom == "gift"){
+
+                if(price > student.gift){
+
+                    res.status(consts.NOT_FOUND_CODE).json({error: consts.GIFT_NOT_ENOUGH});
+                    return;
+                }
+
+                student.gift -= price;
+
+            }else{
+
+                if(price > student.credit){
+
+                    res.status(consts.NOT_FOUND_CODE).json({error: consts.CREDIT_NOT_ENOUGH});
+                    return;
+                }
+
+                student.credit -= price;
+            }
 
             purchase._id = new mongoose.Types.ObjectId();
             purchase.owner = student._id;
@@ -46,59 +87,56 @@ async function commitPurchase(req, res, next) {
             // save student
             student.save((err => {
                 if (err) {
-                    // issue = true;
                     errHandler(err, res);
+                    return;
                 }
             }));
 
             // save purchase
             purchase.save((err => {
                 if (err) {
-                    // issue = true;
                     errHandler(err, res);
+                    return;
                 }
             }));
+
+            // if had an inviter
+            if (student.inviter != "" && student.inviter != undefined){
+
+                inviterId = student.inviter;
+                
+                Student.findOne({ _id: inviterId }, function(err, student) {
+
+                    if (err) {
+                        res.status(consts.SUCCESS_CODE).send("ُInviter finding error!!!");
+                        return;
+        
+        
+                    } else if (!student) { // if no inviter found
+        
+                        res.status(consts.SUCCESS_CODE).send("ُInviter not found!!!");
+                        return;
+        
+                    } else { // if inviter was found
+        
+                        student.credit += price * percent / 100;
+        
+                        // saving inviter
+                        student.save((err => {
+                            if (err) errHandler(err, res);
+                            return;
+                        }));
+        
+                        res.status(consts.SUCCESS_CODE).send("OK");
+                    }
+                });
+            
+            }else{
+
+                res.status(consts.SUCCESS_CODE).send("OK");
+            } 
         }
     });
-
-    if (issue) return;
-
-    // sending student list
-    next();
-
-    // NOTE: headers are sent, client would not know if there was an err increasing inviter's credit
-
-    if (inviterId) { // if student does have a inviter
-
-        // find inviter
-        await Student.findOne({ _id: inviterId }, function(err, student) {
-
-            if (err) {
-                config.log(err);
-                // errHandler(err);
-
-
-            } else if (!student) { // if no inviter found
-
-                config.log('Could not find student inviter');
-                // res.status(consts.NOT_FOUND_CODE)
-                //     .json({
-                //         error: consts.INCORRECT_INVITER_ID
-                //     });
-
-            } else { // if inviter was found
-
-                student.credit += purchase.price * purchase.percent / 100;
-
-                // saving inviter
-                student.save((err => {
-                    if (err) errHandler(err, res);
-                }));
-
-            }
-        });
-    }
-
 }
 
 async function deletePurchases(ownerId) {
@@ -145,5 +183,3 @@ async function getPurchases(ownerId, response) {
 }
 
 module.exports = {commitPurchase, deletePurchases, getPurchases};
-
-

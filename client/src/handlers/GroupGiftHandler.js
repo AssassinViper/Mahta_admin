@@ -1,9 +1,9 @@
 import urls from '../consts/urls';
 
-const SpendCreditHandler = (json, onFetched, onError)=>{
+const GroupGiftHandler = (json, onFetched, onError)=>{
 
-    fetch(urls.spendCredit, {
-        method:"POST", 
+    fetch(urls.groupGift, {
+        method:"POST",
         body: JSON.stringify(json),
         headers: {'Content-Type': 'application/json'},
         credentials: 'include'
@@ -30,4 +30,4 @@ const SpendCreditHandler = (json, onFetched, onError)=>{
         });
 }
 
-export default SpendCreditHandler;
+export default GroupGiftHandler;

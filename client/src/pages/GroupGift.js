@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 
 import Input from '../components/Input';
 import Button from '../components/Button';
-import GroupCommitHandler from '../handlers/GroupCommitHandler';
+import PlainText from '../components/PlainText';
+import GroupGiftHandler from '../handlers/GroupGiftHandler';
 import YesNoModal from '../components/YesNoModal';
 import ErrorModal from '../components/ErrorModal';
 import SuccessModal from '../components/SuccessModal';
@@ -10,6 +11,7 @@ import Dashboard from '../pages/Dashboard';
 import Select from 'react-select';
 
 const gradeOptions=[
+    {value:"all", label:"تمامی پایه ها"},
     {value:"هفتم", label:"هفتم"},
     {value:"هشتم", label:"هشتم"},
     {value:"نهم", label:"نهم"},
@@ -19,16 +21,26 @@ const gradeOptions=[
     {value:"فارغ التحصیل", label:"فارغ التحصیل"}
 ]
 
-class GroupCommit extends Component {
-    
+const fieldOptions=[
+    {value:"all", label:"تمامی رشته ها"},
+    {value:"ریاضی", label:"ریاضی"},
+    {value:"تجربی", label:"تجربی"},
+    {value:"هنر", label:"هنر"},
+    {value:"انسانی", label:"انسانی"},
+]
+
+class GroupGift extends Component {
+
     state = { askModal:false, errorModal:false, successModal:false }
 
     errorMassage="خطا در شبکه"
 
-    GroupCommitData = {
+    GroupGiftData = {
 
-        number:0,
-        gift:0,
+        school:"all",
+        field:"all",
+        grade:"all",
+        price:0
     }
 
     render() { 
@@ -47,19 +59,36 @@ class GroupCommit extends Component {
 
                 <div style={s.space}/>
 
-                <Input height={35} width={200} placeholder="تعداد دانش آموزان" type="number"
-                    ref={(ref=>this.numberInput = ref)}
-                    onChange={(event)=>{this.GroupCommitData.number = Number(event.target.value)}}/>
+                <div style={s.sec1}>
 
-                <Input height={35} width={200} placeholder="هدیه اولیه" type="number"
-                    ref={(ref=>this.giftInput = ref)}
-                    onChange={(event)=>{this.GroupCommitData.gift = Number(event.target.value)}}/>
+                    
+                    <Select options={fieldOptions} styles={customStyles} placeholder="تمامی رشته ها" onChange={(e)=>{
+                        this.GroupGiftData.field = e.value;
+                    }}/>
+
+                    <Input height={35} width={200} placeholder="همه مدارس"type="text"
+                        ref={(ref=>this.schoolInput = ref)}
+                        onChange={(event)=>{this.GroupGiftData.school = event.target.value}}/>
+
+                    <Select options={gradeOptions} styles={customStyles} placeholder="تمامی پایه ها" onChange={(e)=>{
+                        this.GroupGiftData.grade = e.value;
+                    }}/>
+
+                </div>
+
+                <Input height={35} width={200} placeholder="مبلغ هدیه" type="number"
+                ref={(ref=>this.priceInput = ref)}
+                onChange={(event)=>{this.GroupGiftData.price = Number(event.target.value)}}/>
+
+                <PlainText height={90} width="24%" placeholder="توضیحات"
+                ref={(ref=>this.infoPlainText = ref)} 
+                onChange={(event)=>{this.GroupGiftData.info = event.target.value}}/>
 
 
                 <Button height={50} width="15%" fontColor={"rgba(216,92,32,0.9)"} onClick={this.askModalOpen}>ثبت</Button>
 
                 <YesNoModal open={this.state.askModal} commit={this.askModalCommit} cancel={this.askModalClose}>
-                    ثبت گروهی با مشخصات زیر؟
+                    ثبت گروهی هدایا انجام شود؟
                 </YesNoModal>
                 
                 <ErrorModal open={this.state.errorModal} onClose={this.errorModalClose}>
@@ -67,7 +96,7 @@ class GroupCommit extends Component {
                 </ErrorModal>
                 
                 <SuccessModal open={this.state.successModal} onClose={this.successModalClose}>
-                    عملیات ثبت گروهی با موفقیت انجام شد
+                    عملیات ثبت گروهی هدایا با موفقیت انجام شد
                 </SuccessModal>
 
             </div>
@@ -76,12 +105,12 @@ class GroupCommit extends Component {
 
     commit = ()=>{
 
-        GroupCommitHandler(this.GroupCommitData, 
+        GroupGiftHandler(this.GroupGiftData, 
             
             (res)=>{
 
-                this.numberInput.clear();
-                this.giftInput.clear();
+                this.schoolInput.clear();
+                this.priceInput.clear();
 
                 Dashboard.StudentInfoList = [];
                 
@@ -159,7 +188,7 @@ const s = {
     },
 
     space:{
-        height:'2%',
+        height:'5%',
     },
 
     sec1:{
@@ -187,7 +216,7 @@ const customStyles = {
       }),
       control: () => ({
         // none of react-select's styles are passed to <Control />
-        width: 100,
+        width: 150,
         display:'flex',
         flexDirection:'row',
         borderStyle:"solid",
@@ -202,9 +231,8 @@ const customStyles = {
       singleValue: (provided, state) => {
         const opacity = state.isDisabled ? 0.5 : 1;
         const transition = 'opacity 300ms';
-    
         return { ...provided, opacity, transition };
       }
 }
  
-export default GroupCommit;
+export default GroupGift;

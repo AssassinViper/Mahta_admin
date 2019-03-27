@@ -3,6 +3,7 @@ const urls = {
     authenticate:"/api/admin/authenticate",
     getStudentList:"/api/admin/getStudentList",
     groupCommit:"/api/admin/groupCommit",
+    groupGift:"/api/admin/groupgift",
     commitPurchase:"/api/admin/commitPurchase",
     commitGift:"/api/admin/commitGift",
     spendCredit:"/api/admin/spendCredit",

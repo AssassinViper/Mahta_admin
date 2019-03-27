@@ -15,14 +15,15 @@ const gradeOptions=[
     {value:"نهم", label:"نهم"},
     {value:"دهم", label:"دهم"},
     {value:"یازدهم", label:"یازدهم"},
-    {value:"دوازدهم", label:"دوازدهم"}
+    {value:"دوازدهم", label:"دوازدهم"},
+    {value:"فارغ التحصیل", label:"فارغ التحصیل"}
 ]
 
 const fieldOptions=[
-    {value:"riazi", label:"ریاضی"},
-    {value:"tajrobi", label:"تجربی"},
-    {value:"honar", label:"هنر"},
-    {value:"ensani", label:"انسانی"},
+    {value:"ریاضی", label:"ریاضی"},
+    {value:"تجربی", label:"تجربی"},
+    {value:"هنر", label:"هنر"},
+    {value:"انسانی", label:"انسانی"},
 ]
 
   
@@ -36,8 +37,8 @@ class AddStudent extends Component {
 
         firstName:"",
         lastName:"",
-        grade:"نهم",
-        field:"ریاضی",
+        grade:"",
+        field:"",
         school:"",
         phone:"",
         home:"",
@@ -49,9 +50,9 @@ class AddStudent extends Component {
         return ( 
             <div style={{opacity:0.85,
                 display:'flex',
-                height:(this.props.height*(0.78)),
+                height:'78vh',
                 minHeight:440,
-                width:(this.props.width*(0.86)),
+                width:'80vw',
                 minWidth:900,
                 flexDirection:'column',
                 alignItems:'center',
@@ -64,7 +65,7 @@ class AddStudent extends Component {
                 <div style={s.sec1}>
                     
                     <Input height={35} width={200} placeholder="نام خانوادگی" type="text"
-                    ref={(ref=>this.lastNameInput = ref)}
+                    ref={(ref=>this.lastNameInput = ref)} value={this.st}
                     onChange={(event)=>{this.AddStudentData.lastName = event.target.value}}/>
 
                     <Input height={35} width={200} placeholder="نام"type="text"
@@ -76,14 +77,18 @@ class AddStudent extends Component {
                 <div style={s.sec1}>
 
                     
-                    <Select options={fieldOptions} styles={customStyles} placeholder="رشته"/>
+                    <Select options={fieldOptions} styles={customStyles} placeholder="رشته" onChange={(e)=>{
+                        this.AddStudentData.field = e.value
+                    }}/>
 
                     <Input height={35} width={200} placeholder="مدرسه"type="text"
                         defaultValue={this.AddStudentData.school}
                         ref={(ref=>this.schoolInput = ref)}
                         onChange={(event)=>{this.AddStudentData.school = event.target.value}}/>
 
-                    <Select options={gradeOptions} styles={customStyles} placeholder="پایه"/>
+                    <Select options={gradeOptions} styles={customStyles} placeholder="پایه" onChange={(e)=>{
+                        this.AddStudentData.grade = e.value
+                    }}/>
 
 
                 </div>
@@ -102,13 +107,13 @@ class AddStudent extends Component {
                 
                 <div style={s.sec1}>
 
-                    <Input height={35} width={200} placeholder="شماره تماس" type="number"
+                    <Input height={35} width={200} placeholder="شماره همراه" type="tel"
                     ref={(ref=>this.phoneInput = ref)}
-                    onChange={(event)=>{this.AddStudentData.phone = Number(event.target.value)}}/>
+                    onChange={(event)=>{this.AddStudentData.phone = event.target.value}}/>
 
-                    <Input height={35} width={200} placeholder="شماره منزل" type="number"
+                    <Input height={35} width={200} placeholder="شماره منزل" type="tel"
                     ref={(ref=>this.homeInput = ref)}
-                    onChange={(event)=>{this.AddStudentData.home = Number(event.target.value)}}/>
+                    onChange={(event)=>{this.AddStudentData.home = event.target.value}}/>
 
                 </div>
                 
@@ -133,7 +138,6 @@ class AddStudent extends Component {
     commit = ()=>{
 
         
-
         AddStudentHandler(this.AddStudentData,
             (res)=>{
 
@@ -145,7 +149,7 @@ class AddStudent extends Component {
                 this.homeInput.clear();
                 this.schoolInput.clear();
 
-                Dashboard.StudentInfoList = res;
+                Dashboard.StudentInfoList = [];
 
                 this.successModalOpen();
 

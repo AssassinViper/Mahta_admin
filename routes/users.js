@@ -96,6 +96,7 @@ router.post('/addStudent', withAuth, studentHandler.addStudent);
 router.post('/editStudent', withAuth, studentHandler.editStudent);
 router.post('/deleteStudent', withAuth, studentHandler.deleteStudent);
 
+router.post('/groupgift', withAuth, giftHandler.groupGift);
 router.post('/commitPurchase', withAuth, purchaseHandler.commitPurchase, studentHandler.getStudentList);
 router.post('/commitGift', withAuth, giftHandler.commitGift, studentHandler.getStudentList);
 

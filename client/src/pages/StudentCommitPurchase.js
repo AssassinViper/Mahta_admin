@@ -10,7 +10,9 @@ import ErrorModal from '../components/ErrorModal';
 import SuccessModal from '../components/SuccessModal';
 
 class CommitPurchase extends Component {
-    state = { askModal:false, errorModal:false, successModal:false }
+    state = { askModal:false, errorModal:false, successModal:false, usefrom:'gift'}
+    
+    errorMassage="خطا در شبکه"
     
     CommitPurchaseData = {
 
@@ -30,9 +32,9 @@ class CommitPurchase extends Component {
             return ( 
                 <div style={{opacity:0.85,
                     display:'flex',
-                    height:(this.props.height*(0.78)),
+                    height:'78vh',
                     minHeight:440,
-                    width:(this.props.width*(0.86)),
+                    width:'80vw',
                     minWidth:900,
                     flexDirection:'column',
                     alignItems:'center',
@@ -42,15 +44,41 @@ class CommitPurchase extends Component {
 
                     <div style={s.space}/>
 
-                    <Input height={35} width="20%" placeholder="(مبلغ خرید(تومان"  type="number"
+                    <div style={s.sec1}>
+
+                    <Input height={35} width={200} placeholder="(مبلغ خرید(تومان"  type="number"
                     ref={(ref=>this.priceInput = ref)}
                     onChange={(event)=>{this.CommitPurchaseData.price = Number(event.target.value)}}/>
 
-                    <Input height={35} width="20%" placeholder="درصد خانواده" type="number"
+                    <Input height={35} width={200} placeholder="درصد خانواده" type="number" max={100}
                     ref={(ref=>this.percentInput = ref)}
                     onChange={(event)=>{this.CommitPurchaseData.percent = Number(event.target.value)}}/>
+                    
+                    </div>
 
-                    <PlainText height={90} width="20%" placeholder="توضیحات"
+                    <div style={s.sec2}>
+
+                    <div style={s.sec3}>
+                        <label style={s.usefrom_con}>
+                        ({Dashboard.selectedStudent.credit})از اعتبار&emsp;
+                            <input type="radio" value="credit" name="credit" 
+                                checked={this.state.usefrom === "credit"}
+                                onChange={this.onUseFromChanged} name="usefrom"/>
+                        </label>
+                    </div>
+
+                    <div style={s.sec3}>
+                        <label style={s.usefrom_con}>
+                        ({Dashboard.selectedStudent.gift})از هدیه&emsp;
+                            <input type="radio" value="gift" name="gift"
+                                checked={this.state.usefrom === "gift"}
+                                onChange={this.onUseFromChanged}name="usefrom"/>
+                        </label>
+                    </div>
+
+                    </div>
+
+                    <PlainText height={90} width="24%" placeholder="توضیحات"
                     ref={(ref=>this.infoPlainText = ref)} 
                     onChange={(event)=>{this.CommitPurchaseData.info = event.target.value}}/>
 
@@ -61,7 +89,7 @@ class CommitPurchase extends Component {
                     </YesNoModal>
 
                     <ErrorModal open={this.state.errorModal} onClose={this.errorModalClose}>
-                        خطا
+                        {this.errorMassage}
                     </ErrorModal>
 
                     <SuccessModal open={this.state.successModal} onClose={this.successModalClose}>
@@ -75,6 +103,8 @@ class CommitPurchase extends Component {
 
     commit = ()=>{
 
+        this.CommitPurchaseData.useFrom = this.state.usefrom;
+
         CommitPurchaseHandler(this.CommitPurchaseData,
             (res)=>{
 
@@ -82,15 +112,22 @@ class CommitPurchase extends Component {
                 this.percentInput.clear();
                 this.infoPlainText.clear();
 
-                Dashboard.StudentInfoList = res;
+                Dashboard.StudentInfoList = [];
                 
                 this.successModalOpen();
             },
             (err)=>{
 
+                this.errorMassage = err;
                 this.errorModalOpen();
             }
         );
+    }
+
+    onUseFromChanged =(event)=>{
+        let newState = Object.assign({},this.state);
+        newState.usefrom = event.currentTarget.value;
+        this.setState(newState);
     }
 
     askModalCommit = ()=>{
@@ -154,6 +191,48 @@ const s = {
         width:1100,
         borderRadius:15,
         backgroundColor:'rgb(55, 110, 198)',
+    },
+
+    sec1:{
+        height:'15%',
+        width:'60%',
+        display:'flex',
+        alignItems:'center',
+        justifyContent:'space-around',
+        borderWidth:"1px",
+        borderStyle:"solid",
+        borderRadius:8,
+        borderColor:'rgba(255,255,255,0.1)'
+    },
+
+    sec2:{
+        height:'13%',
+        width:'40%',
+        display:'flex',
+        alignItems:'center',
+        justifyContent:'space-around',
+        borderWidth:"1px",
+        borderStyle:"solid",
+        borderRadius:8,
+        borderColor:'rgba(255,255,255,0.1)'
+    },
+
+    sec3:{
+
+        height:'30%',
+        width:'50%',
+        display:'inline',
+        alignItems:'center',
+        justifyContent:'center',
+    },
+
+    usefrom_con:{
+        fontFamily:'amp',
+        fontSize:18,
+        color:'white',
+        display:'inline',
+        height:'5%',
+        width:'20%',
     },
 
     space:{

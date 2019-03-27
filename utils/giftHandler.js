@@ -11,32 +11,36 @@ let Gift = require('../models/gift');
 async function commitGift(req, res, next) {
 
     let params = req.body;
-    let issue = false;
-
+    
+    let price = params.price || 0;
+    let info = params.info || "";
     let gift = new Gift({});
-    let inviterId;
+
+    // validation
+    if(price <= 0){
+        res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_PRICE});
+        return;
+    }
 
     // find student
     await Student.findOne({ code: params.code }, function(err, student) {
 
         if (err) {
+            
             errHandler(err, res);
+            return;
 
         } else if (!student) { // if no student found
-
-            issue = true;
-            res.status(consts.NOT_FOUND_CODE)
-                .json({
-                    error: consts.INCORRECT_MAHTA_ID
-                });
+            res.status(consts.NOT_FOUND_CODE).json({error: consts.INCORRECT_MAHTA_ID});
+            return;
 
         } else { // if student was found
 
             // creating gift
             gift._id = new mongoose.Types.ObjectId();
             gift.owner = student._id;
-            gift.price = params.price;
-            gift.info = params.info;
+            gift.price = price;
+            gift.info = info;
 
             // updating student
             student.gifts.push(gift);
@@ -48,6 +52,7 @@ async function commitGift(req, res, next) {
                 if (err) {
                     errHandler(err, res);
                     config.log(`err in saving student`);
+                    return;
                 }
 
             }));
@@ -57,14 +62,69 @@ async function commitGift(req, res, next) {
                 if (err) {
                     errHandler(err, res);
                     config.log(`err in saving gift`);
+                    return;
                 }
             }));
+
+            res.status(consts.SUCCESS_CODE).send("OK");
         }
     });
+}
 
-    if (issue) return;
+async function groupGift(req, res){
 
-    next();
+    let params = req.body;
+    let price = params.price || 0;
+    let info = params.info || "هدایای گروهی";
+    let query = {}
+
+    if(price <= 0){
+        res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_PRICE});
+        return;
+    }
+
+    if(params.grade != undefined && params.grade != "" && params.grade != 'all'){
+
+        query.grade = params.grade;
+    }
+
+    if(params.field != undefined && params.field != "" && params.field != 'all'){
+
+        query.field = params.field;
+    }
+
+    if(params.school != undefined && params.school != "" && params.school != 'all'){
+
+        query.school = params.school;
+    }
+
+    console.log(query);
+    
+    
+    let students = await Student.find(query);
+
+    console.log(students);
+    
+    if(students.length == 0){
+        res.status(consts.BAD_REQ_CODE).json({error:consts.NO_STUDENT_MATCHED});
+        return;
+    }
+
+    students.forEach(async function(s){
+
+        let newGift = new Gift({});
+        newGift._id = new mongoose.Types.ObjectId();
+        newGift.owner= s._id;
+        newGift.price= price;
+        newGift.info= info;
+
+        s.gifts.push(newGift);
+        s.gift += price;
+        await s.save();
+        await newGift.save();
+    })
+
+    res.status(consts.SUCCESS_CODE).send("OK");
 }
 
 async function deleteGifts(ownerId) {
@@ -107,6 +167,6 @@ async function getGifts(ownerId, response) {
 
 }
 
-module.exports = {commitGift, deleteGifts, getGifts};
+module.exports = {commitGift, groupGift, deleteGifts, getGifts};
 
 

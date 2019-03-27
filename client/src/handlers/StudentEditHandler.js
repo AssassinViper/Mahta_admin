@@ -12,15 +12,21 @@ const StudentEditHandler = (json, onFetched, onError)=>{
 
             if(res.status === 200){
                 
-                res.json().then(res=> onFetched(res));
+                res.json().then(res=> onFetched(res))
+                .catch(err=>{ onFetched(res) });
             
+            }else if(res.status === 500){
+
+                onError("خطای حاصل از نقص سرور")
+
             }else{
 
-                onError("error");
+                res.json().then(res=> onError(res.error))
+                .catch(err=>{ onError(res) });
             }
         }).catch(err=>{
 
-            onError(err);
+            onError("خطای شبکه و اتصال به سرور");
         });
 }
 

@@ -54,7 +54,7 @@ module.exports = {
 
                     new Student({
                         _id: new mongoose.Types.ObjectId(),
-                        code: 1400000 + i,
+                        code: 14000000 + i,
                         firstName: getFirstName(),
                         lastName: getLastName(),
                         grade: getGrade(),

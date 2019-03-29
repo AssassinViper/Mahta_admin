@@ -53,8 +53,7 @@ let studentSchema = mongoose.Schema({
         default: () => {
             return moment().tz("Asia/Tehran").format('YYYY-MM-DD HH:mm:ss.SSS')+'Z'
         }
-    },
-    password: String,
+    }
 });
 
 let Student = module.exports = mongoose.model('Student', studentSchema);

@@ -15,6 +15,7 @@ async function commitGift(req, res, next) {
     let price = params.price || 0;
     let info = params.info || "";
     let gift = new Gift({});
+    let code = Number(params.code);
 
     // validation
     if(price <= 0){
@@ -23,7 +24,7 @@ async function commitGift(req, res, next) {
     }
 
     // find student
-    await Student.findOne({ code: params.code }, function(err, student) {
+    await Student.findOne({ code }, function(err, student) {
 
         if (err) {
             

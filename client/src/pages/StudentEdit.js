@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+
+import LoginPage from '../pages/Login';
 import Dashboard from '../pages/Dashboard';
 import Input from '../components/Input';
 import Button from '../components/Button';
@@ -9,6 +11,7 @@ import Select from 'react-select';
 import YesNoModal from '../components/YesNoModal';
 import ErrorModal from '../components/ErrorModal';
 import SuccessModal from '../components/SuccessModal';
+import {GetSchoolList} from '../handlers/SchoolListHandler';
 
 const gradeOptions=[
     {value:"هفتم", label:"هفتم"},
@@ -30,7 +33,7 @@ const fieldOptions=[
   
 
 class StudentEdit extends Component {
-    state = { askModal:false, errorModal:false, successModal:false }
+    state = { askModal:false, errorModal:false, successModal:false, schoolNameList:[] }
 
     constructor(props){
 
@@ -40,6 +43,16 @@ class StudentEdit extends Component {
         this.defaultField = "";
         this.yesNoDialog = "";
         this.successDialog = "";
+    }
+
+    componentDidMount(){
+        
+        GetSchoolList(()=>{
+
+            let newState = Object.assign({}, this.state);
+            newState.schoolNameList = LoginPage.schoolNameList;
+            this.setState(newState);
+        })
     }
 
     render() {
@@ -90,10 +103,9 @@ class StudentEdit extends Component {
                         placeholder="رشته" onChange={(e)=>{this.StudentEditData.field = e.value}}/>
 
                         
-                        <Input height={35} width={200} placeholder="مدرسه"type="text"
-                        defaultValue={this.StudentEditData.school}
-                        ref={(ref=>this.schoolInput = ref)}
-                        onChange={(event)=>{this.StudentEditData.school = event.target.value}}/>
+                        <Select options={this.state.schoolNameList} styles={customStyles} placeholder="مدرسه" 
+                        defaultValue={{value:this.StudentEditData.school, label:this.StudentEditData.school}} 
+                        onChange={(e)=>{this.StudentEditData.school = e.value}}/>
                         
                         <Select options={gradeOptions} styles={customStyles} 
                         defaultValue={{value:this.StudentEditData.grade, label:this.StudentEditData.grade}} 

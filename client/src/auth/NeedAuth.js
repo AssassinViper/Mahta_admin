@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 
+
+
 function NeedAuth(Comp,prop) {
   return class extends Component {
 
@@ -13,6 +15,7 @@ function NeedAuth(Comp,prop) {
     state = {component:null, height:0, width:0};
 
     componentDidMount() {
+
       // TODO: change this to POST
       fetch('/api/admin/checkToken',{
         method:"POST",
@@ -24,7 +27,7 @@ function NeedAuth(Comp,prop) {
         if (res.status === 200) {
 
           if(this.prop.height != undefined){
-            
+
             this.setState({component:<Comp history={this.props.history} height={this.prop.height} width={this.prop.width}/>});
           }
 

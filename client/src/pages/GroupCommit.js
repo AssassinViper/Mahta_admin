@@ -7,7 +7,6 @@ import YesNoModal from '../components/YesNoModal';
 import ErrorModal from '../components/ErrorModal';
 import SuccessModal from '../components/SuccessModal';
 import Dashboard from '../pages/Dashboard';
-import Select from 'react-select';
 
 const gradeOptions=[
     {value:"هفتم", label:"هفتم"},
@@ -19,17 +18,19 @@ const gradeOptions=[
     {value:"فارغ التحصیل", label:"فارغ التحصیل"}
 ]
 
+const emptyGroupCommitData = {
+    start:0,
+    number:0,
+    gift:0,
+}
+
 class GroupCommit extends Component {
     
     state = { askModal:false, errorModal:false, successModal:false }
 
     errorMassage="خطا در شبکه"
 
-    GroupCommitData = {
-
-        number:0,
-        gift:0,
-    }
+    GroupCommitData = Object.assign({}, emptyGroupCommitData);
 
     render() { 
         return ( 
@@ -47,9 +48,17 @@ class GroupCommit extends Component {
 
                 <div style={s.space}/>
 
-                <Input height={35} width={200} placeholder="تعداد دانش آموزان" type="number"
-                    ref={(ref=>this.numberInput = ref)}
-                    onChange={(event)=>{this.GroupCommitData.number = Number(event.target.value)}}/>
+                <div style={s.sec1}>
+
+                    <Input height={35} width={200} placeholder="تعداد دانش آموزان" type="number"
+                        ref={(ref=>this.numberInput = ref)}
+                        onChange={(event)=>{this.GroupCommitData.number = Number(event.target.value)}}/>
+
+                    <Input height={35} width={200} placeholder="شروع از" type="number"
+                        ref={(ref=>this.startInput = ref)}
+                        onChange={(event)=>{this.GroupCommitData.start = Number(event.target.value)}}/>
+
+                </div>
 
                 <Input height={35} width={200} placeholder="هدیه اولیه" type="number"
                     ref={(ref=>this.giftInput = ref)}
@@ -82,8 +91,10 @@ class GroupCommit extends Component {
 
                 this.numberInput.clear();
                 this.giftInput.clear();
+                this.startInput.clear();
 
                 Dashboard.StudentInfoList = [];
+                this.GroupCommitData = Object.assign({}, emptyGroupCommitData);
                 
                 this.successModalOpen();
             },

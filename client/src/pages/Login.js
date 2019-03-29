@@ -8,6 +8,8 @@ import lock from '../assets/svg/lock.svg'
 class LoginPage extends Component{
     state={errorMassage:""}
 
+    static schoolNameList = "noset";
+
     username = "";
     password = "";
 
@@ -40,7 +42,7 @@ class LoginPage extends Component{
 
             if(res.status === 200 ){
 
-                this.props.history.push("/admin")
+                this.props.history.push("/admin");
 
             }else if(res.status === 500){
 
@@ -119,6 +121,9 @@ const s = {
         color:'white',
     }
 }
+
+
+
 const create=<div style={s.create}>&emsp;&emsp;&emsp;&emsp;برنامه نویسی و طراحی سایت : امیرمحمد پاکدل  &emsp; | &emsp; برنامه نویس سرور : محمد نوری</div>
 
 export default LoginPage;

@@ -12,13 +12,13 @@ async function commitPurchase(req, res, next) {
 
     let params = req.body;
 
-    let code = params.code;
-    let price = params.price;
-    let percent = params.percent;
-    let useFrom = params.useFrom;
+    let {code, price, percent, useGift, useCredit, info} = params;
 
     let purchase = new Purchase({});
+    let studentToSave = {};
     let inviterId;
+
+    let issue = false;
 
     if(percent < 0 || percent > 100){
         res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_PERCENT});
@@ -30,114 +30,148 @@ async function commitPurchase(req, res, next) {
         return;
     }
 
-    if(code == "" || code <= 0){
+    if(code === "" || code <= 0){
         res.status(consts.NOT_FOUND_CODE).json({error: consts.INCORRECT_MAHTA_ID});
         return;
     }
 
-    if(useFrom == "" || (useFrom != "gift" && useFrom != "credit")){
-        res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_USE_FROM});
-        return;
-    }
+
+    let payable = price;
+
 
     // find student
     await Student.findOne({ code: params.code }, function(err, student) {
 
         if (err) {
             errHandler(err, res);
-            return;
+            issue = true;
 
         } else if (!student) { // if no student found
 
             res.status(consts.NOT_FOUND_CODE).json({error: consts.INCORRECT_MAHTA_ID});
-            return;    
+            issue = true;
 
         } else { // if student was found
 
-            //check the gift or credit amount
-            if(useFrom == "gift"){
+            purchase.usedGift = 0;
+            purchase.usedCredit = 0;
 
-                if(price > student.gift){
+            // credit, gift calculations
+            if (useCredit) { config.log('usedCredit is true')
+                if (payable > student.credit) { // if price was more than student's credit
 
-                    res.status(consts.NOT_FOUND_CODE).json({error: consts.GIFT_NOT_ENOUGH});
-                    return;
-                }
+                    payable -= student.credit;
+                    purchase.usedCredit = student.credit;
+                    student.credit = 0;
 
-                student.gift -= price;
+                    if (useGift) {
 
-            }else{
+                        if (payable > student.gift) {
 
-                if(price > student.credit){
+                            payable -= student.gift;
+                            purchase.usedGift = student.gift;
+                            student.gift = 0;
 
-                    res.status(consts.NOT_FOUND_CODE).json({error: consts.CREDIT_NOT_ENOUGH});
-                    return;
-                }
+                        } else {
+                            purchase.usedGift = payable;
+                            student.gift -= payable;
+                            payable = 0;
+                        }
 
-                student.credit -= price;
-            }
-
-            purchase._id = new mongoose.Types.ObjectId();
-            purchase.owner = student._id;
-            purchase.price = params.price;
-            purchase.percent = params.percent;
-            purchase.info = params.info;
-
-            student.purchases.push(purchase);
-
-            // save student
-            student.save((err => {
-                if (err) {
-                    errHandler(err, res);
-                    return;
-                }
-            }));
-
-            // save purchase
-            purchase.save((err => {
-                if (err) {
-                    errHandler(err, res);
-                    return;
-                }
-            }));
-
-            // if had an inviter
-            if (student.inviter != "" && student.inviter != undefined){
-
-                inviterId = student.inviter;
-                
-                Student.findOne({ _id: inviterId }, function(err, student) {
-
-                    if (err) {
-                        res.status(consts.SUCCESS_CODE).send("ُInviter finding error!!!");
-                        return;
-        
-        
-                    } else if (!student) { // if no inviter found
-        
-                        res.status(consts.SUCCESS_CODE).send("ُInviter not found!!!");
-                        return;
-        
-                    } else { // if inviter was found
-        
-                        student.credit += price * percent / 100;
-        
-                        // saving inviter
-                        student.save((err => {
-                            if (err) errHandler(err, res);
-                            return;
-                        }));
-        
-                        res.status(consts.SUCCESS_CODE).send("OK");
                     }
-                });
-            
-            }else{
 
-                res.status(consts.SUCCESS_CODE).send("OK");
-            } 
+                } else {
+                    purchase.usedCredit = payable;
+                    student.credit -= payable;
+                    payable = 0;
+
+                }
+            } else {
+
+                if (useGift) {
+
+                    if (payable > student.gift) {
+
+                        payable -= student.gift;
+                        purchase.usedGift = student.gift;
+                        student.gift = 0;
+
+                    } else {
+                        purchase.usedGift = payable;
+                        student.gift -= payable;
+                        payable = 0;
+
+                    }
+
+                }
+            }
+            studentToSave = student;
         }
     });
-}
+
+    if (issue) return;
+
+    purchase._id = new mongoose.Types.ObjectId();
+    purchase.owner = studentToSave._id;
+    purchase.price = params.price;
+    purchase.payed = payable;
+    purchase.percent = params.percent;
+    purchase.info = params.info;
+
+    studentToSave.purchases.push(purchase);
+
+    // save student
+    await studentToSave.save((err => { config.log('saving student')
+        if (err) {
+            errHandler(err, res);
+            issue = true
+        }
+    }));
+
+    if (issue) return;
+
+    // save purchase
+    issue = await purchase.save((err => {
+        if (err) {
+            errHandler(err, res);
+            issue = true
+        }
+    }));
+
+    if (issue) return;
+
+    // if had an inviter and payed was not zero
+    if (studentToSave.inviter !== "" && studentToSave.inviter !== undefined && purchase.payed !== 0){
+
+        inviterId = studentToSave.inviter;
+
+        Student.findOne({ _id: inviterId }, function(err, student) {
+
+            if (err) {
+                res.status(consts.SUCCESS_CODE).send("ُInviter finding error!!!");
+
+            } else if (!student) { // if no inviter found
+                res.status(consts.SUCCESS_CODE).send("ُInviter not found!!!");
+
+            } else { // if inviter was found
+
+                student.credit += percent * purchase.payed / 100;
+
+                // saving inviter
+                student.save((err => {
+                    if (err) errHandler(err, res);
+                }));
+
+                res.status(consts.SUCCESS_CODE).send("OK");
+            }
+        });
+
+    } else{
+
+        res.status(consts.SUCCESS_CODE).send("OK");
+    }
+
+}//done
 
 async function deletePurchases(ownerId) {
 

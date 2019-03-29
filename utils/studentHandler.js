@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const consts = require('./consts');
+const dateConverter = require('../tools/dateConverter');
 const errHandler = require('./errHandler');
 const giftHandler = require('./giftHandler');
 const purchaseHandler = require('./purchaseHandler');
@@ -30,8 +31,9 @@ async function getStudentList(req, res, next) {
 async function addStudent(req, res, next) {
 
     let params = req.body;
+
     let issue = validator.addStudent(req, res);
-    if(issue){return};
+    if(issue) return;
 
     let newStudent = new Student({});
 
@@ -44,17 +46,23 @@ async function addStudent(req, res, next) {
         
         if (err) {
             errHandler(err, res);
-            return;
+            issue = true;
 
         } else if (student) { // if a student owns requested Code
 
             res.status(consts.BAD_REQ_CODE).json({error: consts.MAHTA_CODE_EXISTS});
-            return;
+            issue = true;
         }
     });
+
+    if (issue) return;
+
+
+
+
     
     newStudent._id = new mongoose.Types.ObjectId();
-    newStudent.code = params.code;
+    newStudent.code = await createCode(params.grade);
     newStudent.firstName = params.firstName;
     newStudent.lastName = params.lastName;
     newStudent.grade = params.grade;
@@ -62,6 +70,7 @@ async function addStudent(req, res, next) {
     newStudent.phone = params.phone;
     newStudent.home = params.home || 0;
     newStudent.school = params.school;
+
 
     // check if inviterCode is valid
     if (params.inviterCode) {
@@ -71,12 +80,10 @@ async function addStudent(req, res, next) {
 
             if (err) {
                 errHandler(err, res);
-                return;
 
             } else if (!student) { // if found no inviter
 
                 res.status(consts.BAD_REQ_CODE).json({error: consts.INCORRECT_INVITER_ID});
-                return;
 
             } else { // if inviterCode is valid
 
@@ -93,27 +100,125 @@ async function addStudent(req, res, next) {
                         errHandler(err, res);
                         return;
                     }
-                    
+
                     newStudent.save((err => {
                         if (err) {
                             errHandler(err, res);
                             config.log(`error at saving new student`);
                             return;
                         }
-                        res.status(consts.SUCCESS_CODE).send("OK");
+                        res.status(consts.SUCCESS_CODE).send(newStudent);
                     }));
+
                 }));
             }
         });
-    }    
+    } else {
+
+        newStudent.save((err => {
+            if (err) {
+                errHandler(err, res);
+                config.log(`error at saving new student`);
+                return;
+            }
+            res.status(consts.SUCCESS_CODE).send(newStudent);
+        }));
+
+    }
+
 }//done
+
+async function createCode(grade) {
+    config.log(`in create code`);
+    let date = dateConverter.getLiveDate();
+
+    let konkurYear = Number(date.substring(0, 4));
+
+    let isFirst3Month = date.substring(5, 7) <= 3;
+
+    switch (grade) {
+
+        case 'دوازدهم' || 'فارغ التحصیل':
+            if (isFirst3Month) {}
+            else konkurYear += 1;
+            break;
+
+        case 'یازدهم':
+            if (isFirst3Month) konkurYear += 1;
+            else konkurYear += 2;
+            break;
+
+        case 'دهم':
+            if (isFirst3Month) konkurYear += 2;
+            else konkurYear += 3;
+            break;
+
+        case 'نهم':
+            if (isFirst3Month) konkurYear += 3;
+            else konkurYear += 4;
+            break;
+
+        case 'هشتم':
+            if (isFirst3Month) konkurYear += 4;
+            else konkurYear += 5;
+            break;
+
+        case 'هفتم':
+            if (isFirst3Month) konkurYear += 5;
+            else konkurYear += 6;
+            break;
+
+        case 'ششم':
+            if (isFirst3Month) konkurYear += 6;
+            else konkurYear += 7;
+            break;
+    }
+
+    config.log(`konkurYear : ${konkurYear}`);
+
+    let latestCode = 0;
+
+    let issue = false;
+
+    konkurYear = konkurYear * 10000;
+
+    let temp = konkurYear;
+
+    console.log(`temp : ${temp}`);
+
+    await Student.findOne({ code: { $gt: temp, $lt: temp + 10000 }}, { code:1, _id:0 }, { sort: { 'created' : -1 } },
+        function(err, student) {
+
+            config.log(`finding latest added student`);
+
+            if (err) {
+                issue = true;
+                errHandler(err);
+
+            } else if (student) { // if found student
+                latestCode = Number(student.code);
+
+                config.log('query result:');
+                config.log(student);
+
+            } else { // if found no student was found -> handling first student with chosen grade
+                latestCode = temp;
+            }
+        });
+
+
+    if (issue) return;
+
+    return (latestCode + 1);
+}// done
+
 
 async function editStudent(req, res, next) {
 
     let params = req.body;
 
     let issue = validator.addStudent(req, res);
-    if(issue){return};
+    if(issue) return;
 
     let query = {code: params.code};
 
@@ -308,7 +413,7 @@ async function spendCredit(req, res, next) {
     let code = Number(params.code) || 0;
     let price = Number(params.price) || 0;
 
-    if(code == "" || code <= 0){
+    if(code === "" || code <= 0){
         res.status(consts.NOT_FOUND_CODE).json({error: consts.INCORRECT_MAHTA_ID});
         return;
     }
@@ -355,8 +460,7 @@ async function spendCredit(req, res, next) {
     });
 }
 
-// TODO: create a number of students with random code
-// check if codes are not repeated
+// TODO: create a number of students with sequential code
 async  function groupCommit(req, res, next) {
 
     let params = req.body;

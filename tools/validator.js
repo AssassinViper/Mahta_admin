@@ -62,5 +62,29 @@ function addStudent(req, res){
     }
 }
 
-module.exports = {hasCode, validateSpendCredit, addStudent};
+function groupCommit(req, res) {
+
+    let {start, number, gift} = req.body;
+
+    if(start === undefined || start === "" ){
+
+        res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_START});
+        return true;
+    }
+
+    if(number === undefined || number === "" || number === 0){
+
+        res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_NUMBER});
+        return true;
+    }
+
+    if(gift === undefined){
+
+        res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_GIFT});
+        return true;
+    }
+
+}
+
+module.exports = {hasCode, validateSpendCredit, addStudent, groupCommit};
 

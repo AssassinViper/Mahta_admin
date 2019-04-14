@@ -15,6 +15,11 @@ module.exports = {
     INCORRECT_GRADE : 'پایه تحصیلی باید مشخص شود',
     INCORRECT_FIELD : 'رشته تحصیلی باید مشخص شود',
 
+    INCORRECT_START : 'عدد شروع نامعتبر',
+    INCORRECT_GIFT: 'مقدار هدیه ورودی نامعتبر',
+    INCORRECT_NUMBER : 'تعداد ورودی نامعتبر',
+    STUDENTS_NOT_AVAILABLE : 'کد های مورد نظر خالی نیست',
+
     CREDIT_NOT_ENOUGH : 'اعتبار موجود کافی نیست',
     GIFT_NOT_ENOUGH : 'هدیه موجود کافی نیست',
     INCORRECT_PRICE : 'مبلغ وارد شده نامعتبر است',

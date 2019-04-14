@@ -36,6 +36,7 @@ async function addStudent(req, res, next) {
     if(issue) return;
 
     let newStudent = new Student({});
+    let inviterToSave;
 
     let query = { // no need need to convert to Number in add/edit :|
         code: params.code
@@ -72,55 +73,51 @@ async function addStudent(req, res, next) {
     if (params.inviterCode) {
 
         // finding inviter
-        await Student.findOne({ code: Number(params.inviterCode) }, function(err, student) {
+        await Student.findOne({ code: Number(params.inviterCode) }, function(err, inviter) {
 
             if (err) {
                 errHandler(err, res);
+                issue = true;
 
-            } else if (!student) { // if found no inviter
+            } else if (!inviter) { // if found no inviter
 
                 res.status(consts.BAD_REQ_CODE).json({error: consts.INCORRECT_INVITER_ID});
+                issue = true;
 
             } else { // if inviterCode is valid
 
                 // defining inviter for newStudent
-                newStudent.inviter = student._id;
+                newStudent.inviter = inviter._id;
 
                 // adding ref to inviter
-                student.inviteds.push(newStudent);
-                
-                // saving inviter
-                student.save((err => {
-                    
-                    if (err) {
-                        errHandler(err, res);
-                        return;
-                    }
+                inviter.inviteds.push(newStudent);
 
-                    newStudent.save((err => {
-                        if (err) {
-                            errHandler(err, res);
-                            config.log(`error at saving new student`);
-                            return;
-                        }
-                        res.status(consts.SUCCESS_CODE).send(newStudent);
-                    }));
+                inviterToSave = inviter;
 
-                }));
             }
         });
-    } else {
 
-        newStudent.save((err => {
+        if (issue) return;
+
+        // saving inviter
+        inviterToSave.save((err => {
+
             if (err) {
                 errHandler(err, res);
-                config.log(`error at saving new student`);
-                return;
+                issue = true;
             }
-            res.status(consts.SUCCESS_CODE).send(newStudent);
         }));
 
     }
+
+    await newStudent.save((err => {
+        if (err) {
+            errHandler(err, res);
+            config.log(`error at saving new student`);
+            return;
+        }
+        res.status(consts.SUCCESS_CODE).send(newStudent);
+    }));
 
 }//done
 
@@ -456,49 +453,61 @@ async function spendCredit(req, res, next) {
     });
 }
 
-// TODO: create a number of students with sequential code
 async  function groupCommit(req, res, next) {
 
     let params = req.body;
-    let issue = false;
-
-    let studentId;
-
-    let response = {
-        gifts : [],
-        purchases : []
-    };
-
-    query = {
-        code: params.code
-    };
-
-    await Student.findOne(query, function(err, student) {
-
-        if (err) {
-            issue = true;
-            errHandler(err, res);
-
-        } else if (!student) { // if found no student
-
-            issue = true;
-            res.status(consts.NOT_FOUND_CODE)
-                .json({
-                    error: consts.INCORRECT_MAHTA_ID
-                });
-        } else { // if found student
-
-            gifts = student.gifts;
-            purchases = student.purchases;
-            studentId = student._id;
-        }
-    });
+    let issue = validator.groupCommit(req, res);
 
     if (issue) return;
 
+    let start = Number(params.start);
+    let number = Number(params.number);
+    let gift = Number(params.gift);
 
-    res.status(consts.SUCCESS_CODE)
-        .json(response);
+    await Student.find({ code: { $gt: start , $lt: start + number + 1 }},
+        function(err, result) {
+
+            if (err) {
+                issue = true;
+                errHandler(err);
+
+            } else if (result.length === 0) { // if codes were empty
+                config.log(`codes were available`);
+
+            } else { // if codes were not available
+
+                issue = true;
+                config.log(`codes were not available`);
+                res.status(consts.BAD_REQ_CODE).json({error: consts.STUDENTS_NOT_AVAILABLE});
+
+            }
+        });
+
+    if (issue) return;
+
+    let array = [];
+
+    for (let i = 0; i < number; i++) {
+        array.push({code: start + i, gift: gift})
+    }
+
+    await Student.insertMany(array, function(err, docs) {
+
+        console.log('docs: ');
+        console.log(docs);
+
+        if (err) {
+            issue = true;
+            errHandler(err);
+
+        } else if (docs.length === 0) { // if codes were empty
+
+        } else { // if codes were not available
+
+        }
+
+    });
+
 
 }
 

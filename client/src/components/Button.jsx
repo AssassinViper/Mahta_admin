@@ -13,7 +13,7 @@ class Button extends Component {
                     margin:15,
                     fontFamily:'amp',
                     fontWeight:'bold', 
-                    fontSize:24, 
+                    fontSize:this.props.fontSize || 24, 
                     padding:'5px 15px',
                     borderRadius:4, 
                     borderWidth:0,

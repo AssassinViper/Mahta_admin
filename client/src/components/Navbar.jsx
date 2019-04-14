@@ -71,17 +71,18 @@ class Navbar extends Component {
                 </div>
                 <div style={s.space}/>
 
+                <div style={{width:"7%"}}/>
                 <NavButton history={this.props.history} active={this.state.activeButtons.spendcredit} 
                 activeButton={this.activeButton} navTo="spendcredit" text="برداشت اعتبار"/>
-                <NavButton history={this.props.history} active={this.state.activeButtons.commitpurchase} 
-                activeButton={this.activeButton} navTo="commitpurchase" text="ثبت خرید"/>
+                {/*<NavButton history={this.props.history} active={this.state.activeButtons.commitpurchase} 
+                activeButton={this.activeButton} navTo="commitpurchase" text="ثبت خرید"/>*/}
                 <NavButton history={this.props.history} active={this.state.activeButtons.groupgift} 
                 activeButton={this.activeButton} navTo="groupgift" text="هدیه گروهی"/>
                 <NavButton history={this.props.history} active={this.state.activeButtons.commitgift} 
                 activeButton={this.activeButton} navTo="commitgift" text="ثبت هدیه"/>
                 <NavButton history={this.props.history} active={this.state.activeButtons.groupcommit} 
                 activeButton={this.activeButton} navTo="groupcommit" text="ثبت گروهی"/>
-                <NavButton history={this.props.history} active={this.state.activeButtons.addstudent} width={'10%'}
+                <NavButton history={this.props.history} active={this.state.activeButtons.addstudent} width={'11%'}
                 activeButton={this.activeButton} navTo="addstudent" text="دانش آموز جدید"/>
                 <NavButton history={this.props.history} active={this.state.activeButtons.studentList} width={'12%'}
                 activeButton={this.activeButton} navTo="" text="لیست دانش آموزان"/>

@@ -12,8 +12,7 @@ const CommitPurchaseHandler = (json, onFetched, onError)=>{
 
             if(res.status === 200){
                 
-                res.json().then(res=> onFetched(res))
-                .catch(err=>{ onFetched(res) });
+                onFetched(res);
             
             }else if(res.status === 500){
 
@@ -21,8 +20,8 @@ const CommitPurchaseHandler = (json, onFetched, onError)=>{
 
             }else{
 
-                res.json().then(res=> onError(res.error))
-                .catch(err=>{ onError(res) });
+                onFetched(res);
+                
             }
         }).catch(err=>{
 

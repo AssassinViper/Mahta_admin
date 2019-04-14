@@ -4,6 +4,7 @@ import StudentList from '../components/StudentList';
 import {GetStudentList} from '../handlers/StudentListHandler';
 import SearchBar from '../components/SearchBar';
 import {Search} from '../utils/Search';
+import Button from '../components/Button';
 import {Sort} from '../utils/Sort';
 
 class Dashboard extends Component {
@@ -11,7 +12,7 @@ class Dashboard extends Component {
     static StudentInfoList = [];
     static selectedStudent = {}
     
-    state = { sortBy:"code", sortOrder:"A" }
+    state = { sortBy:"code", sortOrder:"A", listBtn:"نمایش دعوت ها", listType:"signed", list:[]}
 
     componentDidMount(){
 
@@ -57,11 +58,19 @@ class Dashboard extends Component {
                     <div style={s.space}/>
                     
                     <div style={s.list_con}>
-                        <StudentList getShowList={(showlist)=>this.showlist=showlist} history={this.props.history}
-                            sortByName={()=>{this.sortBy("name")}} sortByCode={()=>{this.sortBy("code")}}/>
+                        <StudentList getShowList={(showlist)=>this.showlist=showlist} list={this.state.list}
+                        history={this.props.history} sortByName={()=>{this.sortBy("name")}} 
+                        sortByCode={()=>{this.sortBy("code")}}/>
                     </div>
 
-                    <SearchBar searchBtnClick={this.search}/>
+                    <div style={{display:"flex", height:"14%", width:"100%", alignItems:'center'}}>
+                        <div style={{width:"30%"}}></div>
+                        <SearchBar searchBtnClick={this.search} list={this.state.list}/> 
+                        <div style={{width:"30%", height:"100%"}}>
+                            <Button fontSize="16px" onClick={this.listBtn}>{this.state.listBtn}</Button>
+                        </div>  
+                    </div>
+                    
 
                 </div>
             </div>
@@ -72,14 +81,14 @@ class Dashboard extends Component {
         
         if(searchWord != ""){
 
-            let list = Search(searchWord, Dashboard.StudentInfoList)
+            let list = Search(searchWord, this.state.list)
             list = Sort(list,this.state.sortBy, this.state.sortOrder)
             this.showlist(list);
 
         }else{
 
-            Sort(Dashboard.StudentInfoList,this.state.sortBy, this.state.sortOrder)
-            this.showlist(Sort(Dashboard.StudentInfoList,this.state.sortBy, this.state.sortOrder));
+            Sort(this.state.list, this.state.sortBy, this.state.sortOrder)
+            this.showlist(Sort(this.state.list, this.state.sortBy, this.state.sortOrder));
         }
     }
 
@@ -102,6 +111,63 @@ class Dashboard extends Component {
         this.setState(newState);
         this.showlist(Sort(Dashboard.StudentInfoList,newState.sortBy, newState.sortOrder));
     }
+
+    listBtn= ()=>{
+
+        if(this.state.listType == "signed"){
+
+            let newState = Object.assign({}, this.state);
+
+            newState.listType = "invites";
+            newState.listBtn = "نمایش دانش آموزان";
+            newState.list = this.showInvites();
+
+            this.setState(newState, ()=>{
+                this.showlist(newState.list)
+            });
+
+        }else{
+
+            let newState = Object.assign({}, this.state);
+
+            newState.listType = "signed";
+            newState.listBtn = "نمایش دعوت ها";
+            newState.list = this.showSigned();
+
+            this.setState(newState, ()=>{
+                this.showlist(newState.list)
+            });
+        }
+    }
+
+    showSigned = ()=>{
+
+        let list = [];
+
+        Dashboard.StudentInfoList.forEach(element => {
+            
+            if(element.firstName){
+                list.push(element);
+            }
+        });
+
+        return list;
+    }
+
+    showInvites = ()=>{
+
+        let list = [];
+
+        Dashboard.StudentInfoList.forEach(element => {
+            
+            if(!element.firstName){
+                list.push(element);
+            }
+        });
+
+        return list;
+    }
+
 }
 
 const s = {

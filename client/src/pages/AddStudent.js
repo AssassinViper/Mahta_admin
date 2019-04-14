@@ -37,7 +37,7 @@ const emptyStudent = {
     school:"",
     phone:"",
     home:"",
-    inviterCode:""
+    inviterCode:0
 }
   
 
@@ -95,7 +95,7 @@ class AddStudent extends Component {
                     <Select options={this.state.schoolNameList} styles={customStyles} placeholder="مدرسه" 
                     onChange={(e)=>{this.AddStudentData.school = e.value}} ref={ref=>this.schoolSelect=ref}/>
 
-                    <Select options={gradeOptions} styles={customStyles} placeholder="پایه" 
+                    <Select options={gradeOptions} styles={customStyles} placeholder="پایه"
                     onChange={(e)=>{this.AddStudentData.grade = e.value}} ref={ref=>this.gradeSelect=ref}/>
 
 
@@ -142,7 +142,6 @@ class AddStudent extends Component {
     }
 
     commit = ()=>{
-
         
         AddStudentHandler(this.AddStudentData,
             (res)=>{
@@ -152,12 +151,16 @@ class AddStudent extends Component {
                 this.inviterCodeInput.clear();
                 this.phoneInput.clear();
                 this.homeInput.clear();
-                this.schoolSelect.clearValue();
-                this.fieldSelect.clearValue();
-                this.gradeSelect.clearValue();
 
                 Dashboard.StudentInfoList = [];
+
+                let grade = this.AddStudentData.grade;
+                let field = this.AddStudentData.field;
+                let school = this.AddStudentData.school;
                 this.AddStudentData = Object.assign({}, emptyStudent);
+                this.AddStudentData.school = school;
+                this.AddStudentData.field = field;
+                this.AddStudentData.grade = grade;
 
                 this.successModalOpen(res.code);
 

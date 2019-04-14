@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import PlainText from '../components/PlainText';
+import {showNumber} from '../utils/NumberUtils';
 import CommitPurchaseHandler from '../handlers/CommitPurchaseHandler';
 import YesNoModal from '../components/YesNoModal';
 import ErrorModal from '../components/ErrorModal';
@@ -10,7 +11,7 @@ import SuccessModal from '../components/SuccessModal';
 import Dashboard from '../pages/Dashboard';
 
 class CommitPurchase extends Component {
-    state = { usefrom:"credit", askModal:false, errorModal:false, successModal:false }
+    state = { usefrom:"credit", askModal:false, errorModal:false, successModal:false, pay:0}
     
     errorMassage="خطا در شبکه"
 
@@ -76,7 +77,9 @@ class CommitPurchase extends Component {
 
                 </div>
 
-                
+                <div style={s.text}>
+                        {"("+showNumber(this.state.pay) +") : "+" مقدار مبلغ پرداختی به تومان"}
+                </div>
 
                 <PlainText height={90} width="24%" placeholder="توضیحات"
                 ref={(ref=>this.infoPlainText = ref)} 
@@ -176,6 +179,40 @@ class CommitPurchase extends Component {
         newState.successModal =false;
         this.setState(newState);
     }
+
+    setPay = ()=>{
+        let newState = Object.assign({}, this.state);
+        let gc = 0;
+        if(newState.gift){gc+= Dashboard.selectedStudent.gift};
+        if(newState.credit){gc+= Dashboard.selectedStudent.credit};
+
+        if(this.CommitPurchaseData.price <= gc){
+
+            newState.pay = 0;
+        }else{
+            newState.pay = this.CommitPurchaseData.price - gc;
+        }
+        
+        
+        this.setState(newState);
+    }
+
+    onUseFromChanged =(event)=>{
+        let newState = Object.assign({},this.state);
+        newState[event.currentTarget.value] = event.currentTarget.checked;
+        let gc = 0;
+        if(newState.gift){gc+= Dashboard.selectedStudent.gift};
+        if(newState.credit){gc+= Dashboard.selectedStudent.credit};
+        
+        if(this.CommitPurchaseData.price <= gc){
+
+            newState.pay = 0;
+        }else{
+            newState.pay = this.CommitPurchaseData.price - gc;
+        }
+        
+        this.setState(newState);
+    }
 }
 
 const s = {
@@ -223,6 +260,13 @@ const s = {
         display:'inline',
         alignItems:'center',
         justifyContent:'center',
+    },
+
+    text:{
+        fontFamily:'amp',
+        fontSize:18,
+        color:'white',
+        display:'inline'
     },
 
     usefrom_con:{

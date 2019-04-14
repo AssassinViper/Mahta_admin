@@ -87,24 +87,28 @@ async function groupGift(req, res){
     if(params.grade != undefined && params.grade != "" && params.grade != 'all'){
 
         query.grade = params.grade;
+    }else{
+        res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_GRADE});
+        return;
     }
 
     if(params.field != undefined && params.field != "" && params.field != 'all'){
 
         query.field = params.field;
+    }else{
+        res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_FIELD});
+        return;
     }
 
     if(params.school != undefined && params.school != "" && params.school != 'all'){
 
         query.school = params.school;
+    }else{
+        res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_SCHOOL});
+        return;
     }
-
-    console.log(query);
-    
     
     let students = await Student.find(query);
-
-    console.log(students);
     
     if(students.length == 0){
         res.status(consts.BAD_REQ_CODE).json({error:consts.NO_STUDENT_MATCHED});

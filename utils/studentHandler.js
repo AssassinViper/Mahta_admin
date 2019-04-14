@@ -57,10 +57,6 @@ async function addStudent(req, res, next) {
 
     if (issue) return;
 
-
-
-
-    
     newStudent._id = new mongoose.Types.ObjectId();
     newStudent.code = await createCode(params.grade);
     newStudent.firstName = params.firstName;

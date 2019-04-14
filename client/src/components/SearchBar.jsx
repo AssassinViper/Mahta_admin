@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import search from '../assets/icons/search.png';
 
 
-
 class SearchBar extends Component {
     
     state = {  }
@@ -22,11 +21,10 @@ class SearchBar extends Component {
               
                 <div style={s.input_con}>
                     <input type="text" style={s.input} 
-                    //onInput={()=>{this.props.searchBtnClick(this.searchWord)}}
                     onChange={(event)=>{
                         this.searchWord = event.target.value
                         this.props.searchBtnClick(this.searchWord)
-                        }}/>
+                    }}/>
                 </div>
                 
             </div>
@@ -41,8 +39,8 @@ const s={
         borderStyle:'solid',
         borderColor:'rgb(220,96,36)',
         borderWidth:1,
-        height:'8%',
-        width:'40%',
+        height:"60%",
+        width:'38%',
         display:'flex',
         background:'white',
         overflow: 'hidden',

@@ -3,11 +3,7 @@ const Search = (word, studentList)=>{
 
     let newList = [];
 
-    console.log(word);
     let j=0;
-
-    let a = "محمد";
-    let b = "مح";
     
     
     studentList.forEach(element => {
@@ -37,6 +33,11 @@ const Search = (word, studentList)=>{
 }
 
 const recSearch = (a, b, i=0)=>{ // search a in b
+
+    if(b == undefined){
+
+        return false;
+    }
 
     if(a.length == i){
 

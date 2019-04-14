@@ -89,13 +89,13 @@ class AddStudent extends Component {
                 <div style={s.sec1}>
 
                     
-                    <Select options={fieldOptions} styles={customStyles} placeholder="رشته" 
+                    <Select options={fieldOptions} styles={customStyles2} placeholder="رشته" 
                     onChange={(e)=>{this.AddStudentData.field = e.value}} ref={ref=>this.fieldSelect=ref}/>
 
                     <Select options={this.state.schoolNameList} styles={customStyles} placeholder="مدرسه" 
                     onChange={(e)=>{this.AddStudentData.school = e.value}} ref={ref=>this.schoolSelect=ref}/>
 
-                    <Select options={gradeOptions} styles={customStyles} placeholder="پایه"
+                    <Select options={gradeOptions} styles={customStyles2} placeholder="پایه"
                     onChange={(e)=>{this.AddStudentData.grade = e.value}} ref={ref=>this.gradeSelect=ref}/>
 
 
@@ -254,6 +254,36 @@ const s = {
 }
 
 const customStyles = {
+
+    option: (provided, state) => ({
+        ...provided,
+        borderBottom: '1px dotted pink',
+        color: state.isSelected ? 'red' : 'blue',
+        padding: 20,
+        fontFamily:"amp",
+      }),
+      control: () => ({
+        // none of react-select's styles are passed to <Control />
+        width: 150,
+        display:'flex',
+        flexDirection:'row',
+        borderStyle:"solid",
+        borderRadius:5,
+        borderWidth:2,
+        paddingLeft:20,
+        paddingRight:10,
+        fontFamily:"amp",
+        borderColor:'white',
+        backgroundColor:'white'
+      }),
+      singleValue: (provided, state) => {
+        const opacity = state.isDisabled ? 0.5 : 1;
+        const transition = 'opacity 300ms';
+        return { ...provided, opacity, transition };
+      }
+}
+
+const customStyles2 = {
 
     option: (provided, state) => ({
         ...provided,

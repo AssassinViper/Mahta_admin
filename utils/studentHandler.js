@@ -70,7 +70,7 @@ async function addStudent(req, res, next) {
 
     // check if inviterCode is valid
     if (params.inviterCode) {
-
+        
         // finding inviter
         await Student.findOne({ code: Number(params.inviterCode) }, function(err, student) {
 
@@ -109,6 +109,7 @@ async function addStudent(req, res, next) {
                 }));
             }
         });
+
     } else {
 
         newStudent.save((err => {

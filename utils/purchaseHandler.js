@@ -121,7 +121,7 @@ async function commitPurchase(req, res, next) {
     studentToSave.purchases.push(purchase);
 
     // save student
-    await studentToSave.save((err => { config.log('saving student')
+    await studentToSave.save((err => { config.log('saving student');
         if (err) {
             errHandler(err, res);
             issue = true

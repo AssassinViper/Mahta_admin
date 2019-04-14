@@ -26,7 +26,7 @@ const emptyGroupCommitData = {
 
 class GroupCommit extends Component {
     
-    state = { askModal:false, errorModal:false, successModal:false }
+    state = { askModal:false, errorModal:false, successModal:false, error:""}
 
     errorMassage="خطا در شبکه"
 
@@ -72,7 +72,7 @@ class GroupCommit extends Component {
                 </YesNoModal>
                 
                 <ErrorModal open={this.state.errorModal} onClose={this.errorModalClose}>
-                    {this.errorMassage}
+                    {this.state.error}
                 </ErrorModal>
                 
                 <SuccessModal open={this.state.successModal} onClose={this.successModalClose}>
@@ -100,8 +100,12 @@ class GroupCommit extends Component {
             },
             (err)=>{
 
-                this.errorMassage = err;
-                this.errorModalOpen();
+                let newState = Object.assign({}, this.state);
+                newState.error = err;
+                this.setState(newState, ()=>{
+
+                    this.errorModalOpen();
+                });
             }
         );
     }

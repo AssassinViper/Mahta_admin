@@ -493,17 +493,15 @@ async  function groupCommit(req, res, next) {
 
     await Student.insertMany(array, function(err, docs) {
 
-        console.log('docs: ');
-        console.log(docs);
-
         if (err) {
             issue = true;
             errHandler(err);
 
         } else if (docs.length === 0) { // if codes were empty
 
-        } else { // if codes were not available
 
+        } else { // if codes were not available
+            res.status(consts.SUCCESS_CODE).json({error: 'OK'});
         }
 
     });

@@ -100,7 +100,7 @@ class StudentInfo extends Component {
                             <Label text={this.state.student.phone} label="شماره تماس"/>
                         </div>
                         <div style={s.column}>
-                            <Label text={this.state.student.phone} label="شماره منزل"/>
+                            <Label text={this.state.student.home} label="شماره منزل"/>
                         </div>
                     </div>
                     <div style={s.row}>

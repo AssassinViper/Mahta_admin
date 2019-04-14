@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import {showNumber} from '../utils/NumberUtils';
 import Dashboard from '../pages/Dashboard';
 import Input from '../components/Input';
 import Button from '../components/Button';
@@ -10,7 +11,7 @@ import ErrorModal from '../components/ErrorModal';
 import SuccessModal from '../components/SuccessModal';
 
 class CommitPurchase extends Component {
-    state = { askModal:false, errorModal:false, successModal:false, usefrom:'gift'}
+    state = { askModal:false, errorModal:false, successModal:false, gift:false, credit:false, pay:0}
     
     errorMassage="خطا در شبکه"
     
@@ -48,7 +49,8 @@ class CommitPurchase extends Component {
 
                     <Input height={35} width={200} placeholder="(مبلغ خرید(تومان"  type="number"
                     ref={(ref=>this.priceInput = ref)}
-                    onChange={(event)=>{this.CommitPurchaseData.price = Number(event.target.value)}}/>
+                    onChange={(event)=>{
+                        this.CommitPurchaseData.price = Number(event.target.value);this.setPay()}}/>
 
                     <Input height={35} width={200} placeholder="درصد خانواده" type="number" max={100}
                     ref={(ref=>this.percentInput = ref)}
@@ -60,22 +62,26 @@ class CommitPurchase extends Component {
 
                     <div style={s.sec3}>
                         <label style={s.usefrom_con}>
-                        ({Dashboard.selectedStudent.credit})از اعتبار&emsp;
-                            <input type="radio" value="credit" name="credit" 
-                                checked={this.state.usefrom === "credit"}
+                        ({showNumber(Dashboard.selectedStudent.credit)})از اعتبار&emsp;
+                            <input type="checkbox" value="credit" name="credit" 
+                                checked={this.state.credit}
                                 onChange={this.onUseFromChanged} name="usefrom"/>
                         </label>
                     </div>
 
                     <div style={s.sec3}>
                         <label style={s.usefrom_con}>
-                        ({Dashboard.selectedStudent.gift})از هدیه&emsp;
-                            <input type="radio" value="gift" name="gift"
-                                checked={this.state.usefrom === "gift"}
+                        ({showNumber(Dashboard.selectedStudent.gift)})از هدیه&emsp;
+                            <input type="checkbox" value="gift" name="gift"
+                                checked={this.state.gift}
                                 onChange={this.onUseFromChanged}name="usefrom"/>
                         </label>
                     </div>
 
+                    </div>
+
+                    <div style={s.text}>
+                        {"("+showNumber(this.state.pay) +") : "+" مقدار مبلغ پرداختی به تومان"}
                     </div>
 
                     <PlainText height={90} width="24%" placeholder="توضیحات"
@@ -103,7 +109,10 @@ class CommitPurchase extends Component {
 
     commit = ()=>{
 
-        this.CommitPurchaseData.useFrom = this.state.usefrom;
+        this.CommitPurchaseData.useGift = this.state.gift;
+        this.CommitPurchaseData.useCredit = this.state.credit;
+
+        alert(JSON.stringify(this.CommitPurchaseData))
 
         CommitPurchaseHandler(this.CommitPurchaseData,
             (res)=>{
@@ -124,9 +133,37 @@ class CommitPurchase extends Component {
         );
     }
 
+    setPay = ()=>{
+        let newState = Object.assign({}, this.state);
+        let gc = 0;
+        if(newState.gift){gc+= Dashboard.selectedStudent.gift};
+        if(newState.credit){gc+= Dashboard.selectedStudent.credit};
+
+        if(this.CommitPurchaseData.price <= gc){
+
+            newState.pay = 0;
+        }else{
+            newState.pay = this.CommitPurchaseData.price - gc;
+        }
+        
+        
+        this.setState(newState);
+    }
+
     onUseFromChanged =(event)=>{
         let newState = Object.assign({},this.state);
-        newState.usefrom = event.currentTarget.value;
+        newState[event.currentTarget.value] = event.currentTarget.checked;
+        let gc = 0;
+        if(newState.gift){gc+= Dashboard.selectedStudent.gift};
+        if(newState.credit){gc+= Dashboard.selectedStudent.credit};
+        
+        if(this.CommitPurchaseData.price <= gc){
+
+            newState.pay = 0;
+        }else{
+            newState.pay = this.CommitPurchaseData.price - gc;
+        }
+        
         this.setState(newState);
     }
 
@@ -237,6 +274,13 @@ const s = {
 
     space:{
         height:'5%',
+    },
+
+    text:{
+        fontFamily:'amp',
+        fontSize:18,
+        color:'white',
+        display:'inline'
     }
 
 }

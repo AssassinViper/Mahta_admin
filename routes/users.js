@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
+const School = require('../models/school')
 
 const withAuth = require('../auth/middleware');
 const consts = require('../utils/consts');
@@ -53,6 +54,7 @@ router.post('/authenticate', (req, res) => {
                     });
 
                     try {
+
                         res.cookie('token', token, { httpOnly: true }).sendStatus(200);
 
                     } catch (e) {
@@ -74,6 +76,21 @@ router.post('/authenticate', (req, res) => {
     });
 
 });
+
+router.post('/getSchools', (req, res)=>{
+
+    School.find((err, data)=>{
+
+        if(err){
+
+            res.status(consts.ERR).json({error:err});
+
+        }else{
+
+            res.status(consts.SUCCESS_CODE).json(data);
+        }
+    });
+})
 
 
 router.post('/logout', (req, res)=>{

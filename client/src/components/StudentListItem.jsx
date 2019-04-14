@@ -19,6 +19,7 @@ class StudentListItem extends Component {
     showInfo(studentInfo){
         
         Dashboard.selectedStudent = studentInfo;
+        Dashboard.selectedStudent.code = Number(Dashboard.selectedStudent.code)
         console.log(studentInfo);
         
         this.props.history.push('/student');

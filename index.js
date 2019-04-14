@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 
 const config = require('./config/config');
 
+const School = require('./models/school');
 
 mongoose.connect(config.database, { useNewUrlParser: true });
 

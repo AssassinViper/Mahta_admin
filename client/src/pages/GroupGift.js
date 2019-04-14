@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import LoginPage from '../pages/Login';
 import Input from '../components/Input';
 import Button from '../components/Button';
 import PlainText from '../components/PlainText';
@@ -9,6 +10,7 @@ import ErrorModal from '../components/ErrorModal';
 import SuccessModal from '../components/SuccessModal';
 import Dashboard from '../pages/Dashboard';
 import Select from 'react-select';
+import {GetSchoolList} from '../handlers/SchoolListHandler';
 
 const gradeOptions=[
     {value:"all", label:"تمامی پایه ها"},
@@ -29,18 +31,36 @@ const fieldOptions=[
     {value:"انسانی", label:"انسانی"},
 ]
 
+const emptyGroupGiftData = {
+
+    school:"all",
+    field:"all",
+    grade:"all",
+    price:0
+}
+
 class GroupGift extends Component {
 
-    state = { askModal:false, errorModal:false, successModal:false }
+    state = { askModal:false, errorModal:false, successModal:false, schoolNameList:[]}
 
-    errorMassage="خطا در شبکه"
+    constructor(props){
+        super(props);
+    }
 
-    GroupGiftData = {
+    errorMassage="خطا در شبکه";
 
-        school:"all",
-        field:"all",
-        grade:"all",
-        price:0
+    GroupGiftData = Object.assign({},emptyGroupGiftData);
+
+    componentDidMount(){
+        
+        GetSchoolList(()=>{
+
+            let newState = Object.assign({}, this.state);
+            newState.schoolNameList = LoginPage.schoolNameList;
+            newState.schoolNameList.pop();
+            newState.schoolNameList.push({value:"all",label:"همه مدارس"})
+            this.setState(newState);
+        })
     }
 
     render() { 
@@ -62,17 +82,14 @@ class GroupGift extends Component {
                 <div style={s.sec1}>
 
                     
-                    <Select options={fieldOptions} styles={customStyles} placeholder="تمامی رشته ها" onChange={(e)=>{
-                        this.GroupGiftData.field = e.value;
-                    }}/>
+                    <Select options={fieldOptions} styles={customStyles} placeholder="تمامی رشته ها" 
+                    onChange={(e)=>{this.GroupGiftData.field = e.value}} ref={ref=>this.fieldSelect=ref}/>
 
-                    <Input height={35} width={200} placeholder="همه مدارس"type="text"
-                        ref={(ref=>this.schoolInput = ref)}
-                        onChange={(event)=>{this.GroupGiftData.school = event.target.value}}/>
+                    <Select options={this.state.schoolNameList} styles={customStyles} placeholder="همه مدارس" 
+                    onChange={(e)=>{this.GroupGiftData.school = e.value}} ref={ref=>this.schoolSelect=ref}/>
 
-                    <Select options={gradeOptions} styles={customStyles} placeholder="تمامی پایه ها" onChange={(e)=>{
-                        this.GroupGiftData.grade = e.value;
-                    }}/>
+                    <Select options={gradeOptions} styles={customStyles} placeholder="تمامی پایه ها" 
+                    onChange={(e)=>{this.GroupGiftData.grade = e.value}} ref={ref=>this.gradeSelect=ref}/>
 
                 </div>
 
@@ -111,8 +128,12 @@ class GroupGift extends Component {
 
                 this.schoolInput.clear();
                 this.priceInput.clear();
+                this.fieldSelect.clearValue();
+                this.gradeSelect.clearValue();
+                this.schoolSelect.clearValue();
 
                 Dashboard.StudentInfoList = [];
+                this.GroupGiftData = Object.assign({},emptyGroupGiftData);
                 
                 this.successModalOpen();
             },
@@ -193,7 +214,7 @@ const s = {
 
     sec1:{
         height:'15%',
-        width:'60%',
+        width:'70%',
         display:'flex',
         alignItems:'center',
         justifyContent:'space-around',

@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 
 import Input from '../components/Input';
 import Button from '../components/Button';
+import LoginPage from '../pages/Login';
 import AddStudentHandler from '../handlers/AddStudentHandler';
 import Select from 'react-select';
 import Dashboard from '../pages/Dashboard';
 import YesNoModal from '../components/YesNoModal';
 import ErrorModal from '../components/ErrorModal';
 import SuccessModal from '../components/SuccessModal';
+import {GetSchoolList} from '../handlers/SchoolListHandler';
 
 const gradeOptions=[
     {value:"هفتم", label:"هفتم"},
@@ -26,25 +28,35 @@ const fieldOptions=[
     {value:"انسانی", label:"انسانی"},
 ]
 
+const emptyStudent = {
+
+    firstName:"",
+    lastName:"",
+    grade:"",
+    field:"",
+    school:"",
+    phone:"",
+    home:"",
+    inviterCode:0
+}
   
 
 class AddStudent extends Component {
-    state = { askModal:false, errorModal:false, successModal:false }
+    state = { askModal:false, errorModal:false, successModal:false, studentCode:"" , schoolNameList:[]}
+
+    componentDidMount(){
+        
+        GetSchoolList(()=>{
+
+            let newState = Object.assign({}, this.state);
+            newState.schoolNameList = LoginPage.schoolNameList;
+            this.setState(newState);
+        })
+    }
 
     errorMassage="خطا در شبکه"
 
-    AddStudentData = {
-
-        firstName:"",
-        lastName:"",
-        grade:"",
-        field:"",
-        school:"",
-        phone:"",
-        home:"",
-        code:"",
-        inviterCode:""
-    }
+    AddStudentData = Object.assign({}, emptyStudent);
 
     render() { 
         return ( 
@@ -77,31 +89,15 @@ class AddStudent extends Component {
                 <div style={s.sec1}>
 
                     
-                    <Select options={fieldOptions} styles={customStyles} placeholder="رشته" onChange={(e)=>{
-                        this.AddStudentData.field = e.value
-                    }}/>
+                    <Select options={fieldOptions} styles={customStyles} placeholder="رشته" 
+                    onChange={(e)=>{this.AddStudentData.field = e.value}} ref={ref=>this.fieldSelect=ref}/>
 
-                    <Input height={35} width={200} placeholder="مدرسه"type="text"
-                        defaultValue={this.AddStudentData.school}
-                        ref={(ref=>this.schoolInput = ref)}
-                        onChange={(event)=>{this.AddStudentData.school = event.target.value}}/>
+                    <Select options={this.state.schoolNameList} styles={customStyles} placeholder="مدرسه" 
+                    onChange={(e)=>{this.AddStudentData.school = e.value}} ref={ref=>this.schoolSelect=ref}/>
 
-                    <Select options={gradeOptions} styles={customStyles} placeholder="پایه" onChange={(e)=>{
-                        this.AddStudentData.grade = e.value
-                    }}/>
+                    <Select options={gradeOptions} styles={customStyles} placeholder="پایه"
+                    onChange={(e)=>{this.AddStudentData.grade = e.value}} ref={ref=>this.gradeSelect=ref}/>
 
-
-                </div>
-                
-                <div style={s.sec1}>
-
-                    <Input height={35} width={200} placeholder="کد معرف" type="number"
-                    ref={(ref=>this.inviterCodeInput = ref)}
-                    onChange={(event)=>{this.AddStudentData.inviterCode = Number(event.target.value)}}/>
-
-                    <Input height={35} width={200} placeholder="کد خانواده"type="number"
-                    ref={(ref=>this.codeInput = ref)}
-                    onChange={(event)=>{this.AddStudentData.code = Number(event.target.value)}}/>
 
                 </div>
                 
@@ -114,6 +110,14 @@ class AddStudent extends Component {
                     <Input height={35} width={200} placeholder="شماره منزل" type="tel"
                     ref={(ref=>this.homeInput = ref)}
                     onChange={(event)=>{this.AddStudentData.home = event.target.value}}/>
+
+                </div>
+
+                <div style={s.sec1}>
+
+                    <Input height={35} width={200} placeholder="کد معرف" type="number"
+                    ref={(ref=>this.inviterCodeInput = ref)}
+                    onChange={(event)=>{this.AddStudentData.inviterCode = Number(event.target.value)}}/>
 
                 </div>
                 
@@ -129,6 +133,8 @@ class AddStudent extends Component {
                 
                 <SuccessModal open={this.state.successModal} onClose={this.successModalClose}>
                     عملیات ثبت دانش آموز با موفقیت انجام شد
+                    <br/>
+                    {this.state.studentCode} : کد خانواده
                 </SuccessModal>
 
             </div>
@@ -136,22 +142,27 @@ class AddStudent extends Component {
     }
 
     commit = ()=>{
-
         
         AddStudentHandler(this.AddStudentData,
             (res)=>{
 
                 this.firstNameInput.clear();
                 this.lastNameInput.clear();
-                this.codeInput.clear();
                 this.inviterCodeInput.clear();
                 this.phoneInput.clear();
                 this.homeInput.clear();
-                this.schoolInput.clear();
 
                 Dashboard.StudentInfoList = [];
 
-                this.successModalOpen();
+                let grade = this.AddStudentData.grade;
+                let field = this.AddStudentData.field;
+                let school = this.AddStudentData.school;
+                this.AddStudentData = Object.assign({}, emptyStudent);
+                this.AddStudentData.school = school;
+                this.AddStudentData.field = field;
+                this.AddStudentData.grade = grade;
+
+                this.successModalOpen(res.code);
 
             },(err)=>{
 
@@ -195,9 +206,10 @@ class AddStudent extends Component {
         this.setState(newState);
     }
 
-    successModalOpen = ()=>{
+    successModalOpen = (code)=>{
 
         let newState = Object.assign({}, this.state);
+        newState.studentCode = code;
         newState.successModal =true;
         this.setState(newState);
     }

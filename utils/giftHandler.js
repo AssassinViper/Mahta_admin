@@ -15,6 +15,7 @@ async function commitGift(req, res, next) {
     let price = params.price || 0;
     let info = params.info || "";
     let gift = new Gift({});
+    let code = Number(params.code);
 
     // validation
     if(price <= 0){
@@ -23,7 +24,7 @@ async function commitGift(req, res, next) {
     }
 
     // find student
-    await Student.findOne({ code: params.code }, function(err, student) {
+    await Student.findOne({ code }, function(err, student) {
 
         if (err) {
             
@@ -86,24 +87,28 @@ async function groupGift(req, res){
     if(params.grade != undefined && params.grade != "" && params.grade != 'all'){
 
         query.grade = params.grade;
+    }else{
+        res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_GRADE});
+        return;
     }
 
     if(params.field != undefined && params.field != "" && params.field != 'all'){
 
         query.field = params.field;
+    }else{
+        res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_FIELD});
+        return;
     }
 
     if(params.school != undefined && params.school != "" && params.school != 'all'){
 
         query.school = params.school;
+    }else{
+        res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_SCHOOL});
+        return;
     }
-
-    console.log(query);
-    
     
     let students = await Student.find(query);
-
-    console.log(students);
     
     if(students.length == 0){
         res.status(consts.BAD_REQ_CODE).json({error:consts.NO_STUDENT_MATCHED});

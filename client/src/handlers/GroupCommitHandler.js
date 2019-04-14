@@ -20,7 +20,15 @@ const CommitPurchaseHandler = (json, onFetched, onError)=>{
 
             }else{
 
-                onFetched(res);
+                res.json().then((data)=>{
+
+                    onError(data.error)
+
+                }).catch((err)=>{
+
+                    onError(err)
+
+                });
                 
             }
         }).catch(err=>{

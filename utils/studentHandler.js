@@ -179,7 +179,8 @@ async function createCode(grade) {
 
     console.log(`temp : ${temp}`);
 
-    await Student.findOne({ code: { $gt: temp, $lt: temp + 10000 }}, { code:1, _id:0 }, { sort: { 'created' : -1 } },
+    await Student.findOne({ code: { $gt: temp, $lt: temp + 10000 }}, { code:1, _id:0 },
+        { sort: { sort: { 'code' : -1 } } },
         function(err, student) {
 
             config.log(`finding latest added student`);
@@ -225,18 +226,17 @@ async function editStudent(req, res, next) {
         school: params.school
     };
 
+    // The upsert = true option creates the object if it doesn't exist.
     await Student.findOneAndUpdate(query, student, {upsert:false}, function(err, student){
 
         if (err) {
             errHandler(err, res);
-            return;
 
         } else if (!student) {
-
             res.status(consts.NOT_FOUND_CODE).json({error: consts.INCORRECT_MAHTA_ID});
-            return;
         }
     });
+
 }//done
 
 async function deleteStudent(req, res, next) {
@@ -453,6 +453,9 @@ async function spendCredit(req, res, next) {
     });
 }
 
+// TODO: change return to issue
+// TODO: fix errhandler args
+
 async  function groupCommit(req, res, next) {
 
     let params = req.body;
@@ -495,7 +498,7 @@ async  function groupCommit(req, res, next) {
 
         if (err) {
             issue = true;
-            errHandler(err);
+            errHandler(err, res);
 
         } else if (docs.length === 0) { // if codes were empty
 

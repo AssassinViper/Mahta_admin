@@ -100,7 +100,7 @@ async function addStudent(req, res, next) {
         if (issue) return;
 
         // saving inviter
-        inviterToSave.save((err => {
+        await inviterToSave.save((err => {
 
             if (err) {
                 errHandler(err, res);
@@ -180,7 +180,7 @@ async function createCode(grade) {
     console.log(`temp : ${temp}`);
 
     await Student.findOne({ code: { $gt: temp, $lt: temp + 10000 }}, { code:1, _id:0 },
-        { sort: { sort: { 'code' : -1 } } },
+        { sort: { 'code' : -1 } },
         function(err, student) {
 
             config.log(`finding latest added student`);

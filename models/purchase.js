@@ -18,6 +18,7 @@ let puchaseSchema = mongoose.Schema({
     percent:{
         type: Number,
         max: 100,
+        default: 0
     },
     info:{
         type: String

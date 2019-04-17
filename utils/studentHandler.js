@@ -455,6 +455,7 @@ async function spendCredit(req, res, next) {
 
 // TODO: change return to issue
 // TODO: fix errhandler args
+// TODO: set validator for all shits
 
 async  function groupCommit(req, res, next) {
 

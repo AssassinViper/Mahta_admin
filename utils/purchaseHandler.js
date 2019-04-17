@@ -20,17 +20,17 @@ async function commitPurchase(req, res, next) {
 
     let issue = false;
 
-    if(percent < 0 || percent > 100){
+    if(percent < 0 || percent > 100 || !percent){
         res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_PERCENT});
         return;
     }
 
-    if(price <= 0){
+    if(price <= 0 || !price){
         res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_PRICE});
         return;
     }
 
-    if(code === "" || code <= 0){
+    if(code === "" || code <= 0 || !code){
         res.status(consts.NOT_FOUND_CODE).json({error: consts.INCORRECT_MAHTA_ID});
         return;
     }
@@ -57,7 +57,7 @@ async function commitPurchase(req, res, next) {
             purchase.usedCredit = 0;
 
             // credit, gift calculations
-            if (useCredit) { config.log('usedCredit is true')
+            if (useCredit) { config.log('usedCredit is true');
                 if (payable > student.credit) { // if price was more than student's credit
 
                     payable -= student.credit;
@@ -117,6 +117,7 @@ async function commitPurchase(req, res, next) {
     purchase.payed = payable;
     purchase.percent = params.percent;
     purchase.info = params.info;
+
 
     studentToSave.purchases.push(purchase);
 

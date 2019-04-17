@@ -50,7 +50,7 @@ module.exports = {
 
             if (count <= 50) { // check students count
 
-                for (let i = 0; i < 3000; i++) {
+                for (let i = 0; i < 300; i++) {
 
                     new Student({
                         _id: new mongoose.Types.ObjectId(),

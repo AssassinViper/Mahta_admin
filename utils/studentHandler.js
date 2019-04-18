@@ -234,6 +234,9 @@ async function editStudent(req, res, next) {
 
         } else if (!student) {
             res.status(consts.NOT_FOUND_CODE).json({error: consts.INCORRECT_MAHTA_ID});
+        } else {
+
+            res.status(consts.SUCCESS_CODE).send('OK');
         }
     });
 
@@ -243,9 +246,9 @@ async function deleteStudent(req, res, next) {
 
     let params = req.body;
 
-    if(validator.hasCode(req, res, params)){
-        return;
-    }
+    let issue = validator.hasCode(req, res, params);
+    if (issue) return;
+
 
     let inviterId;
     let gifts;
@@ -262,12 +265,12 @@ async function deleteStudent(req, res, next) {
 
         if (err) { // if there were errors running query
             errHandler(err, res);
-            return;
+            issue = true;
 
         } else if (!student) { // if found no student
 
             res.status(consts.BAD_REQ_CODE).json({error: consts.INCORRECT_MAHTA_ID});
-            return;
+            issue = true;
 
         } else { // if found student
 
@@ -280,6 +283,9 @@ async function deleteStudent(req, res, next) {
         }
     });
 
+    if (issue) return;
+
+
     // if student had inviter
     if (inviterId) {
 
@@ -288,7 +294,7 @@ async function deleteStudent(req, res, next) {
 
             if (err) {
                 errHandler(err, res);
-                return;
+                issue = true;
 
             } else if (!student) { // if found no inviter
 
@@ -307,7 +313,7 @@ async function deleteStudent(req, res, next) {
                     if (err) {
 
                         errHandler(err);
-                        return;
+                        issue = true;
 
                     } else {
                         config.log(`inviter's property updated`);
@@ -316,6 +322,8 @@ async function deleteStudent(req, res, next) {
             }
         });
     }
+
+    if (issue) return;
 
     // if student had gifts
     if (gifts) {
@@ -331,12 +339,9 @@ async function deleteStudent(req, res, next) {
     await Student.deleteOne(studentToDelete ,(err, student) => {
 
         if (err) {
-
             errHandler(err, res);
-            return;
 
         } else {
-            
             res.status(consts.SUCCESS_CODE).send("OK")
         }
     });
@@ -403,8 +408,10 @@ async function spendCredit(req, res, next) {
 
     let params = req.body;
 
-    let code = Number(params.code) || 0;
-    let price = Number(params.price) || 0;
+    let code = Number(params.code);
+    let price = Number(params.price);
+
+    let issue = validator.spendCredit(req, res);
 
     if(code === "" || code <= 0){
         res.status(consts.NOT_FOUND_CODE).json({error: consts.INCORRECT_MAHTA_ID});
@@ -421,13 +428,13 @@ async function spendCredit(req, res, next) {
     await Student.findOne(query, function(err, student) {
 
         if (err) {
-
             errHandler(err, res);
+            issue = true;
 
         } else if (!student) { // if found no student
 
             res.status(consts.NOT_FOUND_CODE).json({error: consts.INCORRECT_MAHTA_ID});
-            return;
+            issue = true;
 
         } else { // if found student
 

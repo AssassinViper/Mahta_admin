@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 // Bring in Models
 let User = require('../models/user');
 let Student = require('../models/student');
+let School = require('../models/school');
 
 
 module.exports = {
@@ -50,7 +51,7 @@ module.exports = {
 
             if (count <= 50) { // check students count
 
-                for (let i = 0; i < 300; i++) {
+                for (let i = 0; i < 200; i++) {
 
                     new Student({
                         _id: new mongoose.Types.ObjectId(),
@@ -67,6 +68,72 @@ module.exports = {
                         });
 
                 }
+
+            }
+
+        });
+    },
+    insertFakeSchools: () => {
+
+        School.count({}, function(err, count) {
+
+            if (count <= 1) { // check students count
+
+                new School({
+                    _id: new mongoose.Types.ObjectId(),
+                    name: 'شاهد'
+                }).save((err) => {
+                        if (err) console.log(err);
+                        else console.log(`school added`)
+                    });
+
+                new School({
+                    _id: new mongoose.Types.ObjectId(),
+                    name: 'بهشتی'
+                }).save((err) => {
+                    if (err) console.log(err);
+                    else console.log(`school added`)
+                });
+
+                new School({
+                    _id: new mongoose.Types.ObjectId(),
+                    name: 'فرزانگان'
+                }).save((err) => {
+                    if (err) console.log(err);
+                    else console.log(`school added`)
+                });
+
+                new School({
+                    _id: new mongoose.Types.ObjectId(),
+                    name: 'سمیعی'
+                }).save((err) => {
+                    if (err) console.log(err);
+                    else console.log(`school added`)
+                });
+
+                new School({
+                    _id: new mongoose.Types.ObjectId(),
+                    name: 'احسانبخش'
+                }).save((err) => {
+                    if (err) console.log(err);
+                    else console.log(`school added`)
+                });
+
+                new School({
+                    _id: new mongoose.Types.ObjectId(),
+                    name: 'باهنر'
+                }).save((err) => {
+                    if (err) console.log(err);
+                    else console.log(`school added`)
+                });
+
+                new School({
+                    _id: new mongoose.Types.ObjectId(),
+                    name: 'تابش'
+                }).save((err) => {
+                    if (err) console.log(err);
+                    else console.log(`school added`)
+                });
 
             }
 

@@ -102,6 +102,7 @@ if (config.isDevelopment) {
 const faker = require('./tools/faker');
 faker.insertFakeAdmin();
 faker.insertFakeStudents();
+faker.insertFakeSchools();
 
 
 

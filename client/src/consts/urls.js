@@ -13,6 +13,6 @@ const urls = {
     studentEdit:"/api/admin/editStudent",
     studentGPList:"/api/admin/getGPList",
     schoolList:"/api/admin/getSchools"
-}
+};
 
 export default urls;

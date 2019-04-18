@@ -12,8 +12,11 @@ module.exports = {
     INCORRECT_LASTNAME : 'نام خانوادگی وارد شده نامعتبر',
     INCORRECT_SCHOOL : 'مدرسه نامعتبر',
     INCORRECT_PHONE : 'شماره موبایل نامعتبر',
+    INCORRECT_HOME : 'شماره ثابت نامعتبر',
     INCORRECT_GRADE : 'پایه تحصیلی باید مشخص شود',
     INCORRECT_FIELD : 'رشته تحصیلی باید مشخص شود',
+
+    INCORRECT_INFO: 'لطفا توضیحی وارد کنید',
 
     INCORRECT_START : 'عدد شروع نامعتبر',
     INCORRECT_GIFT: 'مقدار هدیه ورودی نامعتبر',

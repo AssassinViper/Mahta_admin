@@ -79,18 +79,16 @@ router.post('/authenticate', (req, res) => {
 
 router.post('/getSchools', (req, res)=>{
 
-    School.find((err, data)=>{
+    School.find({}, (err, data) => {
 
         if(err){
-
             res.status(consts.ERR).json({error:err});
 
         }else{
-
             res.status(consts.SUCCESS_CODE).json(data);
         }
     });
-})
+});
 
 
 router.post('/logout', (req, res)=>{

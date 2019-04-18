@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const consts = require('./consts');
 const errHandler = require('./errHandler');
 const config = require('../config/config');
+const validator = require('../tools/validator');
 
 // Requiring models
 let Student = require('../models/student');
@@ -11,11 +12,15 @@ let Gift = require('../models/gift');
 async function commitGift(req, res, next) {
 
     let params = req.body;
+
+    let issue = validator.commitGift(req, res);
+    if (issue) return;
     
-    let price = params.price || 0;
-    let info = params.info || "";
-    let gift = new Gift({});
+    let price = params.price;
+    let info = params.info;
     let code = Number(params.code);
+
+    let gift = new Gift({});
 
     // validation
     if(price <= 0){
@@ -29,11 +34,11 @@ async function commitGift(req, res, next) {
         if (err) {
             
             errHandler(err, res);
-            return;
+            issue = true;
 
         } else if (!student) { // if no student found
             res.status(consts.NOT_FOUND_CODE).json({error: consts.INCORRECT_MAHTA_ID});
-            return;
+            issue = true;
 
         } else { // if student was found
 
@@ -53,7 +58,7 @@ async function commitGift(req, res, next) {
                 if (err) {
                     errHandler(err, res);
                     config.log(`err in saving student`);
-                    return;
+                    issue = true;
                 }
 
             }));
@@ -63,13 +68,15 @@ async function commitGift(req, res, next) {
                 if (err) {
                     errHandler(err, res);
                     config.log(`err in saving gift`);
-                    return;
+                    issue = true;
                 }
             }));
 
             res.status(consts.SUCCESS_CODE).send("OK");
         }
     });
+
+    if (issue) return;
 }
 
 async function groupGift(req, res){
@@ -77,57 +84,56 @@ async function groupGift(req, res){
     let params = req.body;
     let price = params.price || 0;
     let info = params.info || "هدایای گروهی";
-    let query = {}
+    let query = {};
 
     if(price <= 0){
         res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_PRICE});
         return;
     }
 
-    if(params.grade != undefined && params.grade != "" && params.grade != 'all'){
+    if(params.grade !== undefined && params.grade !== ""){
 
-        query.grade = params.grade;
-    }else{
-        res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_GRADE});
-        return;
+        if (params.school !== 'all') {
+            query.grade = params.grade;
+        }
     }
 
-    if(params.field != undefined && params.field != "" && params.field != 'all'){
+    if(params.field !== undefined && params.field !== ""){
 
-        query.field = params.field;
-    }else{
-        res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_FIELD});
-        return;
+        if (params.school !== 'all') {
+            query.field = params.field;
+        }
     }
 
-    if(params.school != undefined && params.school != "" && params.school != 'all'){
+    if(params.school !== undefined && params.school !== ""){
 
-        query.school = params.school;
-    }else{
-        res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_SCHOOL});
-        return;
+        if (params.school !== 'all') {
+            query.school = params.school;
+        }
     }
-    
+
     let students = await Student.find(query);
-    
-    if(students.length == 0){
+
+    if(students.length === 0){
         res.status(consts.BAD_REQ_CODE).json({error:consts.NO_STUDENT_MATCHED});
         return;
     }
 
-    students.forEach(async function(s){
+    students.forEach(async function(student){
 
         let newGift = new Gift({});
+
         newGift._id = new mongoose.Types.ObjectId();
-        newGift.owner= s._id;
+        newGift.owner= student._id;
         newGift.price= price;
         newGift.info= info;
 
-        s.gifts.push(newGift);
-        s.gift += price;
-        await s.save();
+        student.gifts.push(newGift);
+        student.gift += price;
+
+        await student.save();
         await newGift.save();
-    })
+    });
 
     res.status(consts.SUCCESS_CODE).send("OK");
 }

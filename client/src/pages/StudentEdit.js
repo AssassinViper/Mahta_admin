@@ -84,12 +84,12 @@ class StudentEdit extends Component {
                     
                     <div style={s.sec1}>
                         
-                        <Input height={35} width={200} placeholder="نام خانوادگی" type="text"
+                        <Input height={35} width={200} placeholder="نام خانوادگی" type="text" dir="rtl"
                         defaultValue={this.StudentEditData.lastName}
                         ref={(ref=>this.lastNameInput = ref)}
                         onChange={(event)=>{this.StudentEditData.lastName = event.target.value}}/>
 
-                        <Input height={35} width={200} placeholder="نام"type="text"
+                        <Input height={35} width={200} placeholder="نام"type="text" dir="rtl"
                         defaultValue={this.StudentEditData.firstName}
                         ref={(ref=>this.firstNameInput = ref)}
                         onChange={(event)=>{this.StudentEditData.firstName = event.target.value}}/>

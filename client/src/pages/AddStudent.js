@@ -76,11 +76,11 @@ class AddStudent extends Component {
                 
                 <div style={s.sec1}>
                     
-                    <Input height={35} width={200} placeholder="نام خانوادگی" type="text"
+                    <Input height={35} width={200} placeholder="نام خانوادگی" type="text" dir="rtl"
                     ref={(ref=>this.lastNameInput = ref)} value={this.st}
                     onChange={(event)=>{this.AddStudentData.lastName = event.target.value}}/>
 
-                    <Input height={35} width={200} placeholder="نام"type="text"
+                    <Input height={35} width={200} placeholder="نام"type="text" dir="rtl"
                     ref={(ref=>this.firstNameInput = ref)}
                     onChange={(event)=>{this.AddStudentData.firstName = event.target.value}}/>
 
@@ -89,7 +89,7 @@ class AddStudent extends Component {
                 <div style={s.sec1}>
 
                     
-                    <Select options={fieldOptions} styles={customStyles2} placeholder="رشته" 
+                    <Select options={fieldOptions} styles={customStyles2} placeholder="رشته"
                     onChange={(e)=>{this.AddStudentData.field = e.value}} ref={ref=>this.fieldSelect=ref}/>
 
                     <Select options={this.state.schoolNameList} styles={customStyles} placeholder="مدرسه" 

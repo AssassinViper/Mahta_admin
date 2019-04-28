@@ -63,9 +63,9 @@ class Navbar extends Component {
                     <a onClick={this.logout} style={s.logout}>خروج</a>
 
                     <div style={s.icon}>
-                        <div unselectable style={{fontFamily:'ebhar', color:'white', 
+                        <div  style={{fontFamily:'ebhar', color:'white', 
                         fontSize:55, userSelect: 'none' }}>ادمین&thinsp;</div>
-                        <div unselectable style={{fontFamily:'ebhar', color:'rgb(220,96,36)', 
+                        <div  style={{fontFamily:'ebhar', color:'rgb(220,96,36)', 
                         fontSize:55, userSelect: 'none' }}>مهتا</div>
                     </div>
                 </div>

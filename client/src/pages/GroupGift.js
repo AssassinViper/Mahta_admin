@@ -104,7 +104,7 @@ class GroupGift extends Component {
 
                 <Button height={50} width="15%" fontColor={"rgba(216,92,32,0.9)"} onClick={this.askModalOpen}>ثبت</Button>
 
-                <YesNoModal open={this.state.askModal} commit={this.askModalCommit} cancel={this.askModalClose}>
+                <YesNoModal open={this.state.askModal} commit={this.askModalCommit} onClose={this.askModalClose}>
                     ثبت گروهی هدایا انجام شود؟
                 </YesNoModal>
                 
@@ -126,11 +126,12 @@ class GroupGift extends Component {
             
             (res)=>{
 
-                this.schoolInput.clear();
+                //this.schoolInput.clear();
                 this.priceInput.clear();
-                this.fieldSelect.clearValue();
-                this.gradeSelect.clearValue();
-                this.schoolSelect.clearValue();
+                this.infoPlainText.clear();
+                //this.fieldSelect.clearValue();
+                //this.gradeSelect.clearValue();
+                //this.schoolSelect.clearValue();
 
                 Dashboard.StudentInfoList = [];
                 this.GroupGiftData = Object.assign({},emptyGroupGiftData);
@@ -139,6 +140,7 @@ class GroupGift extends Component {
             },
             (err)=>{
 
+                alert('dd')
                 this.errorMassage = err;
                 this.errorModalOpen();
             }

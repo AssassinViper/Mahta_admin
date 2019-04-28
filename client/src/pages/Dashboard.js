@@ -12,7 +12,7 @@ class Dashboard extends Component {
     static StudentInfoList = [];
     static selectedStudent = {}
     
-    state = { sortBy:"code", sortOrder:"A", listBtn:"نمایش دعوت ها", listType:"signed", list:[]}
+    state = { sortBy:"code", sortOrder:"A", listBtn:"نمایش دعوت ها", listType:"invites", list:[]}
 
     componentDidMount(){
 
@@ -26,7 +26,7 @@ class Dashboard extends Component {
 
                 Dashboard.StudentInfoList = res;
 
-                this.showlist(Sort(Dashboard.StudentInfoList,this.state.sortBy, this.state.sortOrder));
+                this.listBtn();
     
             },(err)=>{
     
@@ -35,7 +35,7 @@ class Dashboard extends Component {
 
         }else{
 
-            this.showlist(Sort(Dashboard.StudentInfoList,this.state.sortBy, this.state.sortOrder));
+            this.listBtn();
         }
         
     }

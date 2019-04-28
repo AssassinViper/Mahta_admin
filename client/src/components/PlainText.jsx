@@ -10,11 +10,10 @@ class PlainText extends Component {
 
     render() { 
         return ( 
-            <textarea placeholder={this.props.placeholder} type="text" onChange={this.props.onChange}
+            <textarea dir="rtl" placeholder={this.props.placeholder} type="text" onChange={this.props.onChange}
             maxLength={2000} ref={ref=>this.textarea=ref}
             
             style={{
-                
                 height:this.props.height,
                 width:this.props.width,
                 verticalAlign:'top',

@@ -11,6 +11,7 @@ class Input extends Component {
     render() { 
         return ( 
             <input 
+            dir={this.props.dir || "ltr"}
             placeholder={this.props.placeholder}
             type={this.props.type || "text"}
             defaultValue={this.props.defaultValue}

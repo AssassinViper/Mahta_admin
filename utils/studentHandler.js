@@ -508,10 +508,10 @@ async  function groupCommit(req, res, next) {
             issue = true;
             errHandler(err, res);
 
-        } else if (docs.length === 0) { // if codes were empty
+        } else if (docs.length === 0) {
 
 
-        } else { // if codes were not available
+        } else {
             res.status(consts.SUCCESS_CODE).json({error: 'OK'});
         }
 

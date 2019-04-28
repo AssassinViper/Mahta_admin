@@ -114,12 +114,13 @@ async function groupGift(req, res){
 
     let students = await Student.find(query);
 
+
     if(students.length === 0){
         res.status(consts.BAD_REQ_CODE).json({error:consts.NO_STUDENT_MATCHED});
         return;
     }
 
-    students.forEach(async function(student){
+    for(const student of students){
 
         let newGift = new Gift({});
 
@@ -133,7 +134,7 @@ async function groupGift(req, res){
 
         await student.save();
         await newGift.save();
-    });
+    }
 
     res.status(consts.SUCCESS_CODE).send("OK");
 }

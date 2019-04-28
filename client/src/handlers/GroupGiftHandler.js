@@ -10,10 +10,9 @@ const GroupGiftHandler = (json, onFetched, onError)=>{
         })
         .then(res =>{
 
-            if(res.status === 200){
+            if(res.status == 200){
                 
-                res.json().then(res=> onFetched(res))
-                .catch(err=>{ onFetched(res) });
+                onFetched();
             
             }else if(res.status === 500){
 
@@ -25,7 +24,6 @@ const GroupGiftHandler = (json, onFetched, onError)=>{
                 .catch(err=>{ onError(res) });
             }
         }).catch(err=>{
-
             onError("خطای شبکه و اتصال به سرور");
         });
 }

@@ -16,7 +16,7 @@ async function getStudentList(req, res, next) {
     // config.log(req.cookies.token);
 
     // projecting fields
-    await Student.find({}, { __v: 0 }, (err, students) => {
+    await Student.find({}, { __v: 0 }, { sort: { 'code' : 1 } } , (err, students) => {
 
         if (err) {
             errHandler(err);
@@ -460,9 +460,6 @@ async function spendCredit(req, res, next) {
     });
 }
 
-// TODO: change return to issue
-// TODO: fix errhandler args
-// TODO: set validator for all shits
 
 async  function groupCommit(req, res, next) {
 

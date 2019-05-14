@@ -18,6 +18,7 @@ let studentSchema = mongoose.Schema({
     school: String,
     phone: String,
     home: String,
+    subscription: Object,
     credit: {
         type: Number,
         default: 0

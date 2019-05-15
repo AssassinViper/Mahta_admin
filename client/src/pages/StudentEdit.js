@@ -137,7 +137,7 @@ class StudentEdit extends Component {
                     </div>
                     
 
-                    <YesNoModal open={this.state.askModal} commit={this.askModalCommit} cancel={this.askModalClose}>
+                    <YesNoModal open={this.state.askModal} commit={this.askModalCommit} cancel={this.askModalClose} onClose={this.askModalClose}>
                         {this.yesNoDialog}
                     </YesNoModal>
                     

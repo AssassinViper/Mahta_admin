@@ -104,7 +104,7 @@ class GroupGift extends Component {
 
                 <Button height={50} width="15%" fontColor={"rgba(216,92,32,0.9)"} onClick={this.askModalOpen}>ثبت</Button>
 
-                <YesNoModal open={this.state.askModal} commit={this.askModalCommit} onClose={this.askModalClose}>
+                <YesNoModal open={this.state.askModal} commit={this.askModalCommit} onClose={this.askModalClose} cancel={this.askModalClose}>
                     ثبت گروهی هدایا انجام شود؟
                 </YesNoModal>
                 

@@ -57,7 +57,7 @@ class CommitGift extends Component {
 
                     <Button height={50} width="15%" fontColor={"rgba(55, 110, 198,0.9)"} onClick={this.askModalOpen}>ثبت</Button>
 
-                    <YesNoModal open={this.state.askModal} commit={this.askModalCommit} cancel={this.askModalClose}>
+                    <YesNoModal open={this.state.askModal} commit={this.askModalCommit} cancel={this.askModalClose} onClose={this.askModalClose}>
                         ثبت هدیه با مشخصات زیر؟
                     </YesNoModal>
 

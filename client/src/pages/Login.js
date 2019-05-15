@@ -10,6 +10,10 @@ class LoginPage extends Component{
 
     static schoolNameList = "noset";
 
+    componentDidMount(){
+
+    }
+
     username = "";
     password = "";
 
@@ -17,7 +21,7 @@ class LoginPage extends Component{
 
         return(
 
-            <div style={s.con}>
+            <div style={s.con} onKeyPress={this.EnterPressed}>
 
                 <div style={s.con2}>
                     <div style={s.space}/>
@@ -66,6 +70,16 @@ class LoginPage extends Component{
             newState.errorMassage="خطای اتصال به سرور";
             this.setState(newState);
         });
+    }
+
+    EnterPressed = (e)=>{
+        alert(e.key)
+
+        if(e.key === "Enter"){
+            alert("DD");
+            
+            this.authenticate();
+        }
     }
 }
 

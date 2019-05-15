@@ -109,7 +109,7 @@ class Dashboard extends Component {
         }
 
         this.setState(newState);
-        this.showlist(Sort(Dashboard.StudentInfoList,newState.sortBy, newState.sortOrder));
+        this.showlist(Sort(this.state.list, newState.sortBy, newState.sortOrder));
     }
 
     listBtn= ()=>{
@@ -123,7 +123,7 @@ class Dashboard extends Component {
             newState.list = this.showInvites();
 
             this.setState(newState, ()=>{
-                this.showlist(newState.list)
+                this.showlist(newState.list);
             });
 
         }else{
@@ -135,7 +135,7 @@ class Dashboard extends Component {
             newState.list = this.showSigned();
 
             this.setState(newState, ()=>{
-                this.showlist(newState.list)
+                this.showlist(newState.list);
             });
         }
     }

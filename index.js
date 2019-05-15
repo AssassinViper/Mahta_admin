@@ -3,10 +3,17 @@ const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const webpush = require("web-push");
 
 const config = require('./config/config');
 
 const School = require('./models/school');
+
+webpush.setVapidDetails(
+  "mahtaAdmin:test@test.com",
+  config.publicVapidKey,
+  config.privateVapidKey
+);
 
 mongoose.connect(config.database, { useNewUrlParser: true });
 
@@ -71,7 +78,6 @@ if (config.isDevelopment) {
         // res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
 
 
-
         // Cookies that have not been signed
         // console.log('Cookies: ', req.cookies);
 
@@ -116,15 +122,14 @@ app.use('/api/admin', users);
 // just for fun :)
 app.get('/api/info', (req, res) => {
 
-    // res.send(req.headers);
+    res.send(req.headers);
 
-    let Student = require('./models/student');
-
-
-    Student.find({}).sort({created: -1}).find(function(err,docs){
-
-        res.send(docs)
-    });
+    // let Student = require('./models/student');
+    //
+    // Student.find({}).sort({created: -1}).find(function(err,docs){
+    //
+    //     res.send(docs)
+    // });
 
 });
 

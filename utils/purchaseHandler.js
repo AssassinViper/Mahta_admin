@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const webpush = require("web-push");
 const consts = require('./consts');
 const errHandler = require('./errHandler');
 const config = require('../config/config');
@@ -156,12 +157,27 @@ async function commitPurchase(req, res, next) {
 
             } else { // if inviter was found
 
-                student.credit += percent * purchase.payed / 100;
+                let increaseAmount = percent * purchase.payed / 100;
+
+                student.credit += increaseAmount;
 
                 // saving inviter
                 student.save((err => {
                     if (err) errHandler(err, res);
                 }));
+
+
+              if (student.subscription) {
+
+                  const payload = JSON.stringify({ title: "سامانه مهتا", body: 'مبلغ ' + increaseAmount + ' تومان از خرید ' +
+                          studentToSave.firstName + ' ' + student.lastName
+                          + ' به اعتبار شما افزوده شد' });
+
+                // Pass object into sendNotification
+                webpush.sendNotification(student.subscription, payload)
+                  .catch(err => config.error(err));
+              }
+
 
                 res.status(consts.SUCCESS_CODE).send("OK");
             }

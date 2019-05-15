@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const webpush = require("web-push");
 const consts = require('./consts');
 const errHandler = require('./errHandler');
 const config = require('../config/config');
@@ -60,7 +61,6 @@ async function commitGift(req, res, next) {
                     config.log(`err in saving student`);
                     issue = true;
                 }
-
             }));
 
             // save purchase
@@ -71,6 +71,16 @@ async function commitGift(req, res, next) {
                     issue = true;
                 }
             }));
+
+            // notify student
+            if (student.subscription) {
+
+            const payload = JSON.stringify({ title: "سامانه مهتا", body: 'هدیه به مبلغ ' + price + ' تومان به شما داده شد.' });
+
+            // Pass object into sendNotification
+            webpush.sendNotification(student.subscription, payload)
+              .catch(err => config.error(err));
+            }
 
             res.status(consts.SUCCESS_CODE).send("OK");
         }
@@ -120,6 +130,8 @@ async function groupGift(req, res){
         return;
     }
 
+    const payload = JSON.stringify({ title: "سامانه مهتا", body: 'هدیه به مبلغ ' + price + ' تومان به شما داده شد.' });
+
     for(const student of students){
 
         let newGift = new Gift({});
@@ -131,6 +143,16 @@ async function groupGift(req, res){
 
         student.gifts.push(newGift);
         student.gift += price;
+
+
+
+        if (student.subscription) {
+
+          // Pass object into sendNotification
+          webpush.sendNotification(student.subscription, payload)
+            .catch(err => config.error(err));
+        }
+
 
         await student.save();
         await newGift.save();

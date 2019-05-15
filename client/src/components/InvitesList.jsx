@@ -8,10 +8,6 @@ class InvitesList extends Component {
 
     componentDidMount(){
 
-        //Dashboard.selectedStudent.invites;
-
-        console.log();
-
         let inviteds = Dashboard.selectedStudent.inviteds;
         let elements = [];
 

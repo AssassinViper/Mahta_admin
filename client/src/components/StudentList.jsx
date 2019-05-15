@@ -45,19 +45,23 @@ class StudentList extends Component {
 
     sortByName = ()=>{
 
-        let newState = Object.assign({},this.state);
+        if(this.props.listType == "signed"){
 
-        if(this.state.NameSort === sort2){
-            newState.NameSort = sort4;
-            newState.CodeSort = sort2;
-        }else if(this.state.NameSort === sort4){
-            newState.NameSort = sort3;
-            newState.CodeSort = sort2;
-        }else if(this.state.NameSort === sort3){
-            newState.NameSort = sort4;
-            newState.CodeSort = sort2;
+            let newState = Object.assign({},this.state);
+
+            if(this.state.NameSort === sort2){
+                newState.NameSort = sort4;
+                newState.CodeSort = sort2;
+            }else if(this.state.NameSort === sort4){
+                newState.NameSort = sort3;
+                newState.CodeSort = sort2;
+            }else if(this.state.NameSort === sort3){
+                newState.NameSort = sort4;
+                newState.CodeSort = sort2;
+            }
+            
+            this.setState(newState, this.props.sortByName);
         }
-        this.setState(newState, this.props.sortByName);
     }
 
     sortByCode = ()=>{
@@ -90,7 +94,6 @@ class StudentList extends Component {
             )
 
             i++;
-            console.log(i);
             
         });
         

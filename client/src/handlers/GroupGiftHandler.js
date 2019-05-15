@@ -10,7 +10,7 @@ const GroupGiftHandler = (json, onFetched, onError)=>{
         })
         .then(res =>{
 
-            if(res.status == 200){
+            if(res.status === 200){
                 
                 onFetched();
             

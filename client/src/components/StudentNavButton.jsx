@@ -4,8 +4,6 @@ import React, { Component } from 'react';
 class StudentNavButton extends Component {
     state = {backgroundColor:'transparent'}
     render() { 
-
-        //alert(this.props.navTo+" : "+this.props.active);
         
         if(this.props.active){
             this.state.backgroundColor="rgb(55, 110, 198)";

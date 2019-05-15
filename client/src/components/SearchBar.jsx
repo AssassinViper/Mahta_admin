@@ -15,7 +15,7 @@ class SearchBar extends Component {
                 
 
                 <button style={s.icon_con} onClick={()=>{this.props.searchBtnClick(this.searchWord)}}>
-                    <img src={search}>
+                    <img src={search} alt="جستجو">
                     </img>
                 </button>
               

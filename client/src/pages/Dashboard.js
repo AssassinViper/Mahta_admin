@@ -16,13 +16,9 @@ class Dashboard extends Component {
 
     componentDidMount(){
 
-        console.log(Dashboard.StudentInfoList)
-
         if(Dashboard.StudentInfoList.length == 0){
 
             GetStudentList((res)=>{
-
-                console.log(res);
 
                 Dashboard.StudentInfoList = res;
 
@@ -58,8 +54,8 @@ class Dashboard extends Component {
                     <div style={s.space}/>
                     
                     <div style={s.list_con}>
-                        <StudentList getShowList={(showlist)=>this.showlist=showlist} list={this.state.list}
-                        history={this.props.history} sortByName={()=>{this.sortBy("name")}} 
+                        <StudentList listType={this.state.listType} getShowList={(showlist)=>this.showlist=showlist} 
+                        list={this.state.list}history={this.props.history} sortByName={()=>{this.sortBy("name")}} 
                         sortByCode={()=>{this.sortBy("code")}}/>
                     </div>
 

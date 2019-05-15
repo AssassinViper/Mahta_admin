@@ -6,8 +6,6 @@ const Sort = (studentList, by, order)=>{
     if(by == "code"){
 
         newList.sort((a,b)=>{
-
-            console.log("A-fam");
             
             return a.code - b.code;
         });
@@ -20,8 +18,6 @@ const Sort = (studentList, by, order)=>{
     }else{
 
         newList.sort((a,b)=>{
-
-            console.log("A-name");
             
             return a.lastName.localeCompare(b.lastName);
         });

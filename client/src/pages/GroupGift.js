@@ -140,7 +140,7 @@ class GroupGift extends Component {
             },
             (err)=>{
 
-                alert('dd')
+                // alert('dd')
                 this.errorMassage = err;
                 this.errorModalOpen();
             }

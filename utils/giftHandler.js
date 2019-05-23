@@ -89,7 +89,7 @@ async function commitGift(req, res, next) {
     if (issue) return;
 }
 
-async function groupGift(req, res){
+async function groupGift(req, res) {
 
     let params = req.body;
     let price = params.price || 0;
@@ -121,6 +121,9 @@ async function groupGift(req, res){
             query.school = params.school;
         }
     }
+
+    config.log(`query: `);
+    config.log(query);
 
     let students = await Student.find(query);
 

@@ -73,10 +73,10 @@ class LoginPage extends Component{
     }
 
     EnterPressed = (e)=>{
-        alert(e.key)
+        // alert(e.key)
 
         if(e.key === "Enter"){
-            alert("DD");
+            // alert("DD");
             
             this.authenticate();
         }

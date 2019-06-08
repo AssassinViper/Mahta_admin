@@ -103,14 +103,14 @@ async function groupGift(req, res) {
 
     if(params.grade !== undefined && params.grade !== ""){
 
-        if (params.school !== 'all') {
+        if (params.grade !== 'all') {
             query.grade = params.grade;
         }
     }
 
     if(params.field !== undefined && params.field !== ""){
 
-        if (params.school !== 'all') {
+        if (params.field !== 'all') {
             query.field = params.field;
         }
     }

@@ -170,7 +170,7 @@ async function commitPurchase(req, res, next) {
               if (student.subscription) {
 
                   const payload = JSON.stringify({ title: "سامانه مهتا", body: 'مبلغ ' + increaseAmount + ' تومان از خرید ' +
-                          studentToSave.firstName + ' ' + student.lastName
+                          studentToSave.firstName + ' ' + studentToSave.lastName
                           + ' به اعتبار شما افزوده شد' });
 
                 // Pass object into sendNotification

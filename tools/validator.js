@@ -1,4 +1,5 @@
 const consts = require('../utils/consts');
+const config = require('../config/config');
 
 function hasCode(req, res, params) {
 
@@ -39,17 +40,29 @@ function addStudent(req, res){
         return true;
     }
 
-    if(grade === undefined || grade === ""){
-        
-        res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_GRADE});
-        return true;
+    if (grade === "هفتم" || grade ===  "هشتم" || grade === "نهم") {
+
+        if (field !== "") {
+            res.status(consts.BAD_REQ_CODE).json({error:consts.FIELD_ISSUE});
+            return true;
+        }
+
+    } else {
+
+        if(field === undefined || field === ""){
+
+            res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_FIELD});
+            return true;
+        }
     }
 
-    if(field === undefined || field === ""){
+    if(grade === undefined || grade === ""){
         
         res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_FIELD});
         return true;
     }
+
+
 
     if(school === undefined || school === "" || school.length > 100){
         res.status(consts.BAD_REQ_CODE).json({error:consts.INCORRECT_SCHOOL});

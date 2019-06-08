@@ -15,6 +15,7 @@ module.exports = {
     INCORRECT_HOME : 'شماره ثابت نامعتبر',
     INCORRECT_GRADE : 'پایه تحصیلی باید مشخص شود',
     INCORRECT_FIELD : 'رشته تحصیلی باید مشخص شود',
+    FIELD_ISSUE : 'رشته غیرمجاز برای پایه متوسطه اول',
 
     INCORRECT_INFO: 'لطفا توضیحی وارد کنید',
 

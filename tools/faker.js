@@ -73,71 +73,51 @@ module.exports = {
 
         });
     },
-    insertFakeSchools: () => {
+    insertFakeSchools: async () => {
 
-        School.count({}, function(err, count) {
+        let count = await School.count({}, function(err, count) {});
 
-            if (count <= 1) { // check students count
+        if (count <= 5) { // check schools count
 
-                new School({
-                    _id: new mongoose.Types.ObjectId(),
-                    name: 'شاهد'
-                }).save((err) => {
-                        if (err) console.log(err);
-                        else console.log(`school added`)
-                    });
+            var arr = [
+                { name: 'توحید (دختران)' },
+                { name: 'اردشیری (دختران)' },
+                { name: 'عصمت (دختران)' },
+                { name: 'شاهد گلباغ (دختران)' },
+                { name: 'خمامی زاده (دختران)' },
+                { name: 'بعثت (دختران)' },
+                { name: 'کوثر (دختران)' },
+                { name: 'اروندرود (دختران)' },
+                { name: 'هجرت (دختران)' },
+                { name: 'پیک نور (دختران)' },
+                { name: 'شاهد صفاری (دختران)' },
+                { name: 'پروفسور رضا (دختران)' },
+                { name: 'یکان (دختران)' },
+                { name: 'اندیشه های شریف (دختران)' },
+                { name: 'بهار دانش (دختران)' },
+                { name: 'فرزانگان (دختران)' },
 
-                new School({
-                    _id: new mongoose.Types.ObjectId(),
-                    name: 'بهشتی'
-                }).save((err) => {
-                    if (err) console.log(err);
-                    else console.log(`school added`)
-                });
+                { name: 'میرزا کوچک خان ۱ (پسران)' },
+                { name: 'میرزا کوچک خان 2 (پسران)' },
+                { name: 'شریعتی (پسران)' },
+                { name: 'ابوریحان (پسران)' },
+                { name: 'شاهد امام حسین (پسران)' },
+                { name: 'بهشتی (پسران)' },
+                { name: 'فرهنگ نهی قناد (پسران)' },
+                { name: 'شاهد (کمیل) (پسران)' },
+                { name: 'پروفسور سمیعی (پسران)' },
+                { name: 'پروفسور رضا (پسران)' },
+            ];
 
-                new School({
-                    _id: new mongoose.Types.ObjectId(),
-                    name: 'فرزانگان'
-                }).save((err) => {
-                    if (err) console.log(err);
-                    else console.log(`school added`)
-                });
+            let result = await School.insertMany(arr, function(error, docs) {
 
-                new School({
-                    _id: new mongoose.Types.ObjectId(),
-                    name: 'سمیعی'
-                }).save((err) => {
-                    if (err) console.log(err);
-                    else console.log(`school added`)
-                });
+            });
 
-                new School({
-                    _id: new mongoose.Types.ObjectId(),
-                    name: 'احسانبخش'
-                }).save((err) => {
-                    if (err) console.log(err);
-                    else console.log(`school added`)
-                });
+            console.log(result);
 
-                new School({
-                    _id: new mongoose.Types.ObjectId(),
-                    name: 'باهنر'
-                }).save((err) => {
-                    if (err) console.log(err);
-                    else console.log(`school added`)
-                });
 
-                new School({
-                    _id: new mongoose.Types.ObjectId(),
-                    name: 'تابش'
-                }).save((err) => {
-                    if (err) console.log(err);
-                    else console.log(`school added`)
-                });
+        }
 
-            }
-
-        });
     }
 
 };

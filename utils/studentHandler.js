@@ -65,6 +65,7 @@ async function addStudent(req, res, next) {
     newStudent.grade = params.grade;
     newStudent.field = params.field;
     newStudent.phone = params.phone;
+    newStudent.password = params.phone;
     newStudent.home = params.home || 0;
     newStudent.school = params.school;
 
@@ -367,7 +368,7 @@ async function getGPList(req, res, next) {
         code: params.code
     };
 
-    await Student.findOne(query, function(err, student) {
+    let student = await Student.findOne(query, function(err, student) {
 
         if (err) {
             issue = true;
@@ -382,13 +383,17 @@ async function getGPList(req, res, next) {
                 });
         } else { // if found student
 
-            gifts = student.gifts;
-            purchases = student.purchases;
-            studentId = student._id;
         }
     });
 
     if (issue) return;
+
+    console.log('student: ' + student);
+
+
+    gifts = student.gifts;
+    purchases = student.purchases;
+    studentId = student._id;
 
 
     // if student had gifts

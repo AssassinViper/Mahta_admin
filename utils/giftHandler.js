@@ -187,20 +187,24 @@ async function getGifts(ownerId, response) {
        owner: ownerId
     };
 
-    await Gift.find(query, {_id: 0, __v: 0, owner: 0}, function (err, gifts) {
+    let result = await Gift.find(query, {_id: 0, __v: 0, owner: 0}, function (err, gifts) {
 
         if (err) {
             issue = true;
             errHandler(err, res);
         } else {
 
-            config.log('gifts: ');
-            config.log(gifts);
-
-            // only way to change sent argument to a function in js is this: :)
-            response.gifts = gifts;
         }
     });
+
+    config.log('gifts: ');
+    config.log(result);
+
+    if (issue) return;
+
+
+    // only way to change sent argument to a function in js is this: :)
+    response.gifts = result;
 
 }
 

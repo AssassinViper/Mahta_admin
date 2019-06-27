@@ -43,7 +43,7 @@ class CommitGift extends Component {
                 ref={(ref=>this.codeInput = ref)}
                 onChange={(event)=>{this.CommitGiftData.code = Number(event.target.value)}}/>
 
-                <Input height={35} width="20%" placeholder="(مبلغ خرید(تومان"  type="number"
+                <Input height={35} width="20%" placeholder="(مبلغ هدیه(تومان"  type="number"
                 ref={(ref=>this.priceInput = ref)}
                 onChange={(event)=>{this.CommitGiftData.price = Number(event.target.value)}}/>
 

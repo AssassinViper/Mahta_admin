@@ -12,7 +12,7 @@ class Dashboard extends Component {
     static StudentInfoList = [];
     static selectedStudent = {}
     
-    state = { sortBy:"code", sortOrder:"A", listBtn:"نمایش دعوت ها", listType:"invites", list:[]}
+    state = { sortBy:"code", sortOrder:"A", listBtn:"نمایش ثبت نشده ها", listType:"invites", list:[]}
 
     componentDidMount(){
 
@@ -127,7 +127,7 @@ class Dashboard extends Component {
             let newState = Object.assign({}, this.state);
 
             newState.listType = "signed";
-            newState.listBtn = "نمایش دعوت ها";
+            newState.listBtn = "نمایش ثبت نشده ها";
             newState.list = this.showSigned();
 
             this.setState(newState, ()=>{

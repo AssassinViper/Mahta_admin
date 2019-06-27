@@ -44,13 +44,6 @@ app.use(cookieParser());
 if (config.isDevelopment) {
     console.log(`We're on developement :)`);
 
-    // Express session Middleware
-    // app.use(session({
-    //     secret: 'keyboard cat',
-    //     resave: true,
-    //     saveUninitialized: true,
-    // }));
-
     // const cors = require('cors');
     // app.use(cors());
 
@@ -59,33 +52,6 @@ if (config.isDevelopment) {
     //     credentials: true,
     //     exposedMethods: ['Content-Length', 'Options']
     // }));
-
-    // app.use(function (req, res, next) {
-
-        // res.setHeader('Access-Control-Allow-Origin', req.header('origin')
-        //     || req.header('x-forwarded-host') || req.header('referer') || req.header('host'));
-        //
-        // res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-        //
-        // res.header('Access-Control-Allow-Origin', req.headers.origin);
-        // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-        //
-        //
-        // res.header('Access-Control-Allow-Origin', 'http://localhost:3005');
-        //
-        // res.header("Access-Control-Allow-Headers","*");
-        // res.header('Access-Control-Allow-Credentials', true);
-        // res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-
-
-        // Cookies that have not been signed
-        // console.log('Cookies: ', req.cookies);
-
-        // Cookies that have been signed
-        // console.log('Signed Cookies: ', req.signedCookies);
-
-        // next();
-    // });
 
 
 
@@ -107,7 +73,7 @@ if (config.isDevelopment) {
 // TODO: comment this if you don't need test samples
 const faker = require('./tools/faker');
 faker.insertFakeAdmin();
-faker.insertFakeStudents();
+// faker.insertFakeStudents();
 faker.insertFakeSchools();
 
 

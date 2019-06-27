@@ -65,6 +65,7 @@ async function addStudent(req, res, next) {
     newStudent.grade = params.grade;
     newStudent.field = params.field;
     newStudent.phone = params.phone;
+    newStudent.password = params.phone;
     newStudent.home = params.home || 0;
     newStudent.school = params.school;
 
@@ -195,7 +196,7 @@ async function createCode(grade) {
                 config.log('query result:');
                 config.log(student);
 
-            } else { // if found no student was found -> handling first student with chosen grade
+            } else if (!student){ // if found no student was found -> handling first student with chosen grade
                 latestCode = temp;
             }
         });
@@ -203,7 +204,9 @@ async function createCode(grade) {
 
     if (issue) return;
 
-    return (latestCode + 1);
+    config.log('returning: ' + Number(latestCode) + 1)
+
+    return (Number(latestCode) + 1);
 }// done
 
 
@@ -365,7 +368,7 @@ async function getGPList(req, res, next) {
         code: params.code
     };
 
-    await Student.findOne(query, function(err, student) {
+    let student = await Student.findOne(query, function(err, student) {
 
         if (err) {
             issue = true;
@@ -380,13 +383,17 @@ async function getGPList(req, res, next) {
                 });
         } else { // if found student
 
-            gifts = student.gifts;
-            purchases = student.purchases;
-            studentId = student._id;
         }
     });
 
     if (issue) return;
+
+    console.log('student: ' + student);
+
+
+    gifts = student.gifts;
+    purchases = student.purchases;
+    studentId = student._id;
 
 
     // if student had gifts

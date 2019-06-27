@@ -89,7 +89,7 @@ async function commitGift(req, res, next) {
     if (issue) return;
 }
 
-async function groupGift(req, res){
+async function groupGift(req, res) {
 
     let params = req.body;
     let price = params.price || 0;
@@ -103,14 +103,14 @@ async function groupGift(req, res){
 
     if(params.grade !== undefined && params.grade !== ""){
 
-        if (params.school !== 'all') {
+        if (params.grade !== 'all') {
             query.grade = params.grade;
         }
     }
 
     if(params.field !== undefined && params.field !== ""){
 
-        if (params.school !== 'all') {
+        if (params.field !== 'all') {
             query.field = params.field;
         }
     }
@@ -121,6 +121,9 @@ async function groupGift(req, res){
             query.school = params.school;
         }
     }
+
+    config.log(`query: `);
+    config.log(query);
 
     let students = await Student.find(query);
 
@@ -184,20 +187,24 @@ async function getGifts(ownerId, response) {
        owner: ownerId
     };
 
-    await Gift.find(query, {_id: 0, __v: 0, owner: 0}, function (err, gifts) {
+    let result = await Gift.find(query, {_id: 0, __v: 0, owner: 0}, function (err, gifts) {
 
         if (err) {
             issue = true;
             errHandler(err, res);
         } else {
 
-            config.log('gifts: ');
-            config.log(gifts);
-
-            // only way to change sent argument to a function in js is this: :)
-            response.gifts = gifts;
         }
     });
+
+    config.log('gifts: ');
+    config.log(result);
+
+    if (issue) return;
+
+
+    // only way to change sent argument to a function in js is this: :)
+    response.gifts = result;
 
 }
 

@@ -112,7 +112,7 @@ class CommitPurchase extends Component {
         this.CommitPurchaseData.useGift = this.state.gift;
         this.CommitPurchaseData.useCredit = this.state.credit;
 
-        alert(JSON.stringify(this.CommitPurchaseData))
+        // alert(JSON.stringify(this.CommitPurchaseData))
 
         CommitPurchaseHandler(this.CommitPurchaseData,
             (res)=>{
